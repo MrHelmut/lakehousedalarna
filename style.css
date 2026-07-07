@@ -215,9 +215,37 @@ box-shadow:0 15px 30px rgba(0,0,0,.18);
 
 height:100vh;
 
-background:url("
+background:url("images/hero.png");
 
-.hero-overlay{
+background-size:cover;
+
+background-position:center;
+
+background-repeat:no-repeat;
+
+position:relative;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+text-align:center;
+
+overflow:hidden;
+
+transform:scale(1.05);
+
+transition:transform 8s ease-out;
+
+}
+
+.hero.hero-loaded{
+
+transform:scale(1);
+
+}
 
 position:absolute;
 
