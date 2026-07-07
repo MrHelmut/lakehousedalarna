@@ -246,7 +246,7 @@ transition:transform 8s ease-out;
 transform:scale(1);
 
 }
-
+.hero-overlay{
 position:absolute;
 
 inset:0;
@@ -264,7 +264,6 @@ rgba(0,0,0,.55)
 );
 
 }
-
 .hero-content{
 
 position:relative;
