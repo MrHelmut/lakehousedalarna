@@ -13,7 +13,6 @@ window.addEventListener("scroll", () => {
     }
 
 });
-
 /* ==========================================================
    FADE UP
 ========================================================== */
@@ -42,20 +41,7 @@ document.querySelectorAll("section").forEach(section=>{
 
 });
 
-/* ==========================================================
-   HERO IMAGE PARALLAX
-========================================================== */
-
 const hero = document.querySelector(".hero");
-
-window.addEventListener("scroll",()=>{
-
-    const y = window.scrollY;
-
-    hero.style.backgroundPosition =
-    `center ${y*0.35}px`;
-
-});
 
 /* ==========================================================
    GALLERY LIGHTBOX
@@ -188,17 +174,3 @@ fill:"forwards"
 );
 
 });
-
-/* ==========================================================
-   KEN BURNS EFFECT
-========================================================== */
-
-let scale=1;
-
-setInterval(()=>{
-
-scale+=0.00012;
-
-hero.style.backgroundSize=`${scale*100}%`;
-
-},40);
