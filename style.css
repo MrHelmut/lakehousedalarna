@@ -1038,11 +1038,11 @@ border:1px solid rgba(15,23,32,.08);
 
 .partner-logo{
 
-width:min(100%, 210px);
+width:min(100%, 165px);
 
-height:46px;
+height:30px;
 
-margin:0 0 18px;
+margin:0 0 14px;
 
 object-fit:contain;
 
