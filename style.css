@@ -1022,31 +1022,7 @@ color:var(--text);
 
 }
 
-.social-card--partner{
 
-display:flex;
-
-flex-direction:column;
-
-align-items:center;
-
-justify-content:center;
-
-border:1px solid rgba(15,23,32,.08);
-
-}
-
-.partner-logo{
-
-width:min(100%, 165px);
-
-height:30px;
-
-margin:0 0 14px;
-
-object-fit:contain;
-
-}
 /* ===========================================================
    FOOTER
 =========================================================== */
@@ -1089,6 +1065,61 @@ margin-bottom:18px;
 
 }
 
+.ferienhausliebe-badge{
+
+max-width:420px;
+
+margin:38px auto 0;
+
+padding:28px 32px;
+
+border-top:1px solid rgba(255,255,255,.18);
+
+border-bottom:1px solid rgba(255,255,255,.18);
+
+}
+
+.ferienhausliebe-badge a{
+
+display:inline-block;
+
+}
+
+.ferienhausliebe-badge img{
+
+width:170px;
+
+height:44px;
+
+margin:0 auto 16px;
+
+object-fit:contain;
+
+}
+
+.footer-content .ferienhausliebe-badge p{
+
+margin:0;
+
+font-size:15px;
+
+line-height:1.6;
+
+color:#d0d0d0;
+
+}
+
+.footer-content .ferienhausliebe-badge .ferienhausliebe-badge-title{
+
+margin-bottom:6px;
+
+font-size:17px;
+
+font-weight:600;
+
+color:white;
+
+}
 .footer-links{
 
 display:flex;
