@@ -1571,3 +1571,22 @@ box-shadow:0 30px 80px rgba(0,0,0,.45);
 .menu a.active{
 color:var(--secondary)!important;
 }
+
+/* Official partner links */
+.explore-link{
+
+display:inline-block;
+
+margin-top:18px;
+
+font-weight:600;
+
+color:var(--secondary);
+
+}
+
+.explore-link:hover{
+
+color:var(--primary);
+
+}
