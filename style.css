@@ -1590,3 +1590,15 @@ color:var(--secondary);
 color:var(--primary);
 
 }
+/* Bjursås map, used with permission */
+.gallery-grid img.piste-map{
+
+grid-column:span 2;
+
+grid-row:span 2;
+
+object-fit:contain;
+
+background:#fff;
+
+}
