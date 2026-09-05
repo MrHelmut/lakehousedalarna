@@ -1386,6 +1386,40 @@ font-weight:600;
 
 cursor:pointer;
 
+display:flex;
+
+flex-direction:column;
+
+align-items:flex-start;
+
+justify-content:space-between;
+
+gap:6px;
+
+padding:12px;
+
+text-align:left;
+
+}
+
+.calendar-date{
+
+font-size:16px;
+
+line-height:1;
+
+}
+
+.calendar-rate{
+
+font-size:11px;
+
+font-weight:500;
+
+line-height:1.2;
+
+color:#6f6557;
+
 }
 
 .calendar-day:hover:not(:disabled){
@@ -1411,9 +1445,21 @@ color:#aaa;
 
 background:#ece9e2;
 
+cursor:not-allowed;
+
+}
+
+.calendar-day.past .calendar-date,
+.calendar-day.unavailable .calendar-date{
+
 text-decoration:line-through;
 
-cursor:not-allowed;
+}
+
+.calendar-day.past .calendar-rate,
+.calendar-day.unavailable .calendar-rate{
+
+color:#aaa;
 
 }
 
@@ -1426,6 +1472,12 @@ border-color:var(--secondary);
 color:white;
 
 text-decoration:none;
+
+}
+
+.calendar-day.selected .calendar-rate{
+
+color:white;
 
 }
 
@@ -1442,6 +1494,19 @@ margin-top:22px;
 font-size:14px;
 
 color:var(--text);
+
+}
+
+.calendar-pricing-note,
+.season-note{
+
+font-size:14px;
+
+line-height:1.7;
+
+color:#6f6557;
+
+margin-top:18px;
 
 }
 
