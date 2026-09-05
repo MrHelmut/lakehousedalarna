@@ -1,5 +1,7 @@
 const form = document.querySelector("[data-booking-request-form]");
 const helpText = document.querySelector("[data-request-help]");
+const requestSelection = document.querySelector("[data-request-selection]");
+const sendRequestLink = document.querySelector("[data-send-request-link]");
 const calendarGrid = document.querySelector("[data-calendar-grid]");
 const calendarStatus = document.querySelector("[data-calendar-status]");
 const monthLabel = document.querySelector("[data-month-label]");
@@ -24,8 +26,9 @@ const pricing = {
     currency: "SEK",
     regularWeeknight: 2400,
     regularWeekend: 3000,
-    shoulderWeekend: 3200,
-    highSeasonBase: 3000,
+    midSeasonWeeknight: 2600,
+    midSeasonWeekend: 3000,
+    highSeasonBase: 3200,
     extraGuestNightly: 200,
 };
 const highSeasonLabels = {
@@ -33,6 +36,11 @@ const highSeasonLabels = {
     christmas: "Christmas & New Year",
     winterHoliday: "Swedish winter holidays",
     skiWorlds: "FIS Nordic World Ski Championships",
+};
+const midSeasonLabels = {
+    spring: "Spring shoulder season",
+    autumn: "Autumn shoulder season",
+    earlyDecember: "Early December",
 };
 
 let bookedDates = new Set();
@@ -151,13 +159,30 @@ function getHighSeasonLabel(date) {
     return "";
 }
 
+function getMidSeasonLabel(date) {
+    const day = new Date(date);
+
+    if (isBetweenMonthDay(day, 4, 1, 6, 14)) {
+        return midSeasonLabels.spring;
+    }
+    if (isBetweenMonthDay(day, 8, 21, 10, 31)) {
+        return midSeasonLabels.autumn;
+    }
+    if (isBetweenMonthDay(day, 12, 1, 12, 20)) {
+        return midSeasonLabels.earlyDecember;
+    }
+
+    return "";
+}
+
 function isWeekendNight(date) {
     const day = date.getDay();
     return day === 5 || day === 6;
 }
 
-function getNightPrice(date, guests = 6) {
+function getNightPrice(date, guests = "") {
     const highSeasonLabel = getHighSeasonLabel(new Date(date));
+    const midSeasonLabel = getMidSeasonLabel(new Date(date));
     const guestCount = Number(guests) || 0;
 
     if (highSeasonLabel) {
@@ -168,10 +193,18 @@ function getNightPrice(date, guests = 6) {
         };
     }
 
-    if (isWeekendNight(date)) {
-        const baseAmount = date.getMonth() === 11 ? pricing.shoulderWeekend : pricing.regularWeekend;
+    if (midSeasonLabel) {
+        const baseAmount = isWeekendNight(date) ? pricing.midSeasonWeekend : pricing.midSeasonWeeknight;
         return {
             amount: baseAmount + (guestCount * pricing.extraGuestNightly),
+            label: midSeasonLabel,
+            highSeason: false,
+        };
+    }
+
+    if (isWeekendNight(date)) {
+        return {
+            amount: pricing.regularWeekend + (guestCount * pricing.extraGuestNightly),
             label: "Weekend",
             highSeason: false,
         };
@@ -215,9 +248,13 @@ function getStayEstimate(checkIn, checkOut, guests) {
 
 function getSeasonSummary(labels) {
     const highSeasonHits = labels.filter((label) => Object.values(highSeasonLabels).includes(label));
+    const midSeasonHits = labels.filter((label) => Object.values(midSeasonLabels).includes(label));
 
     if (highSeasonHits.length) {
         return highSeasonHits.join(" + ");
+    }
+    if (midSeasonHits.length) {
+        return midSeasonHits.join(" + ");
     }
 
     if (labels.includes("Weekend")) {
@@ -229,9 +266,13 @@ function getSeasonSummary(labels) {
 
 function getSeasonNote(labels) {
     const highSeasonHits = labels.filter((label) => Object.values(highSeasonLabels).includes(label));
+    const midSeasonHits = labels.filter((label) => Object.values(midSeasonLabels).includes(label));
 
     if (highSeasonHits.length) {
         return "High-season pricing is included in this estimate. Final price is confirmed before booking.";
+    }
+    if (midSeasonHits.length) {
+        return "Shoulder-season pricing is included in this estimate. Final price is confirmed before booking.";
     }
 
     return "Final price is confirmed before booking.";
@@ -278,12 +319,15 @@ function updateSummary() {
     summaryGuests.textContent = guests ? `${guests} guest${guests === "1" ? "" : "s"}` : "Not selected";
     summaryNights.textContent = nights ? `${nights} night${nights === 1 ? "" : "s"}` : "Not selected";
     summarySeason.textContent = estimate ? getSeasonSummary(estimate.labels) : "Not selected";
+    requestSelection.textContent = estimate && guests && !unavailable
+        ? `Your request: ${checkIn} to ${checkOut}, ${nights} night${nights === 1 ? "" : "s"}, ${guests} guest${guests === "1" ? "" : "s"}, estimated total ${formatSek(estimate.total)}.`
+        : "Choose dates and guests above to include them in your request.";
 
     if (!checkIn || !checkOut) {
         summaryStatus.textContent = "Choose dates";
         priceEstimate.textContent = "Choose dates";
         priceDetails.textContent = "Choose dates and guests to see an estimated total. Guest price is 200 SEK per guest and night.";
-        seasonNote.textContent = "High season includes summer, Christmas & New Year, Swedish winter holidays and the FIS Nordic World Ski Championships in Falun 2027.";
+        seasonNote.textContent = "Low season starts from 2,400 SEK/night, shoulder season from 2,600 SEK/night and high season from 3,200 SEK/night.";
         return;
     }
 
@@ -347,7 +391,7 @@ function renderCalendar() {
 
         button.type = "button";
         button.className = "calendar-day";
-        button.innerHTML = `<span class="calendar-date">${day.getDate()}</span><span class="calendar-rate">${formatShortSek(getNightPrice(day, guestsInput.value).amount)} SEK</span>`;
+        button.innerHTML = `<span class="calendar-date">${day.getDate()}</span><span class="calendar-rate">${formatShortSek(getNightPrice(day, getSelectedGuests()).amount)} SEK</span>`;
         button.dataset.date = key;
 
         if (outsideMonth) {
@@ -387,6 +431,16 @@ function selectDate(key) {
 function moveMonth(direction) {
     visibleMonth.setMonth(visibleMonth.getMonth() + direction);
     renderCalendar();
+}
+
+function focusNextRequestField() {
+    const nextField = form.querySelector("input[name='guest_name'], input[name='guest_email'], textarea[name='message']");
+
+    form.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    if (nextField) {
+        window.setTimeout(() => nextField.focus({ preventScroll: true }), 450);
+    }
 }
 
 async function loadAvailability() {
@@ -470,6 +524,19 @@ form.addEventListener("submit", (event) => {
 
 prevButton.addEventListener("click", () => moveMonth(-1));
 nextButton.addEventListener("click", () => moveMonth(1));
+sendRequestLink.addEventListener("click", (event) => {
+    event.preventDefault();
+    updateSummary();
+    helpText.classList.remove("error");
+
+    if (!checkInInput.value || !checkOutInput.value || !getSelectedGuests()) {
+        helpText.textContent = "Choose dates and guests above, then add your contact details here.";
+    } else {
+        helpText.textContent = "Your selected dates, guests and estimated price are included in the request.";
+    }
+
+    focusNextRequestField();
+});
 checkInInput.addEventListener("change", () => {
     checkOutInput.value = "";
     updateSummary();

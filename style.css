@@ -962,6 +962,12 @@ transition:.35s;
 
 border-top:4px solid transparent;
 
+display:block;
+
+text-decoration:none;
+
+color:inherit;
+
 }
 
 .explore-card:hover{
@@ -969,6 +975,14 @@ border-top:4px solid transparent;
 transform:translateY(-8px);
 
 border-top:4px solid var(--secondary);
+
+}
+
+.explore-card:focus-visible{
+
+outline:3px solid rgba(201,160,99,.45);
+
+outline-offset:4px;
 
 }
 
@@ -1286,6 +1300,24 @@ font-size:16px;
 line-height:1.8;
 
 color:var(--text);
+
+}
+
+.request-selection{
+
+margin:22px 0 28px;
+
+padding:18px 20px;
+
+border-radius:12px;
+
+background:#f7f1e8;
+
+color:var(--primary);
+
+font-weight:500;
+
+line-height:1.7;
 
 }
 
