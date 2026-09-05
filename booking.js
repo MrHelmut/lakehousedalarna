@@ -20,8 +20,31 @@ const summaryStatus = document.querySelector("[data-summary-status]");
 const seasonNote = document.querySelector("[data-season-note]");
 
 const bookingEmail = "alexander_hjelm@hotmail.com";
-const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-const weekdayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+[
+    helpText,
+    requestSelection,
+    calendarGrid,
+    calendarStatus,
+    monthLabel,
+    priceEstimate,
+    priceDetails,
+    summaryGuests,
+    summaryNights,
+    summarySeason,
+    summaryStatus,
+    seasonNote,
+].forEach((element) => element?.setAttribute("data-no-translate", ""));
+
+const monthNames = {
+    en: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    sv: ["Januari", "Februari", "Mars", "April", "Maj", "Juni", "Juli", "Augusti", "September", "Oktober", "November", "December"],
+    de: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
+};
+const weekdayNames = {
+    en: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    sv: ["Mån", "Tis", "Ons", "Tor", "Fre", "Lör", "Sön"],
+    de: ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"],
+};
 const pricing = {
     currency: "SEK",
     regularWeeknight: 2400,
@@ -46,9 +69,58 @@ const midSeasonLabels = {
 let bookedDates = new Set();
 let visibleMonth = new Date();
 let syncingGuests = false;
+let availabilityUpdatedAt = "";
+let availabilityLoaded = false;
+let availabilityLoadFailed = false;
 
 visibleMonth.setDate(1);
 visibleMonth.setHours(0, 0, 0, 0);
+
+function currentLanguage() {
+    return window.siteI18n?.getCurrentLanguage?.() || "en";
+}
+
+function tr(text, replacements = {}) {
+    if (window.siteI18n?.t) {
+        return window.siteI18n.t(text, replacements);
+    }
+
+    return Object.entries(replacements).reduce((translated, [key, value]) => (
+        translated.replaceAll(`{${key}}`, value)
+    ), text);
+}
+
+function guestLabel(value) {
+    const guests = Number(value);
+    if (!guests) {
+        return tr("Not selected");
+    }
+
+    const language = currentLanguage();
+    if (language === "sv") {
+        return guests === 1 ? "1 gäst" : `${guests} gäster`;
+    }
+    if (language === "de") {
+        return guests === 1 ? "1 Gast" : `${guests} Gäste`;
+    }
+    return guests === 1 ? "1 guest" : `${guests} guests`;
+}
+
+function nightLabel(value) {
+    const nights = Number(value);
+    if (!nights) {
+        return tr("Not selected");
+    }
+
+    const language = currentLanguage();
+    if (language === "sv") {
+        return nights === 1 ? "1 natt" : `${nights} nätter`;
+    }
+    if (language === "de") {
+        return nights === 1 ? "1 Nacht" : `${nights} Nächte`;
+    }
+    return nights === 1 ? "1 night" : `${nights} nights`;
+}
 
 function toDateKey(date) {
     const year = date.getFullYear();
@@ -70,7 +142,7 @@ function addDays(date, days) {
 
 function formatValue(formData, key, fallback = "Not provided") {
     const value = String(formData.get(key) || "").trim();
-    return value || fallback;
+    return value || tr(fallback);
 }
 
 function getSelectedGuests() {
@@ -251,17 +323,17 @@ function getSeasonSummary(labels) {
     const midSeasonHits = labels.filter((label) => Object.values(midSeasonLabels).includes(label));
 
     if (highSeasonHits.length) {
-        return highSeasonHits.join(" + ");
+        return highSeasonHits.map((label) => tr(label)).join(" + ");
     }
     if (midSeasonHits.length) {
-        return midSeasonHits.join(" + ");
+        return midSeasonHits.map((label) => tr(label)).join(" + ");
     }
 
     if (labels.includes("Weekend")) {
-        return "Regular dates, incl. weekend";
+        return tr("Regular dates, incl. weekend");
     }
 
-    return "Regular dates";
+    return tr("Regular dates");
 }
 
 function getSeasonNote(labels) {
@@ -269,13 +341,13 @@ function getSeasonNote(labels) {
     const midSeasonHits = labels.filter((label) => Object.values(midSeasonLabels).includes(label));
 
     if (highSeasonHits.length) {
-        return "High-season pricing is included in this estimate. Final price is confirmed before booking.";
+        return tr("High-season pricing is included in this estimate. Final price is confirmed before booking.");
     }
     if (midSeasonHits.length) {
-        return "Shoulder-season pricing is included in this estimate. Final price is confirmed before booking.";
+        return tr("Shoulder-season pricing is included in this estimate. Final price is confirmed before booking.");
     }
 
-    return "Final price is confirmed before booking.";
+    return tr("Final price is confirmed before booking.");
 }
 
 function isUnavailable(date) {
@@ -316,48 +388,58 @@ function updateSummary() {
     const unavailable = hasUnavailableBetween(checkIn, checkOut);
     const estimate = getStayEstimate(checkIn, checkOut, guests);
 
-    summaryGuests.textContent = guests ? `${guests} guest${guests === "1" ? "" : "s"}` : "Not selected";
-    summaryNights.textContent = nights ? `${nights} night${nights === 1 ? "" : "s"}` : "Not selected";
-    summarySeason.textContent = estimate ? getSeasonSummary(estimate.labels) : "Not selected";
+    summaryGuests.textContent = guests ? guestLabel(guests) : tr("Not selected");
+    summaryNights.textContent = nights ? nightLabel(nights) : tr("Not selected");
+    summarySeason.textContent = estimate ? getSeasonSummary(estimate.labels) : tr("Not selected");
     requestSelection.textContent = estimate && guests && !unavailable
-        ? `Your request: ${checkIn} to ${checkOut}, ${nights} night${nights === 1 ? "" : "s"}, ${guests} guest${guests === "1" ? "" : "s"}, estimated total ${formatSek(estimate.total)}.`
-        : "Choose dates and guests above to include them in your request.";
+        ? tr("Your request: {checkIn} to {checkOut}, {nights}, {guests}, estimated total {total}.", {
+            checkIn,
+            checkOut,
+            nights: nightLabel(nights),
+            guests: guestLabel(guests),
+            total: formatSek(estimate.total),
+        })
+        : tr("Choose dates and guests above to include them in your request.");
 
     if (!checkIn || !checkOut) {
-        summaryStatus.textContent = "Choose dates";
-        priceEstimate.textContent = "Choose dates";
-        priceDetails.textContent = "Choose dates and guests to see an estimated total. Guest price is 200 SEK per guest and night.";
-        seasonNote.textContent = "Low season starts from 2,400 SEK/night, shoulder season from 2,600 SEK/night and high season from 3,200 SEK/night.";
+        summaryStatus.textContent = tr("Choose dates");
+        priceEstimate.textContent = tr("Choose dates");
+        priceDetails.textContent = tr("Choose dates and guests to see an estimated total. Guest price is 200 SEK per guest and night.");
+        seasonNote.textContent = tr("Low season starts from 2,400 SEK/night, shoulder season from 2,600 SEK/night and high season from 3,200 SEK/night.");
         return;
     }
 
     if (!nights) {
-        summaryStatus.textContent = "Date issue";
-        priceEstimate.textContent = "Check dates";
-        priceDetails.textContent = "Check-out must be after check-in.";
-        seasonNote.textContent = "Please choose a later check-out date.";
+        summaryStatus.textContent = tr("Date issue");
+        priceEstimate.textContent = tr("Check dates");
+        priceDetails.textContent = tr("Check-out must be after check-in.");
+        seasonNote.textContent = tr("Please choose a later check-out date.");
         return;
     }
 
     if (!guests) {
-        summaryStatus.textContent = "Choose guests";
-        priceEstimate.textContent = "Choose guests";
-        priceDetails.textContent = "Select the number of guests to calculate the estimated price.";
-        seasonNote.textContent = "The estimate uses the nightly date price plus 200 SEK per guest and night.";
+        summaryStatus.textContent = tr("Choose guests");
+        priceEstimate.textContent = tr("Choose guests");
+        priceDetails.textContent = tr("Select the number of guests to calculate the estimated price.");
+        seasonNote.textContent = tr("The estimate uses the nightly date price plus 200 SEK per guest and night.");
         return;
     }
 
     if (unavailable) {
-        summaryStatus.textContent = "Unavailable";
-        priceEstimate.textContent = "Dates unavailable";
-        priceDetails.textContent = "These dates overlap with unavailable nights. Please choose another stay.";
-        seasonNote.textContent = "The Airbnb calendar marks at least one selected night as unavailable.";
+        summaryStatus.textContent = tr("Unavailable");
+        priceEstimate.textContent = tr("Dates unavailable");
+        priceDetails.textContent = tr("These dates overlap with unavailable nights. Please choose another stay.");
+        seasonNote.textContent = tr("The Airbnb calendar marks at least one selected night as unavailable.");
         return;
     }
 
-    summaryStatus.textContent = "Looks available";
-    priceEstimate.textContent = `${formatSek(estimate.total)} estimated`;
-    priceDetails.textContent = `${formatSek(estimate.average)} per night on average for ${nights} night${nights === 1 ? "" : "s"}, including ${guests} guest${guests === "1" ? "" : "s"}. Final price is confirmed before booking.`;
+    summaryStatus.textContent = tr("Looks available");
+    priceEstimate.textContent = tr("{total} estimated", { total: formatSek(estimate.total) });
+    priceDetails.textContent = tr("{average} per night on average for {nights}, including {guests}. Final price is confirmed before booking.", {
+        average: formatSek(estimate.average),
+        nights: nightLabel(nights),
+        guests: guestLabel(guests),
+    });
     seasonNote.textContent = getSeasonNote(estimate.labels);
 }
 
@@ -371,10 +453,14 @@ function renderCalendar() {
     const offset = (firstDay.getDay() + 6) % 7;
     const start = addDays(firstDay, -offset);
 
-    monthLabel.textContent = `${monthNames[month]} ${year}`;
+    const language = currentLanguage();
+    const localizedMonths = monthNames[language] || monthNames.en;
+    const localizedWeekdays = weekdayNames[language] || weekdayNames.en;
+
+    monthLabel.textContent = `${localizedMonths[month]} ${year}`;
     calendarGrid.innerHTML = "";
 
-    weekdayNames.forEach((name) => {
+    localizedWeekdays.forEach((name) => {
         const weekday = document.createElement("div");
         weekday.className = "calendar-weekday";
         weekday.textContent = name;
@@ -443,6 +529,34 @@ function focusNextRequestField() {
     }
 }
 
+function updateCalendarStatus() {
+    if (availabilityLoadFailed) {
+        calendarStatus.textContent = tr("Availability could not be loaded. Please confirm dates in your request.");
+        return;
+    }
+
+    if (availabilityLoaded && availabilityUpdatedAt) {
+        const updated = new Date(availabilityUpdatedAt);
+        calendarStatus.textContent = tr("Synced with Airbnb {date}.", {
+            date: updated.toLocaleDateString(currentLanguage() === "en" ? "en-GB" : currentLanguage() === "sv" ? "sv-SE" : "de-DE"),
+        });
+        return;
+    }
+
+    if (availabilityLoaded) {
+        calendarStatus.textContent = tr("Availability sync is prepared. Dates will update after the Airbnb calendar secret is added in GitHub.");
+        return;
+    }
+
+    calendarStatus.textContent = tr("Loading availability...");
+}
+
+function updateHelpTextDefault() {
+    if (!helpText.classList.contains("error")) {
+        helpText.textContent = tr("Your email app will open with the request filled in.");
+    }
+}
+
 async function loadAvailability() {
     try {
         const response = await fetch(`availability.json?v=${Date.now()}`);
@@ -452,17 +566,15 @@ async function loadAvailability() {
 
         const availability = await response.json();
         bookedDates = new Set(availability.booked_dates || []);
-
-        if (availability.updated_at) {
-            const updated = new Date(availability.updated_at);
-            calendarStatus.textContent = `Synced with Airbnb ${updated.toLocaleDateString("en-GB")}.`;
-        } else {
-            calendarStatus.textContent = "Availability sync is prepared. Dates will update after the Airbnb calendar secret is added in GitHub.";
-        }
+        availabilityUpdatedAt = availability.updated_at || "";
+        availabilityLoaded = true;
+        availabilityLoadFailed = false;
     } catch (error) {
-        calendarStatus.textContent = "Availability could not be loaded. Please confirm dates in your request.";
+        availabilityLoaded = true;
+        availabilityLoadFailed = true;
     }
 
+    updateCalendarStatus();
     renderCalendar();
     updateSummary();
 }
@@ -482,13 +594,13 @@ form.addEventListener("submit", (event) => {
     const estimate = getStayEstimate(checkIn, checkOut, guests);
 
     if (!nights) {
-        helpText.textContent = "Please choose a check-out date after check-in.";
+        helpText.textContent = tr("Please choose a check-out date after check-in.");
         helpText.classList.add("error");
         return;
     }
 
     if (hasUnavailableBetween(checkIn, checkOut)) {
-        helpText.textContent = "These dates appear unavailable. Please choose another stay or ask about alternatives.";
+        helpText.textContent = tr("These dates appear unavailable. Please choose another stay or ask about alternatives.");
         helpText.classList.add("error");
         return;
     }
@@ -504,7 +616,7 @@ form.addEventListener("submit", (event) => {
         `Nights: ${nights}`,
         `Guests: ${guests}`,
         `Estimated price: ${estimate ? `${formatSek(estimate.total)} total (${formatSek(estimate.average)} per night average)` : "Not calculated"}`,
-        `Season: ${estimate ? estimate.labels.join(" + ") : "Not calculated"}`,
+        `Season: ${estimate ? getSeasonSummary(estimate.labels) : "Not calculated"}`,
         "",
         `Name: ${name}`,
         `Email: ${email}`,
@@ -516,7 +628,7 @@ form.addEventListener("submit", (event) => {
         "Please let me know if these dates are available and what the total price would be.",
     ].join("\n");
 
-    helpText.textContent = "Opening your email app with the request filled in.";
+    helpText.textContent = tr("Opening your email app with the request filled in.");
     helpText.classList.remove("error");
 
     window.location.href = `mailto:${bookingEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
@@ -530,9 +642,9 @@ sendRequestLink.addEventListener("click", (event) => {
     helpText.classList.remove("error");
 
     if (!checkInInput.value || !checkOutInput.value || !getSelectedGuests()) {
-        helpText.textContent = "Choose dates and guests above, then add your contact details here.";
+        helpText.textContent = tr("Choose dates and guests above, then add your contact details here.");
     } else {
-        helpText.textContent = "Your selected dates, guests and estimated price are included in the request.";
+        helpText.textContent = tr("Your selected dates, guests and estimated price are included in the request.");
     }
 
     focusNextRequestField();
@@ -557,4 +669,13 @@ priceGuestsInput.addEventListener("change", () => {
     renderCalendar();
 });
 
+window.addEventListener("site-language-change", () => {
+    updateCalendarStatus();
+    updateHelpTextDefault();
+    renderCalendar();
+    updateSummary();
+});
+
+updateHelpTextDefault();
+updateCalendarStatus();
 loadAvailability();
