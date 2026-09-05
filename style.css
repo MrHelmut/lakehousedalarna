@@ -696,6 +696,236 @@ color:var(--text);
 line-height:1.8;
 
 }
+
+/* ================================
+   REVIEWS
+================================ */
+
+.reviews-section{
+
+padding:140px 8%;
+
+background:#fbfaf7;
+
+}
+
+.reviews-wrap{
+
+width:min(1180px,100%);
+
+margin:auto;
+
+display:grid;
+
+grid-template-columns:.9fr 1.4fr;
+
+gap:34px;
+
+align-items:start;
+
+}
+
+.guest-favorite-card,
+.review-card{
+
+background:white;
+
+border:1px solid rgba(20,48,66,.08);
+
+box-shadow:var(--shadow);
+
+border-radius:22px;
+
+}
+
+.guest-favorite-card{
+
+padding:46px 38px;
+
+text-align:center;
+
+position:sticky;
+
+top:110px;
+
+}
+
+.rating-badge{
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+gap:18px;
+
+margin-bottom:18px;
+
+}
+
+.rating-badge strong{
+
+font-size:76px;
+
+line-height:1;
+
+letter-spacing:0;
+
+color:#1f1f1f;
+
+}
+
+.laurel{
+
+width:48px;
+
+height:92px;
+
+display:block;
+
+position:relative;
+
+}
+
+.laurel::before,
+.laurel::after{
+
+content:"";
+
+position:absolute;
+
+inset:0;
+
+background:
+radial-gradient(ellipse at 50% 50%, #f7dc75 0 42%, #d4a735 43% 65%, transparent 66%) 50% 4%/20px 28px no-repeat,
+radial-gradient(ellipse at 50% 50%, #f7dc75 0 42%, #d4a735 43% 65%, transparent 66%) 64% 25%/22px 30px no-repeat,
+radial-gradient(ellipse at 50% 50%, #f7dc75 0 42%, #d4a735 43% 65%, transparent 66%) 68% 48%/22px 30px no-repeat,
+radial-gradient(ellipse at 50% 50%, #f7dc75 0 42%, #d4a735 43% 65%, transparent 66%) 56% 71%/20px 28px no-repeat;
+
+filter:drop-shadow(0 6px 8px rgba(0,0,0,.12));
+
+}
+
+.laurel-left{
+
+transform:rotate(-12deg);
+
+}
+
+.laurel-right{
+
+transform:scaleX(-1) rotate(-12deg);
+
+}
+
+.guest-favorite-card h3{
+
+font-size:30px;
+
+color:var(--primary);
+
+margin-bottom:12px;
+
+}
+
+.guest-favorite-card p{
+
+font-size:17px;
+
+color:var(--text);
+
+line-height:1.8;
+
+margin-bottom:28px;
+
+}
+
+.reviews-button{
+
+display:inline-block;
+
+background:var(--secondary);
+
+color:white;
+
+padding:15px 28px;
+
+border-radius:60px;
+
+font-weight:600;
+
+white-space:nowrap;
+
+transition:var(--transition);
+
+}
+
+.reviews-button:hover{
+
+transform:translateY(-3px);
+
+box-shadow:0 15px 30px rgba(0,0,0,.18);
+
+}
+
+.reviews-grid{
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:22px;
+
+}
+
+.review-card{
+
+padding:30px;
+
+}
+
+.review-stars{
+
+font-size:18px;
+
+letter-spacing:2px;
+
+color:#1f1f1f;
+
+margin-bottom:16px;
+
+}
+
+.review-card p{
+
+font-size:16px;
+
+line-height:1.8;
+
+color:#333;
+
+margin-bottom:22px;
+
+}
+
+.review-card h4{
+
+font-size:19px;
+
+color:var(--primary);
+
+margin-bottom:2px;
+
+}
+
+.review-card span{
+
+font-size:14px;
+
+color:#777;
+
+}
 /* ===========================================================
    EXPLORE DALARNA
 =========================================================== */
@@ -1272,6 +1502,18 @@ grid-template-columns:repeat(2,1fr);
 
 }
 
+.reviews-wrap{
+
+grid-template-columns:1fr;
+
+}
+
+.guest-favorite-card{
+
+position:static;
+
+}
+
 .explore-grid{
 
 grid-template-columns:repeat(2,1fr);
@@ -1457,6 +1699,71 @@ height:260px;
 .feature-grid{
 
 grid-template-columns:1fr;
+
+}
+
+.reviews-section{
+
+padding:100px 8%;
+
+}
+
+.guest-favorite-card{
+
+padding:34px 22px;
+
+}
+
+.rating-badge{
+
+gap:10px;
+
+}
+
+.rating-badge strong{
+
+font-size:58px;
+
+}
+
+.laurel{
+
+width:36px;
+
+height:72px;
+
+}
+
+.guest-favorite-card h3{
+
+font-size:26px;
+
+}
+
+.guest-favorite-card p,
+.review-card p{
+
+font-size:15px;
+
+}
+
+.reviews-button{
+
+width:100%;
+
+padding:14px 18px;
+
+}
+
+.reviews-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.review-card{
+
+padding:24px;
 
 }
 
