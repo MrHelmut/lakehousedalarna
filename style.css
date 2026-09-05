@@ -233,7 +233,7 @@ backdrop-filter:blur(12px);
 
 .language-switcher button{
 
-width:44px;
+width:42px;
 
 height:38px;
 
@@ -247,8 +247,6 @@ color:white;
 
 font:inherit;
 
-font-size:16px;
-
 font-weight:700;
 
 cursor:pointer;
@@ -259,15 +257,79 @@ align-items:center;
 
 justify-content:center;
 
-gap:4px;
+flex-direction:column;
+
+gap:2px;
 
 transition:.25s;
 
 }
 
+.flag{
+
+width:22px;
+
+height:14px;
+
+border-radius:3px;
+
+box-shadow:0 0 0 1px rgba(0,0,0,.16);
+
+position:relative;
+
+overflow:hidden;
+
+display:block;
+
+background:white;
+
+}
+
+.flag-en{
+
+background:
+linear-gradient(90deg,transparent 42%,#c8102e 42%,#c8102e 58%,transparent 58%),
+linear-gradient(0deg,transparent 36%,#c8102e 36%,#c8102e 64%,transparent 64%),
+linear-gradient(90deg,transparent 35%,white 35%,white 65%,transparent 65%),
+linear-gradient(0deg,transparent 29%,white 29%,white 71%,transparent 71%),
+linear-gradient(146deg,transparent 45%,white 45%,white 55%,transparent 55%),
+linear-gradient(34deg,transparent 45%,white 45%,white 55%,transparent 55%),
+#012169;
+
+}
+
+.flag-en::before{
+
+content:"";
+
+position:absolute;
+
+inset:0;
+
+background:
+linear-gradient(146deg,transparent 47%,#c8102e 47%,#c8102e 53%,transparent 53%),
+linear-gradient(34deg,transparent 47%,#c8102e 47%,#c8102e 53%,transparent 53%);
+
+}
+
+.flag-sv{
+
+background:
+linear-gradient(90deg,transparent 31%,#fecc00 31%,#fecc00 45%,transparent 45%),
+linear-gradient(0deg,transparent 38%,#fecc00 38%,#fecc00 56%,transparent 56%),
+#006aa7;
+
+}
+
+.flag-de{
+
+background:linear-gradient(180deg,#000 0 33%,#dd0000 33% 66%,#ffce00 66% 100%);
+
+}
+
 .language-switcher small{
 
-font-size:10px;
+font-size:9px;
 
 letter-spacing:0;
 
@@ -2425,6 +2487,14 @@ width:30px;
 height:30px;
 
 font-size:14px;
+
+}
+
+.flag{
+
+width:20px;
+
+height:13px;
 
 }
 

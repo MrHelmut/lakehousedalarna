@@ -344,9 +344,9 @@ const siteTranslations = {
 };
 
 const languageOptions = {
-    en: { label: "English", flag: "🇬🇧" },
-    sv: { label: "Svenska", flag: "🇸🇪" },
-    de: { label: "Deutsch", flag: "🇩🇪" },
+    en: { label: "English" },
+    sv: { label: "Svenska" },
+    de: { label: "Deutsch" },
 };
 
 function normalizeText(text) {
@@ -440,7 +440,7 @@ function createLanguageSwitcher() {
         switcher.setAttribute("data-language-switcher", "");
         switcher.setAttribute("aria-label", "Language");
         switcher.innerHTML = Object.entries(languageOptions).map(([code, option]) => (
-            `<button type="button" data-language="${code}" aria-label="${option.label}" title="${option.label}"><span>${option.flag}</span><small>${code.toUpperCase()}</small></button>`
+            `<button type="button" data-language="${code}" aria-label="${option.label}" title="${option.label}"><span class="flag flag-${code}" aria-hidden="true"></span><small>${code.toUpperCase()}</small></button>`
         )).join("");
 
         navbar.appendChild(switcher);
