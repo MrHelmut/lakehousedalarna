@@ -8,6 +8,7 @@ const nextButton = document.querySelector("[data-next-month]");
 const checkInInput = document.querySelector("[data-check-in]");
 const checkOutInput = document.querySelector("[data-check-out]");
 const guestsInput = document.querySelector("[data-guests]");
+const priceGuestsInput = document.querySelector("[data-guests-price]");
 const priceEstimate = document.querySelector("[data-price-estimate]");
 const priceDetails = document.querySelector("[data-price-details]");
 const summaryGuests = document.querySelector("[data-summary-guests]");
@@ -25,9 +26,7 @@ const pricing = {
     regularWeekend: 3000,
     shoulderWeekend: 3200,
     highSeasonBase: 3000,
-    highSeasonExtraGuestFrom: 3,
-    highSeasonExtraGuestNightly: 300,
-    highSeasonServiceMultiplier: 1.15,
+    extraGuestNightly: 200,
 };
 const highSeasonLabels = {
     summer: "Summer high season",
@@ -38,6 +37,7 @@ const highSeasonLabels = {
 
 let bookedDates = new Set();
 let visibleMonth = new Date();
+let syncingGuests = false;
 
 visibleMonth.setDate(1);
 visibleMonth.setHours(0, 0, 0, 0);
@@ -63,6 +63,21 @@ function addDays(date, days) {
 function formatValue(formData, key, fallback = "Not provided") {
     const value = String(formData.get(key) || "").trim();
     return value || fallback;
+}
+
+function getSelectedGuests() {
+    return guestsInput.value || priceGuestsInput.value;
+}
+
+function syncGuestControls(value) {
+    if (syncingGuests) {
+        return;
+    }
+
+    syncingGuests = true;
+    guestsInput.value = value;
+    priceGuestsInput.value = value;
+    syncingGuests = false;
 }
 
 function nightsBetween(checkIn, checkOut) {
@@ -143,30 +158,27 @@ function isWeekendNight(date) {
 
 function getNightPrice(date, guests = 6) {
     const highSeasonLabel = getHighSeasonLabel(new Date(date));
-    const guestCount = Number(guests) || 6;
+    const guestCount = Number(guests) || 0;
 
     if (highSeasonLabel) {
-        const extraGuests = Math.max(0, guestCount - pricing.highSeasonExtraGuestFrom + 1);
-        const subtotal = pricing.highSeasonBase + (extraGuests * pricing.highSeasonExtraGuestNightly);
-        const total = Math.round((subtotal * pricing.highSeasonServiceMultiplier) / 10) * 10;
         return {
-            amount: total,
+            amount: pricing.highSeasonBase + (guestCount * pricing.extraGuestNightly),
             label: highSeasonLabel,
             highSeason: true,
         };
     }
 
     if (isWeekendNight(date)) {
-        const amount = date.getMonth() === 11 ? pricing.shoulderWeekend : pricing.regularWeekend;
+        const baseAmount = date.getMonth() === 11 ? pricing.shoulderWeekend : pricing.regularWeekend;
         return {
-            amount,
+            amount: baseAmount + (guestCount * pricing.extraGuestNightly),
             label: "Weekend",
             highSeason: false,
         };
     }
 
     return {
-        amount: pricing.regularWeeknight,
+        amount: pricing.regularWeeknight + (guestCount * pricing.extraGuestNightly),
         label: "Regular season",
         highSeason: false,
     };
@@ -247,10 +259,18 @@ function hasUnavailableBetween(checkIn, checkOut) {
     return false;
 }
 
+function isSelectedRangeDate(key) {
+    if (!checkInInput.value || !checkOutInput.value) {
+        return false;
+    }
+
+    return key >= checkInInput.value && key <= checkOutInput.value;
+}
+
 function updateSummary() {
     const checkIn = checkInInput.value;
     const checkOut = checkOutInput.value;
-    const guests = guestsInput.value;
+    const guests = getSelectedGuests();
     const nights = nightsBetween(checkIn, checkOut);
     const unavailable = hasUnavailableBetween(checkIn, checkOut);
     const estimate = getStayEstimate(checkIn, checkOut, guests);
@@ -262,7 +282,7 @@ function updateSummary() {
     if (!checkIn || !checkOut) {
         summaryStatus.textContent = "Choose dates";
         priceEstimate.textContent = "Choose dates";
-        priceDetails.textContent = "Guide prices start from 2,400 SEK/night. High season for 6 guests is about 4,830 SEK/night.";
+        priceDetails.textContent = "Choose dates and guests to see an estimated total. Guest price is 200 SEK per guest and night.";
         seasonNote.textContent = "High season includes summer, Christmas & New Year, Swedish winter holidays and the FIS Nordic World Ski Championships in Falun 2027.";
         return;
     }
@@ -272,6 +292,14 @@ function updateSummary() {
         priceEstimate.textContent = "Check dates";
         priceDetails.textContent = "Check-out must be after check-in.";
         seasonNote.textContent = "Please choose a later check-out date.";
+        return;
+    }
+
+    if (!guests) {
+        summaryStatus.textContent = "Choose guests";
+        priceEstimate.textContent = "Choose guests";
+        priceDetails.textContent = "Select the number of guests to calculate the estimated price.";
+        seasonNote.textContent = "The estimate uses the nightly date price plus 200 SEK per guest and night.";
         return;
     }
 
@@ -285,7 +313,7 @@ function updateSummary() {
 
     summaryStatus.textContent = "Looks available";
     priceEstimate.textContent = `${formatSek(estimate.total)} estimated`;
-    priceDetails.textContent = `${formatSek(estimate.average)} per night on average for ${nights} night${nights === 1 ? "" : "s"}. Final price is confirmed before booking.`;
+    priceDetails.textContent = `${formatSek(estimate.average)} per night on average for ${nights} night${nights === 1 ? "" : "s"}, including ${guests} guest${guests === "1" ? "" : "s"}. Final price is confirmed before booking.`;
     seasonNote.textContent = getSeasonNote(estimate.labels);
 }
 
@@ -333,6 +361,9 @@ function renderCalendar() {
         }
         if (checkInInput.value === key || checkOutInput.value === key) {
             button.classList.add("selected");
+        }
+        if (isSelectedRangeDate(key)) {
+            button.classList.add("range-selected");
         }
 
         button.disabled = past || unavailable;
@@ -448,6 +479,15 @@ checkOutInput.addEventListener("change", () => {
     updateSummary();
     renderCalendar();
 });
-guestsInput.addEventListener("change", updateSummary);
+guestsInput.addEventListener("change", () => {
+    syncGuestControls(guestsInput.value);
+    updateSummary();
+    renderCalendar();
+});
+priceGuestsInput.addEventListener("change", () => {
+    syncGuestControls(priceGuestsInput.value);
+    updateSummary();
+    renderCalendar();
+});
 
 loadAvailability();

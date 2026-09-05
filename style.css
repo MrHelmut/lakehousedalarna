@@ -1463,6 +1463,20 @@ color:#aaa;
 
 }
 
+.calendar-day.range-selected{
+
+background:#f1e5cf;
+
+border-color:#d5b36e;
+
+}
+
+.calendar-day.range-selected .calendar-rate{
+
+color:#4f402c;
+
+}
+
 .calendar-day.selected{
 
 background:var(--secondary);
@@ -1573,6 +1587,52 @@ gap:18px;
 padding-bottom:14px;
 
 border-bottom:1px solid #ececec;
+
+}
+
+.price-guests-control{
+
+display:flex;
+
+flex-direction:column;
+
+gap:10px;
+
+margin:22px 0 26px;
+
+font-size:14px;
+
+font-weight:600;
+
+color:var(--primary);
+
+}
+
+.price-guests-control select{
+
+width:100%;
+
+border:1px solid #d8d8d2;
+
+border-radius:10px;
+
+background:#fbfbf8;
+
+padding:14px 16px;
+
+font:inherit;
+
+color:#222;
+
+}
+
+.price-guests-control select:focus{
+
+outline:none;
+
+border-color:var(--secondary);
+
+box-shadow:0 0 0 3px rgba(201,160,99,.2);
 
 }
 
