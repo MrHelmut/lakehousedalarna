@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direct Booking Request | Lake House Dalarna</title>
+    <meta name="description" content="Check availability, see pricing guidance and send a direct booking request for Lake House Dalarna.">
+    <meta property="og:title" content="Direct Booking Request | Lake House Dalarna">
+    <meta property="og:description" content="Check availability and send a direct booking request for Lake House Dalarna.">
+    <meta property="og:image" content="images/hero.png">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="booking-page">
+
+<header class="request-header">
+
+<nav class="navbar">
+
+<a class="logo" href="index.html#home">
+<div class="logo-title">Lake House Dalarna</div>
+<div class="logo-subtitle">Welcome to Solsidan Dalarna</div>
+</a>
+
+<ul class="menu">
+<li><a href="index.html#home">Home</a></li>
+<li><a href="index.html#gallery">Gallery</a></li>
+<li><a href="index.html#house">The House</a></li>
+<li><a href="index.html#explore">Explore Dalarna</a></li>
+<li><a href="index.html#contact">Contact</a></li>
+<li><a class="book-btn" href="https://airbnb.com/h/solsidan-dalarna" target="_blank">Book on Airbnb</a></li>
+</ul>
+
+</nav>
+
+<section class="request-hero">
+<div class="request-hero-overlay"></div>
+<div class="request-hero-content">
+<p class="welcome">DIRECT BOOKING</p>
+<h1>Availability &<br>Booking Request</h1>
+<p>
+Check available dates, review the price guidance and send a personal
+booking request directly to us.
+</p>
+</div>
+</section>
+
+</header>
+
+<main>
+
+<section class="request-section">
+
+<div class="direct-booking-layout">
+
+<div class="availability-panel">
+<p class="section-tag">CALENDAR</p>
+<h2>Availability</h2>
+<p class="booking-note" data-calendar-status>Loading availability...</p>
+
+<div class="calendar-toolbar">
+<button type="button" class="calendar-nav" data-prev-month aria-label="Previous month">‹</button>
+<h3 data-month-label></h3>
+<button type="button" class="calendar-nav" data-next-month aria-label="Next month">›</button>
+</div>
+
+<div class="calendar-grid" data-calendar-grid></div>
+
+<div class="calendar-legend">
+<span><i class="legend-free"></i>Available</span>
+<span><i class="legend-booked"></i>Unavailable</span>
+<span><i class="legend-selected"></i>Selected</span>
+</div>
+</div>
+
+<aside class="price-panel">
+<p class="section-tag">PRICE GUIDE</p>
+<h2 data-price-estimate>Price on request</h2>
+<p data-price-details>
+Choose dates to prepare a request. Final price is confirmed before booking.
+</p>
+<div class="price-lines">
+<div><span>Guests</span><strong data-summary-guests>Not selected</strong></div>
+<div><span>Nights</span><strong data-summary-nights>Not selected</strong></div>
+<div><span>Status</span><strong data-summary-status>Choose dates</strong></div>
+</div>
+<a class="primary-btn" href="https://airbnb.com/h/solsidan-dalarna" target="_blank" rel="noopener noreferrer">
+Book on Airbnb
+</a>
+</aside>
+
+<form class="request-form" data-booking-request-form>
+
+<p class="section-tag">DIRECT REQUEST</p>
+<h2>Tell Us About Your Stay</h2>
+<p class="request-intro">
+This does not confirm a booking automatically. We will reply with availability,
+price and next steps.
+</p>
+
+<div class="form-grid">
+
+<label>
+Check-in
+<input type="date" name="check_in" data-check-in required>
+</label>
+
+<label>
+Check-out
+<input type="date" name="check_out" data-check-out required>
+</label>
+
+<label>
+Guests
+<select name="guests" data-guests required>
+<option value="">Select guests</option>
+<option value="1">1 guest</option>
+<option value="2">2 guests</option>
+<option value="3">3 guests</option>
+<option value="4">4 guests</option>
+<option value="5">5 guests</option>
+<option value="6">6 guests</option>
+</select>
+</label>
+
+<label>
+Your name
+<input type="text" name="guest_name" placeholder="Name" required>
+</label>
+
+<label>
+Email
+<input type="email" name="guest_email" placeholder="you@example.com" required>
+</label>
+
+<label>
+Phone
+<input type="tel" name="guest_phone" placeholder="+46 ...">
+</label>
+
+</div>
+
+<label>
+Tell us a little about yourself and your stay
+<textarea name="message" rows="6" placeholder="Who is travelling, what brings you to Dalarna, and anything helpful for us to know." required></textarea>
+</label>
+
+<button class="booking-button request-submit" type="submit">
+Prepare Email Request
+</button>
+
+<p class="request-help" data-request-help>
+Your email app will open with the request filled in.
+</p>
+
+</form>
+
+</div>
+
+</section>
+
+</main>
+
+<footer>
+
+<div class="footer-content">
+<h2>Lake House Dalarna</h2>
+<p>Welcome to Solsidan Dalarna</p>
+<p>Luxury lakeside accommodation in Sweden.</p>
+
+<div class="footer-links">
+<a href="index.html#home">Home</a>
+<a href="index.html#gallery">Gallery</a>
+<a href="index.html#house">The House</a>
+<a href="index.html#explore">Explore Dalarna</a>
+<a href="https://airbnb.com/h/solsidan-dalarna" target="_blank">Book</a>
+<a href="booking.html">Direct Request</a>
+</div>
+
+<p class="copyright">© 2026 Lake House Dalarna · All Rights Reserved</p>
+</div>
+
+</footer>
+
+<script src="booking.js"></script>
+
+</body>
+
+</html>
