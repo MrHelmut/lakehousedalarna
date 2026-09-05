@@ -201,6 +201,30 @@ function getStayEstimate(checkIn, checkOut, guests) {
     };
 }
 
+function getSeasonSummary(labels) {
+    const highSeasonHits = labels.filter((label) => Object.values(highSeasonLabels).includes(label));
+
+    if (highSeasonHits.length) {
+        return highSeasonHits.join(" + ");
+    }
+
+    if (labels.includes("Weekend")) {
+        return "Regular dates, incl. weekend";
+    }
+
+    return "Regular dates";
+}
+
+function getSeasonNote(labels) {
+    const highSeasonHits = labels.filter((label) => Object.values(highSeasonLabels).includes(label));
+
+    if (highSeasonHits.length) {
+        return "High-season pricing is included in this estimate. Final price is confirmed before booking.";
+    }
+
+    return "Final price is confirmed before booking.";
+}
+
 function isUnavailable(date) {
     return bookedDates.has(toDateKey(date));
 }
@@ -233,7 +257,7 @@ function updateSummary() {
 
     summaryGuests.textContent = guests ? `${guests} guest${guests === "1" ? "" : "s"}` : "Not selected";
     summaryNights.textContent = nights ? `${nights} night${nights === 1 ? "" : "s"}` : "Not selected";
-    summarySeason.textContent = estimate ? estimate.labels.join(" + ") : "Not selected";
+    summarySeason.textContent = estimate ? getSeasonSummary(estimate.labels) : "Not selected";
 
     if (!checkIn || !checkOut) {
         summaryStatus.textContent = "Choose dates";
@@ -262,7 +286,7 @@ function updateSummary() {
     summaryStatus.textContent = "Looks available";
     priceEstimate.textContent = `${formatSek(estimate.total)} estimated`;
     priceDetails.textContent = `${formatSek(estimate.average)} per night on average for ${nights} night${nights === 1 ? "" : "s"}. Final price is confirmed before booking.`;
-    seasonNote.textContent = `Season used: ${estimate.labels.join(" + ")}. Peak pricing follows the 4,830 SEK/night guide for 6 guests.`;
+    seasonNote.textContent = getSeasonNote(estimate.labels);
 }
 
 function renderCalendar() {
