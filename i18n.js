@@ -107,6 +107,7 @@ const siteTranslations = {
         "PRICE GUIDE": "PRISINDIKATION",
         "Choose dates": "Välj datum",
         "Choose dates and guests to see an estimated total. Final price is confirmed before booking.": "Välj datum och antal gäster för att se uppskattat totalpris. Slutpris bekräftas innan bokning.",
+        "Number of guests": "Antal gäster",
         "Select guests": "Välj antal gäster",
         "1 guest": "1 gäst",
         "2 guests": "2 gäster",
@@ -277,6 +278,7 @@ const siteTranslations = {
         "PRICE GUIDE": "PREISÜBERSICHT",
         "Choose dates": "Daten wählen",
         "Choose dates and guests to see an estimated total. Final price is confirmed before booking.": "Wählen Sie Daten und Gäste, um einen geschätzten Gesamtpreis zu sehen. Der endgültige Preis wird vor der Buchung bestätigt.",
+        "Number of guests": "Anzahl der Gäste",
         "Select guests": "Gäste wählen",
         "1 guest": "1 Gast",
         "2 guests": "2 Gäste",
@@ -399,6 +401,30 @@ function translateAttributes(language) {
     });
 }
 
+function languageFromUrl() {
+    const language = new URLSearchParams(window.location.search).get("lang");
+    return Object.prototype.hasOwnProperty.call(languageOptions, language) ? language : "";
+}
+
+function localizeInternalLanguageLinks(language) {
+    document.querySelectorAll("a[href]").forEach((link) => {
+        const href = link.getAttribute("href");
+        if (!href || href.startsWith("#") || href.startsWith("mailto:") || href.startsWith("tel:")) {
+            return;
+        }
+
+        const isBookingLink = href === "booking.html" || href.startsWith("booking.html#") || href.startsWith("booking.html?");
+        const isHomeLink = href === "index.html" || href.startsWith("index.html#") || href.startsWith("index.html?");
+        if (!isBookingLink && !isHomeLink) {
+            return;
+        }
+
+        const [pathWithQuery, hash = ""] = href.split("#");
+        const [path] = pathWithQuery.split("?");
+        link.setAttribute("href", `${path}?lang=${language}${hash ? `#${hash}` : ""}`);
+    });
+}
+
 function applyLanguage(language) {
     document.documentElement.lang = language;
     document.querySelectorAll("[data-language-switcher] button").forEach((button) => {
@@ -425,6 +451,7 @@ function applyLanguage(language) {
     }
     nodes.forEach((node) => translateNodeText(node, language));
     translateAttributes(language);
+    localizeInternalLanguageLinks(language);
     localStorage.setItem("lakeHouseLanguage", language);
     window.dispatchEvent(new CustomEvent("site-language-change", { detail: { language } }));
 }
@@ -448,7 +475,8 @@ function createLanguageSwitcher() {
 }
 
 function getCurrentLanguage() {
-    return localStorage.getItem("lakeHouseLanguage") || "en";
+    const language = languageFromUrl() || localStorage.getItem("lakeHouseLanguage") || "en";
+    return Object.prototype.hasOwnProperty.call(languageOptions, language) ? language : "en";
 }
 
 function t(english, replacements = {}) {

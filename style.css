@@ -379,7 +379,7 @@ color:white;
 
 min-height:100svh;
 
-background:url("images/hero.png");
+background:url("images/site/hero.jpg");
 
 background-size:cover;
 
@@ -1178,7 +1178,7 @@ position:relative;
 
 padding:170px 8%;
 
-background:url("images/Baksida i solnedgång.png");
+background:url("images/site/booking-bg.jpg");
 
 background-size:cover;
 
@@ -1312,7 +1312,7 @@ backdrop-filter:blur(14px);
 
 min-height:72vh;
 
-background:url("images/hero.png");
+background:url("images/site/hero.jpg");
 
 background-size:cover;
 
