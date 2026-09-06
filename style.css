@@ -1248,11 +1248,25 @@ margin-bottom:50px;
 
 }
 
+.booking-actions{
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+gap:18px;
+
+flex-wrap:wrap;
+
+}
+
 .booking-button{
 
 display:inline-block;
 
-padding:22px 60px;
+padding:22px 42px;
 
 background:var(--secondary);
 
@@ -1265,6 +1279,22 @@ font-size:19px;
 font-weight:600;
 
 transition:.35s;
+
+}
+
+.booking-button-secondary{
+
+background:rgba(255,255,255,.12);
+
+border:2px solid rgba(255,255,255,.85);
+
+}
+
+.booking-button-secondary:hover{
+
+background:white;
+
+color:var(--primary);
 
 }
 
