@@ -5,6 +5,9 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
 
     <title>Lake House Dalarna | Welcome to Solsidan Dalarna</title>
 
@@ -22,7 +25,9 @@
 
     <link rel="icon" href="favicon.ico">
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="preload" as="image" href="images/site/hero.jpg" fetchpriority="high">
+
+    <link rel="stylesheet" href="style.css?v=20260906b">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
@@ -225,6 +230,9 @@ Book your stay
 <div class="intro-right">
 
 <img src="images/site/hero.jpg"
+loading="eager"
+decoding="async"
+fetchpriority="high"
 alt="Lake House Dalarna">
 
 </div>
@@ -249,51 +257,51 @@ Discover Lake House Dalarna
 
 <div class="gallery-grid">
 
-<img src="images/site/lake-from-water.jpg" alt="Lake House Dalarna from the lake">
+<img src="images/site/lake-from-water.jpg" loading="lazy" decoding="async" alt="Lake House Dalarna from the lake">
 
-<img src="images/site/sauna.jpg" alt="Sauna">
+<img src="images/site/sauna.jpg" loading="lazy" decoding="async" alt="Sauna">
 
-<img src="images/site/kitchen.jpg" alt="Kitchen">
+<img src="images/site/kitchen.jpg" loading="lazy" decoding="async" alt="Kitchen">
 
-<img src="images/site/bathroom.jpg" alt="Bathroom">
+<img src="images/site/bathroom.jpg" loading="lazy" decoding="async" alt="Bathroom">
 
-<img src="images/site/living-room-hall.jpg" alt="Living room">
+<img src="images/site/living-room-hall.jpg" loading="lazy" decoding="async" alt="Living room">
 
-<img src="images/site/hall.jpg" alt="Hall">
+<img src="images/site/hall.jpg" loading="lazy" decoding="async" alt="Hall">
 
-<img src="images/site/private-beach.jpg" alt="Private sandy beach and jetty">
+<img src="images/site/private-beach.jpg" loading="lazy" decoding="async" alt="Private sandy beach and jetty">
 
-<img src="images/site/bbq.jpg" alt="Outdoor barbecue area">
+<img src="images/site/bbq.jpg" loading="lazy" decoding="async" alt="Outdoor barbecue area">
 
-<img src="images/site/terrace-sunset.jpg" alt="Lake house exterior at sunset">
+<img src="images/site/terrace-sunset.jpg" loading="lazy" decoding="async" alt="Lake house exterior at sunset">
 
-<img src="images/site/sauna-relax.jpg" alt="Sauna and relaxation area">
+<img src="images/site/sauna-relax.jpg" loading="lazy" decoding="async" alt="Sauna and relaxation area">
 
-<img src="images/site/attic-bedroom.jpg" alt="Bright attic bedroom">
+<img src="images/site/attic-bedroom.jpg" loading="lazy" decoding="async" alt="Bright attic bedroom">
 
-<img src="images/site/living-dining.jpg" alt="Modern living and dining room">
+<img src="images/site/living-dining.jpg" loading="lazy" decoding="async" alt="Modern living and dining room">
 
-<img src="images/site/bedroom-workspace.jpg" alt="Bedroom and workspace">
+<img src="images/site/bedroom-workspace.jpg" loading="lazy" decoding="async" alt="Bedroom and workspace">
 
-<img src="images/site/living-room-sunset.jpg" alt="Living room at sunset">
+<img src="images/site/living-room-sunset.jpg" loading="lazy" decoding="async" alt="Living room at sunset">
 
-<img src="images/site/frozen-lake.jpg" alt="Lake House Dalarna from the frozen lake">
+<img src="images/site/frozen-lake.jpg" loading="lazy" decoding="async" alt="Lake House Dalarna from the frozen lake">
 
-<img src="images/site/forest-campfire.jpg" alt="Forest campfire near Lake House Dalarna">
+<img src="images/site/forest-campfire.jpg" loading="lazy" decoding="async" alt="Forest campfire near Lake House Dalarna">
 
-<img src="images/site/summer-exterior.jpg" alt="Lake House Dalarna in summer">
+<img src="images/site/summer-exterior.jpg" loading="lazy" decoding="async" alt="Lake House Dalarna in summer">
 
-<img src="images/site/terrace-lake.jpg" alt="Terrace and lake view at Lake House Dalarna">
+<img src="images/site/terrace-lake.jpg" loading="lazy" decoding="async" alt="Terrace and lake view at Lake House Dalarna">
 
-<img src="images/site/sunset-terrace.jpg" alt="Sunset from the terrace at Lake House Dalarna">
+<img src="images/site/sunset-terrace.jpg" loading="lazy" decoding="async" alt="Sunset from the terrace at Lake House Dalarna">
 
-<img src="images/site/garden-breakfast.jpg" alt="Breakfast in the garden at Lake House Dalarna">
+<img src="images/site/garden-breakfast.jpg" loading="lazy" decoding="async" alt="Breakfast in the garden at Lake House Dalarna">
 
-<img src="images/site/living-room-sunset.jpg" alt="Living room with lake view at sunset">
+<img src="images/site/living-room-sunset.jpg" loading="lazy" decoding="async" alt="Living room with lake view at sunset">
 
-<img src="images/site/family-boat-lake.jpg" alt="Family boating on the lake">
+<img src="images/site/family-boat-lake.jpg" loading="lazy" decoding="async" alt="Family boating on the lake">
 
-<img class="piste-map" src="images/site/bjursas-piste-map.jpg" alt="Official piste map for Bjursås Berg & Sjö">
+<img class="piste-map" src="images/site/bjursas-piste-map.jpg" loading="lazy" decoding="async" alt="Official piste map for Bjursås Berg & Sjö">
 
 </div>
 
@@ -920,8 +928,8 @@ Book
 
 </footer>
 
-<script src="i18n.js"></script>
-<script src="script.js"></script>
+<script src="i18n.js?v=20260906b"></script>
+<script src="script.js?v=20260906b"></script>
 
 </body>
 
