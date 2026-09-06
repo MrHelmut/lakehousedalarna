@@ -661,6 +661,30 @@ transform:scale(1.02);
 
 }
 
+.intro-actions{
+
+display:flex;
+
+align-items:center;
+
+gap:20px;
+
+flex-wrap:wrap;
+
+}
+
+.secondary-text-btn{
+
+color:var(--primary);
+
+font-weight:700;
+
+text-decoration:underline;
+
+text-underline-offset:6px;
+
+}
+
 /* ================================
    SECTION TITLES
 ================================ */
@@ -2013,6 +2037,486 @@ margin-bottom:10px;
 }
 
 /* ================================
+   HOUSE DETAIL PAGE
+================================ */
+
+.house-detail-hero{
+
+min-height:72vh;
+
+background:url("images/site/living-dining.jpg");
+
+background-size:cover;
+
+background-position:center center;
+
+position:relative;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+text-align:center;
+
+padding:150px 8% 90px;
+
+}
+
+.house-detail-section{
+
+padding:110px 8%;
+
+background:#f7f7f5;
+
+}
+
+.house-detail-layout{
+
+width:min(1180px,100%);
+
+margin:auto;
+
+display:grid;
+
+grid-template-columns:.72fr 1.28fr;
+
+gap:34px;
+
+align-items:start;
+
+}
+
+.house-detail-summary,
+.detail-block{
+
+background:white;
+
+border:1px solid rgba(20,48,66,.08);
+
+border-radius:22px;
+
+box-shadow:var(--shadow);
+
+}
+
+.house-detail-summary{
+
+position:sticky;
+
+top:110px;
+
+padding:34px;
+
+}
+
+.house-detail-summary h2,
+.detail-block h2,
+.detail-cta h2{
+
+font-size:38px;
+
+line-height:1.2;
+
+color:var(--primary);
+
+margin-bottom:20px;
+
+}
+
+.house-stats{
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:12px;
+
+margin:26px 0;
+
+}
+
+.house-stats div,
+.distance-grid div{
+
+background:#f7f1e8;
+
+border-radius:14px;
+
+padding:18px;
+
+}
+
+.house-stats strong,
+.distance-grid strong{
+
+display:block;
+
+font-size:26px;
+
+line-height:1.1;
+
+color:var(--primary);
+
+}
+
+.house-stats span,
+.distance-grid span{
+
+display:block;
+
+font-size:13px;
+
+line-height:1.4;
+
+color:#6f6557;
+
+margin-top:6px;
+
+}
+
+.house-detail-summary .primary-btn{
+
+display:block;
+
+text-align:center;
+
+padding-inline:22px;
+
+}
+
+.secondary-detail-link{
+
+display:block;
+
+width:max-content;
+
+max-width:100%;
+
+margin:18px auto 0;
+
+color:var(--primary);
+
+font-weight:700;
+
+text-decoration:underline;
+
+text-underline-offset:6px;
+
+}
+
+.house-detail-content{
+
+display:grid;
+
+gap:28px;
+
+}
+
+.detail-block{
+
+padding:42px;
+
+}
+
+.detail-block p,
+.detail-block li{
+
+font-size:16px;
+
+line-height:1.8;
+
+color:var(--text);
+
+}
+
+.detail-block p + p{
+
+margin-top:16px;
+
+}
+
+.highlight-grid,
+.distance-grid{
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:14px;
+
+}
+
+.highlight-grid div{
+
+padding:18px 20px;
+
+border-radius:14px;
+
+background:#f7f1e8;
+
+color:var(--primary);
+
+font-weight:600;
+
+line-height:1.5;
+
+}
+
+.level-list{
+
+display:grid;
+
+gap:18px;
+
+}
+
+.level-list div,
+.info-list p{
+
+padding:20px 0;
+
+border-bottom:1px solid #ececec;
+
+}
+
+.level-list div:last-child,
+.info-list p:last-child{
+
+border-bottom:0;
+
+padding-bottom:0;
+
+}
+
+.level-list h3,
+.bedroom-card h3,
+.know-grid h3,
+.host-card h3{
+
+font-size:22px;
+
+color:var(--primary);
+
+margin-bottom:6px;
+
+}
+
+.know-grid{
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:18px;
+
+margin-bottom:18px;
+
+}
+
+.know-grid div{
+
+background:#f7f1e8;
+
+border-radius:16px;
+
+padding:22px;
+
+}
+
+.know-icon{
+
+display:block;
+
+width:42px;
+
+height:42px;
+
+border-radius:50%;
+
+background:white;
+
+color:var(--primary);
+
+font-size:26px;
+
+line-height:42px;
+
+text-align:center;
+
+margin-bottom:16px;
+
+}
+
+.host-layout{
+
+display:grid;
+
+grid-template-columns:.82fr 1.18fr;
+
+gap:30px;
+
+align-items:start;
+
+}
+
+.host-card{
+
+display:grid;
+
+grid-template-columns:72px 1fr auto;
+
+gap:18px;
+
+align-items:center;
+
+padding:24px;
+
+background:#f7f1e8;
+
+border-radius:18px;
+
+}
+
+.host-avatar{
+
+width:72px;
+
+height:72px;
+
+border-radius:50%;
+
+display:grid;
+
+place-items:center;
+
+background:var(--primary);
+
+color:white;
+
+font-size:34px;
+
+font-weight:700;
+
+}
+
+.host-rating{
+
+border-left:1px solid #ded2c0;
+
+padding-left:18px;
+
+}
+
+.host-rating strong{
+
+display:block;
+
+font-size:28px;
+
+line-height:1;
+
+color:var(--primary);
+
+}
+
+.host-rating span,
+.host-response{
+
+font-weight:700;
+
+color:var(--primary);
+
+}
+
+.host-copy p + p{
+
+margin-top:12px;
+
+}
+
+.bedroom-grid{
+
+display:grid;
+
+gap:16px;
+
+}
+
+.bedroom-card{
+
+display:grid;
+
+grid-template-columns:110px 1fr;
+
+gap:20px;
+
+align-items:center;
+
+padding:16px;
+
+border:1px solid #e7e3db;
+
+border-radius:18px;
+
+}
+
+.bedroom-card img{
+
+width:110px;
+
+height:90px;
+
+object-fit:cover;
+
+border-radius:12px;
+
+}
+
+.amenity-columns{
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:18px 34px;
+
+}
+
+.amenity-columns ul{
+
+padding-left:20px;
+
+}
+
+.detail-cta{
+
+padding:110px 8%;
+
+background:var(--primary);
+
+color:white;
+
+text-align:center;
+
+}
+
+.detail-cta > div{
+
+width:min(900px,100%);
+
+margin:auto;
+
+}
+
+.detail-cta h2{
+
+color:white;
+
+}
+
+/* ================================
    LOCATION
 ================================ */
 
@@ -2604,6 +3108,15 @@ margin-bottom:36px;
 
 }
 
+.intro-actions,
+.booking-actions{
+
+flex-direction:column;
+
+align-items:stretch;
+
+}
+
 .primary-btn,
 
 .secondary-btn,
@@ -2613,6 +3126,62 @@ margin-bottom:36px;
 width:100%;
 
 text-align:center;
+
+}
+
+.house-detail-layout{
+
+grid-template-columns:1fr;
+
+}
+
+.house-detail-summary{
+
+position:static;
+
+}
+
+.highlight-grid,
+.distance-grid,
+.amenity-columns,
+.know-grid,
+.host-layout{
+
+grid-template-columns:1fr;
+
+}
+
+.host-card{
+
+grid-template-columns:64px 1fr;
+
+}
+
+.host-rating{
+
+grid-column:1 / -1;
+
+border-left:0;
+
+border-top:1px solid #ded2c0;
+
+padding-left:0;
+
+padding-top:16px;
+
+}
+
+.bedroom-card{
+
+grid-template-columns:88px 1fr;
+
+}
+
+.bedroom-card img{
+
+width:88px;
+
+height:76px;
 
 }
 
