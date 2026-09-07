@@ -647,6 +647,65 @@ const languageOptions = {
     de: { label: "Deutsch" },
 };
 
+const localizedPageMeta = {
+    "/": {
+        en: {
+            title: "Lake House Dalarna | Luxury Lakeside Accommodation in Sweden",
+            description: "Luxury lakeside accommodation in Dalarna, Sweden with private sandy beach, sauna, panoramic lake views and Scandinavian design."
+        },
+        sv: {
+            title: "Lake House Dalarna | Lyxigt hus vid sjö i Dalarna",
+            description: "Lyxigt hus vid sjö i Dalarna med privat sandstrand, bastu, panoramautsikt och skandinavisk design."
+        },
+        de: {
+            title: "Ferienhaus Schweden am See | Lake House Dalarna",
+            description: "Ferienhaus in Schweden am See in Dalarna mit Sauna, privatem Sandstrand, Panoramablick und Platz für bis zu 6 Gäste."
+        }
+    },
+    "/index.html": {
+        en: {
+            title: "Lake House Dalarna | Luxury Lakeside Accommodation in Sweden",
+            description: "Luxury lakeside accommodation in Dalarna, Sweden with private sandy beach, sauna, panoramic lake views and Scandinavian design."
+        },
+        sv: {
+            title: "Lake House Dalarna | Lyxigt hus vid sjö i Dalarna",
+            description: "Lyxigt hus vid sjö i Dalarna med privat sandstrand, bastu, panoramautsikt och skandinavisk design."
+        },
+        de: {
+            title: "Ferienhaus Schweden am See | Lake House Dalarna",
+            description: "Ferienhaus in Schweden am See in Dalarna mit Sauna, privatem Sandstrand, Panoramablick und Platz für bis zu 6 Gäste."
+        }
+    },
+    "/house.html": {
+        en: {
+            title: "The House | Lake House Dalarna",
+            description: "Detailed information about Lake House Dalarna, including bedrooms, layout, outdoor spaces, amenities, rules and distances."
+        },
+        sv: {
+            title: "Huset | Lake House Dalarna",
+            description: "Detaljer om Lake House Dalarna: sovrum, planlösning, uteplatser, bastu, bekvämligheter, regler och avstånd."
+        },
+        de: {
+            title: "Das Haus | Ferienhaus Schweden am See in Dalarna",
+            description: "Details zum Ferienhaus in Schweden am See: Schlafzimmer, Sauna, privater Strand, Ausstattung, Regeln und Entfernungen in Dalarna."
+        }
+    },
+    "/booking.html": {
+        en: {
+            title: "Direct Booking Request | Lake House Dalarna",
+            description: "Check availability, see pricing guidance and send a direct booking request for Lake House Dalarna."
+        },
+        sv: {
+            title: "Direkt bokningsförfrågan | Lake House Dalarna",
+            description: "Se tillgänglighet, få prisindikation och skicka en direkt bokningsförfrågan för Lake House Dalarna."
+        },
+        de: {
+            title: "Direktanfrage | Ferienhaus Schweden am See",
+            description: "Verfügbarkeit prüfen, Preisindikation sehen und eine Direktanfrage für Lake House Dalarna in Schweden senden."
+        }
+    }
+};
+
 function normalizeText(text) {
     return text.replace(/\s+/g, " ").trim();
 }
@@ -695,6 +754,31 @@ function translateAttributes(language) {
             element.setAttribute(attribute, language === "en" ? english : translations[language] || english);
         });
     });
+}
+
+function updatePageMeta(language) {
+    const path = window.location.pathname.endsWith("/") ? "/" : window.location.pathname;
+    const meta = localizedPageMeta[path]?.[language];
+    if (!meta) {
+        return;
+    }
+
+    document.title = meta.title;
+
+    const description = document.querySelector("meta[name='description']");
+    if (description) {
+        description.setAttribute("content", meta.description);
+    }
+
+    const ogTitle = document.querySelector("meta[property='og:title']");
+    if (ogTitle) {
+        ogTitle.setAttribute("content", meta.title);
+    }
+
+    const ogDescription = document.querySelector("meta[property='og:description']");
+    if (ogDescription) {
+        ogDescription.setAttribute("content", meta.description);
+    }
 }
 
 function languageFromUrl() {
@@ -748,6 +832,7 @@ function applyLanguage(language) {
     }
     nodes.forEach((node) => translateNodeText(node, language));
     translateAttributes(language);
+    updatePageMeta(language);
     localizeInternalLanguageLinks(language);
     localStorage.setItem("lakeHouseLanguage", language);
     window.dispatchEvent(new CustomEvent("site-language-change", { detail: { language } }));
