@@ -626,6 +626,7 @@ form.addEventListener("submit", (event) => {
         message,
         "",
         "Please let me know if these dates are available and what the total price would be.",
+        "If you can host us, please send the payment details or a secure payment link before the booking is confirmed.",
     ].join("\n");
 
     helpText.textContent = tr("Opening your email app with the request filled in.");

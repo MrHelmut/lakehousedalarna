@@ -2515,6 +2515,222 @@ color:white;
 }
 
 /* ================================
+   OWNER BOOKING HELPER
+================================ */
+
+.admin-page{
+
+background:#f7f7f5;
+
+color:var(--text);
+
+}
+
+.admin-shell{
+
+width:min(1180px,100%);
+
+margin:auto;
+
+padding:70px 8%;
+
+}
+
+.admin-hero{
+
+margin-bottom:30px;
+
+}
+
+.admin-hero h1{
+
+font-size:clamp(42px,8vw,76px);
+
+line-height:1.05;
+
+color:var(--primary);
+
+margin-bottom:18px;
+
+}
+
+.admin-hero p{
+
+max-width:760px;
+
+font-size:18px;
+
+line-height:1.7;
+
+}
+
+.admin-warning{
+
+margin-top:18px;
+
+padding:16px 18px;
+
+border-radius:14px;
+
+background:#fff3d8;
+
+color:#624719;
+
+font-weight:600;
+
+}
+
+.admin-layout{
+
+display:grid;
+
+grid-template-columns:1.15fr .85fr;
+
+gap:28px;
+
+align-items:start;
+
+}
+
+.admin-panel,
+.admin-summary,
+.admin-output > div{
+
+background:white;
+
+border:1px solid rgba(20,48,66,.08);
+
+border-radius:22px;
+
+box-shadow:var(--shadow);
+
+padding:34px;
+
+}
+
+.admin-panel h2,
+.admin-summary h2,
+.admin-output h2{
+
+font-size:30px;
+
+line-height:1.2;
+
+color:var(--primary);
+
+margin-bottom:22px;
+
+}
+
+.admin-grid{
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:18px;
+
+}
+
+.admin-panel label{
+
+display:grid;
+
+gap:8px;
+
+font-weight:600;
+
+color:var(--primary);
+
+margin-bottom:18px;
+
+}
+
+.admin-panel input,
+.admin-panel select,
+.admin-panel textarea{
+
+width:100%;
+
+border:1px solid #ddd7cf;
+
+border-radius:12px;
+
+padding:14px 16px;
+
+font:inherit;
+
+color:var(--primary);
+
+background:white;
+
+}
+
+.admin-panel textarea{
+
+resize:vertical;
+
+}
+
+.admin-summary{
+
+position:sticky;
+
+top:24px;
+
+}
+
+.admin-actions{
+
+display:grid;
+
+gap:12px;
+
+margin-top:22px;
+
+}
+
+.admin-secondary{
+
+color:var(--primary);
+
+border-color:rgba(20,48,66,.3);
+
+}
+
+.admin-output{
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:28px;
+
+margin-top:28px;
+
+}
+
+.admin-output pre{
+
+white-space:pre-wrap;
+
+word-break:break-word;
+
+font:15px/1.7 "Poppins", sans-serif;
+
+color:var(--text);
+
+background:#f7f1e8;
+
+border-radius:16px;
+
+padding:22px;
+
+min-height:260px;
+
+}
+
+/* ================================
    LOCATION
 ================================ */
 
@@ -3233,6 +3449,43 @@ grid-template-columns:88px 1fr;
 width:88px;
 
 height:76px;
+
+}
+
+.admin-shell{
+
+padding:56px 20px;
+
+}
+
+.admin-layout,
+.admin-output,
+.admin-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.admin-summary{
+
+position:static;
+
+}
+
+.admin-panel,
+.admin-summary,
+.admin-output > div{
+
+padding:24px;
+
+border-radius:18px;
+
+}
+
+.admin-actions .primary-btn,
+.admin-actions .secondary-btn{
+
+width:100%;
 
 }
 

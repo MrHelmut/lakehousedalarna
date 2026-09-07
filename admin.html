@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Booking Helper | Lake House Dalarna</title>
+    <meta name="description" content="Owner helper for preparing direct booking payment links.">
+    <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" href="style.css?v=20260907b">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="admin-page">
+
+<main class="admin-shell">
+
+<section class="admin-hero">
+<p class="section-tag">ÄGARVERKTYG</p>
+<h1>Direktbokningshjälp</h1>
+<p>
+Förbered ett godkännande, räkna fram belopp och skapa texten du kan använda när du gör en Stripe-betalningslänk manuellt.
+</p>
+<p class="admin-warning">
+Ingen betalning skapas här. Lägg aldrig Stripe secret key eller lösenord i hemsidans filer.
+</p>
+</section>
+
+<section class="admin-layout">
+
+<form class="admin-panel" data-admin-form>
+<h2>Bokningsunderlag</h2>
+
+<div class="admin-grid">
+<label>
+Incheckning
+<input type="date" name="check_in" data-admin-check-in required>
+</label>
+
+<label>
+Utcheckning
+<input type="date" name="check_out" data-admin-check-out required>
+</label>
+
+<label>
+Antal gäster
+<select name="guests" data-admin-guests required>
+<option value="">Välj</option>
+<option value="1">1 gäst</option>
+<option value="2">2 gäster</option>
+<option value="3">3 gäster</option>
+<option value="4">4 gäster</option>
+<option value="5">5 gäster</option>
+<option value="6">6 gäster</option>
+</select>
+</label>
+
+<label>
+Städavgift
+<input type="number" name="cleaning" data-admin-cleaning value="850" min="0" step="50">
+</label>
+
+<label>
+Gästens namn
+<input type="text" name="guest_name" data-admin-guest-name placeholder="Namn">
+</label>
+
+<label>
+Gästens e-post
+<input type="email" name="guest_email" data-admin-guest-email placeholder="namn@example.com">
+</label>
+</div>
+
+<label>
+Kommentar
+<textarea name="owner_note" data-admin-note rows="4" placeholder="Exempel: betalning inom 48 timmar, särskild överenskommelse, rabatt eller extra information."></textarea>
+</label>
+</form>
+
+<aside class="admin-summary">
+<p class="section-tag">BETALNINGSUNDERLAG</p>
+<h2 data-admin-total>Välj datum</h2>
+<div class="price-lines">
+<div><span>Nätter</span><strong data-admin-nights>-</strong></div>
+<div><span>Hyra</span><strong data-admin-rent>-</strong></div>
+<div><span>Städning</span><strong data-admin-cleaning-line>-</strong></div>
+<div><span>Att ta betalt</span><strong data-admin-payment>-</strong></div>
+</div>
+
+<div class="admin-actions">
+<button type="button" class="primary-btn" data-copy-stripe>Kopiera Stripe-underlag</button>
+<button type="button" class="secondary-btn admin-secondary" data-copy-email>Kopiera svar till gäst</button>
+<a class="secondary-detail-link" href="https://dashboard.stripe.com/payment-links" target="_blank" rel="noopener">Öppna Stripe Payment Links</a>
+</div>
+<p class="request-help" data-admin-help>Fyll i bokningen för att skapa underlaget.</p>
+</aside>
+
+</section>
+
+<section class="admin-output">
+<div>
+<h2>Stripe-underlag</h2>
+<pre data-stripe-output></pre>
+</div>
+<div>
+<h2>Svar till gäst</h2>
+<pre data-email-output></pre>
+</div>
+</section>
+
+</main>
+
+<script src="admin.js?v=20260907b"></script>
+
+</body>
+
+</html>
