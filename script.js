@@ -6,6 +6,8 @@ const navbar = document.querySelector(".navbar");
 
 window.addEventListener("scroll", () => {
 
+    if (!navbar) return;
+
     if (window.scrollY > 80) {
         navbar.classList.add("scrolled");
     } else {
@@ -16,6 +18,8 @@ window.addEventListener("scroll", () => {
 /* ==========================================================
    FADE UP
 ========================================================== */
+
+if ("IntersectionObserver" in window) {
 
 const observer = new IntersectionObserver((entries) => {
 
@@ -41,6 +45,12 @@ document.querySelectorAll("section").forEach(section=>{
 
 });
 
+} else {
+
+document.documentElement.classList.add("no-scroll-reveal");
+
+}
+
 const hero = document.querySelector(".hero");
 
 /* ==========================================================
@@ -48,6 +58,8 @@ const hero = document.querySelector(".hero");
 ========================================================== */
 
 const images=document.querySelectorAll(".gallery-grid img");
+
+if (images.length) {
 
 const lightbox=document.createElement("div");
 
@@ -76,6 +88,8 @@ lightbox.addEventListener("click",()=>{
     lightbox.classList.remove("active");
 
 });
+
+}
 
 /* ==========================================================
    ACTIVE MENU
@@ -153,7 +167,11 @@ card.style.background="white";
 
 window.addEventListener("load",()=>{
 
-document.querySelector(".hero-content").animate(
+const heroContent = document.querySelector(".hero-content");
+
+if (!heroContent || typeof heroContent.animate !== "function") return;
+
+heroContent.animate(
 
 [
 {
