@@ -77,7 +77,7 @@ images.forEach(image=>{
 
         lightbox.classList.add("active");
 
-        lightboxImage.src=image.src;
+        lightboxImage.src=image.dataset.full || image.src;
 
         if (!lightboxImage.parentElement) {
             lightbox.appendChild(lightboxImage);
