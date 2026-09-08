@@ -379,7 +379,7 @@ color:white;
 
 min-height:100svh;
 
-background:url("images/site/hero.jpg");
+background:url("images/site/hero.jpg?v=20260908a");
 
 background-size:cover;
 
@@ -1202,7 +1202,7 @@ position:relative;
 
 padding:170px 8%;
 
-background:url("images/site/booking-bg.jpg");
+background:url("images/site/booking-bg.jpg?v=20260908a");
 
 background-size:cover;
 
@@ -1366,7 +1366,7 @@ backdrop-filter:blur(14px);
 
 min-height:72vh;
 
-background:url("images/site/hero.jpg");
+background:url("images/site/hero.jpg?v=20260908a");
 
 background-size:cover;
 
@@ -2224,7 +2224,7 @@ margin-bottom:10px;
 
 min-height:72vh;
 
-background:url("images/site/living-dining.jpg");
+background:url("images/site/living-dining.jpg?v=20260908a");
 
 background-size:cover;
 
@@ -2913,7 +2913,7 @@ justify-content:center;
 
 text-align:center;
 
-background:url("images/site/hero.jpg") center/cover no-repeat;
+background:url("images/site/hero.jpg?v=20260908a") center/cover no-repeat;
 
 color:white;
 

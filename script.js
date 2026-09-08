@@ -65,11 +65,11 @@ const lightbox=document.createElement("div");
 
 lightbox.id="lightbox";
 
-lightbox.innerHTML="<img>";
-
 document.body.appendChild(lightbox);
 
-const lightboxImage=lightbox.querySelector("img");
+const lightboxImage=document.createElement("img");
+
+lightboxImage.alt="";
 
 images.forEach(image=>{
 
@@ -78,6 +78,10 @@ images.forEach(image=>{
         lightbox.classList.add("active");
 
         lightboxImage.src=image.src;
+
+        if (!lightboxImage.parentElement) {
+            lightbox.appendChild(lightboxImage);
+        }
 
     });
 
