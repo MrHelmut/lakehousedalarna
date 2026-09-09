@@ -1,4 +1,5 @@
 User-agent: *
+Disallow: /mobile-preview.html
 Allow: /
 
 Sitemap: https://lakehousedalarna.com/sitemap.xml

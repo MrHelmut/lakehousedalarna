@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Internal Mobile Preview - Lake House Dalarna</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Arial, sans-serif;
+      background: #f3f4f1;
+      color: #182f3f;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px;
+    }
+
+    main {
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    p {
+      margin: 0 0 20px;
+      color: #52606a;
+      line-height: 1.5;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    button {
+      border: 1px solid #cfd7d3;
+      border-radius: 999px;
+      background: #fff;
+      color: #182f3f;
+      padding: 10px 14px;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    button[aria-pressed="true"] {
+      background: #182f3f;
+      color: #fff;
+    }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 390px) minmax(0, 844px);
+      align-items: start;
+      gap: 28px;
+    }
+
+    .device {
+      background: #111;
+      border: 12px solid #111;
+      border-radius: 34px;
+      box-shadow: 0 24px 50px rgba(20, 30, 35, .18);
+      overflow: hidden;
+    }
+
+    .portrait {
+      width: 390px;
+      height: 844px;
+    }
+
+    .landscape {
+      width: 844px;
+      height: 390px;
+      border-radius: 28px;
+    }
+
+    iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #fff;
+    }
+
+    @media (max-width: 980px) {
+      body {
+        padding: 16px;
+      }
+
+      .preview-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .device {
+        transform-origin: top left;
+        max-width: 100%;
+      }
+
+      .portrait,
+      .landscape {
+        width: min(100%, 390px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Internal Mobile Preview</h1>
+    <p>Noindex QA page for checking the live project in mobile sizes. It is not linked from the public website.</p>
+
+    <div class="toolbar" aria-label="Preview page">
+      <button type="button" data-page="index.html?qa=mobile-preview" aria-pressed="true">Home</button>
+      <button type="button" data-page="house.html?qa=mobile-preview">House</button>
+      <button type="button" data-page="booking.html?qa=mobile-preview">Booking</button>
+      <button type="button" data-page="de/ferienhaus-schweden.html?qa=mobile-preview">German SEO</button>
+    </div>
+
+    <div class="preview-grid">
+      <section>
+        <h2>iPhone Portrait</h2>
+        <div class="device portrait">
+          <iframe title="Portrait mobile preview" src="index.html?qa=mobile-preview"></iframe>
+        </div>
+      </section>
+
+      <section>
+        <h2>iPhone Landscape</h2>
+        <div class="device landscape">
+          <iframe title="Landscape mobile preview" src="index.html?qa=mobile-preview"></iframe>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const buttons = Array.from(document.querySelectorAll("[data-page]"));
+    const frames = Array.from(document.querySelectorAll("iframe"));
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        buttons.forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+        frames.forEach((frame) => {
+          frame.src = button.dataset.page;
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -61,6 +61,52 @@ const images=document.querySelectorAll(".gallery-grid img");
 
 if (images.length) {
 
+const warmGalleryImages = () => {
+
+    images.forEach(image => {
+
+        image.loading = "eager";
+
+        const preloader = new Image();
+
+        preloader.decoding = "async";
+
+        preloader.src = image.currentSrc || image.src;
+
+    });
+
+};
+
+document.querySelectorAll('a[href="#gallery"]').forEach(link => {
+
+    link.addEventListener("click", warmGalleryImages, { once: true });
+
+});
+
+if ("IntersectionObserver" in window) {
+
+    const gallery = document.querySelector(".gallery-section");
+
+    if (gallery) {
+
+        const galleryObserver = new IntersectionObserver((entries) => {
+
+            if (entries.some(entry => entry.isIntersecting)) {
+
+                warmGalleryImages();
+
+                galleryObserver.disconnect();
+
+            }
+
+        }, { rootMargin: "500px 0px" });
+
+        galleryObserver.observe(gallery);
+
+    }
+
+}
+
 const lightbox=document.createElement("div");
 
 lightbox.id="lightbox";
