@@ -53,6 +53,20 @@ document.documentElement.classList.add("no-scroll-reveal");
 
 const hero = document.querySelector(".hero");
 
+document.querySelectorAll("img[data-fallback]").forEach(image => {
+
+    image.addEventListener("error", () => {
+
+        if (image.dataset.fallback && image.src !== image.dataset.fallback) {
+
+            image.src = image.dataset.fallback;
+
+        }
+
+    });
+
+});
+
 /* ==========================================================
    GALLERY LIGHTBOX
 ========================================================== */
@@ -122,6 +136,16 @@ images.forEach(image=>{
     image.addEventListener("click",()=>{
 
         lightbox.classList.add("active");
+
+        lightboxImage.onerror = () => {
+
+            if (image.dataset.fullFallback && lightboxImage.src !== image.dataset.fullFallback) {
+
+                lightboxImage.src = image.dataset.fullFallback;
+
+            }
+
+        };
 
         lightboxImage.src=image.dataset.full || image.src;
 
