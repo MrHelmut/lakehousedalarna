@@ -34,7 +34,8 @@ const observer = new IntersectionObserver((entries) => {
     });
 
 },{
-    threshold:.15
+    // Tall sections must reveal even when only a small part fits on screen.
+    threshold:0
 });
 
 document.querySelectorAll("section").forEach(section=>{
