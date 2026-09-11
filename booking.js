@@ -45,26 +45,7 @@ const weekdayNames = {
     sv: ["Mån", "Tis", "Ons", "Tor", "Fre", "Lör", "Sön"],
     de: ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"],
 };
-const pricing = {
-    currency: "SEK",
-    regularWeeknight: 2400,
-    regularWeekend: 3000,
-    midSeasonWeeknight: 2600,
-    midSeasonWeekend: 3000,
-    highSeasonBase: 3200,
-    extraGuestNightly: 200,
-};
-const highSeasonLabels = {
-    summer: "Summer high season",
-    christmas: "Christmas & New Year",
-    winterHoliday: "Swedish winter holidays",
-    skiWorlds: "FIS Nordic World Ski Championships",
-};
-const midSeasonLabels = {
-    spring: "Spring shoulder season",
-    autumn: "Autumn shoulder season",
-    earlyDecember: "Early December",
-};
+const pricing = window.lakeHousePricing;
 
 let bookedDates = new Set();
 let visibleMonth = new Date();
@@ -172,182 +153,57 @@ function nightsBetween(checkIn, checkOut) {
 }
 
 function formatSek(amount) {
-    return new Intl.NumberFormat("en-SE", {
+    return new Intl.NumberFormat(currentLanguage() === "sv" ? "sv-SE" : currentLanguage() === "de" ? "de-DE" : "en-GB", {
         style: "currency",
         currency: pricing.currency,
-        maximumFractionDigits: 0,
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
     }).format(amount);
 }
 
 function formatShortSek(amount) {
-    if (amount >= 1000) {
-        const rounded = amount / 1000;
-        return `${Number.isInteger(rounded) ? rounded : rounded.toFixed(1)}k`;
-    }
-    return String(amount);
-}
-
-function isBetweenMonthDay(date, startMonth, startDay, endMonth, endDay) {
-    const target = new Date(date);
-    target.setHours(0, 0, 0, 0);
-
-    const year = target.getFullYear();
-    let startYear = year;
-    let endYear = year;
-
-    if (endMonth < startMonth) {
-        if (target.getMonth() + 1 <= endMonth) {
-            startYear = year - 1;
-        } else {
-            endYear = year + 1;
-        }
-    }
-
-    const start = new Date(startYear, startMonth - 1, startDay);
-    const end = new Date(endYear, endMonth - 1, endDay);
-
-    return target >= start && target <= end;
-}
-
-function getHighSeasonLabel(date) {
-    const day = new Date(date);
-
-    if (isBetweenMonthDay(day, 6, 15, 8, 20)) {
-        return highSeasonLabels.summer;
-    }
-    if (isBetweenMonthDay(day, 12, 21, 1, 3)) {
-        return highSeasonLabels.christmas;
-    }
-    if (isBetweenMonthDay(day, 2, 1, 2, 7)) {
-        return highSeasonLabels.winterHoliday;
-    }
-
-    const skiWorldsStart = new Date(2027, 1, 24);
-    const skiWorldsEnd = new Date(2027, 2, 7, 23, 59, 59);
-    if (day >= skiWorldsStart && day <= skiWorldsEnd) {
-        return highSeasonLabels.skiWorlds;
-    }
-
-    return "";
-}
-
-function getMidSeasonLabel(date) {
-    const day = new Date(date);
-
-    if (isBetweenMonthDay(day, 4, 1, 6, 14)) {
-        return midSeasonLabels.spring;
-    }
-    if (isBetweenMonthDay(day, 8, 21, 10, 31)) {
-        return midSeasonLabels.autumn;
-    }
-    if (isBetweenMonthDay(day, 12, 1, 12, 20)) {
-        return midSeasonLabels.earlyDecember;
-    }
-
-    return "";
-}
-
-function isWeekendNight(date) {
-    const day = date.getDay();
-    return day === 5 || day === 6;
+    // Calendar guide prices are rounded; the stay total retains öre precision.
+    return new Intl.NumberFormat(currentLanguage(), { maximumFractionDigits: 0 }).format(amount);
 }
 
 function getNightPrice(date, guests = "") {
-    const highSeasonLabel = getHighSeasonLabel(new Date(date));
-    const midSeasonLabel = getMidSeasonLabel(new Date(date));
-    const guestCount = Number(guests) || 0;
-
-    if (highSeasonLabel) {
-        return {
-            amount: pricing.highSeasonBase + (guestCount * pricing.extraGuestNightly),
-            label: highSeasonLabel,
-            highSeason: true,
-        };
-    }
-
-    if (midSeasonLabel) {
-        const baseAmount = isWeekendNight(date) ? pricing.midSeasonWeekend : pricing.midSeasonWeeknight;
-        return {
-            amount: baseAmount + (guestCount * pricing.extraGuestNightly),
-            label: midSeasonLabel,
-            highSeason: false,
-        };
-    }
-
-    if (isWeekendNight(date)) {
-        return {
-            amount: pricing.regularWeekend + (guestCount * pricing.extraGuestNightly),
-            label: "Weekend",
-            highSeason: false,
-        };
-    }
-
-    return {
-        amount: pricing.regularWeeknight + (guestCount * pricing.extraGuestNightly),
-        label: "Regular season",
-        highSeason: false,
-    };
+    const key = toDateKey(date);
+    if (key < pricing.firstDate || key > pricing.lastDate) return null;
+    const base = pricing.nightlyPrices[key.slice(0, 7)]?.[date.getDate() - 1];
+    if (!Number.isFinite(base)) return null;
+    const extraGuests = Math.max(0, (Number(guests) || 1) - pricing.includedGuests);
+    const airbnbAmount = base + extraGuests * pricing.extraGuestNightly;
+    return { airbnbAmount, amount: Math.round(airbnbAmount * 100 * (1 - pricing.directDiscount)) / 100 };
 }
 
 function getStayEstimate(checkIn, checkOut, guests) {
     const nights = nightsBetween(checkIn, checkOut);
-    if (!nights) {
-        return null;
-    }
-
-    let day = parseDateKey(checkIn);
-    const end = parseDateKey(checkOut);
-    const nightPrices = [];
-    const labels = new Set();
-
-    while (day < end) {
+    if (!nights) return null;
+    let airbnbSubtotal = 0;
+    for (let day = parseDateKey(checkIn); day < parseDateKey(checkOut); day = addDays(day, 1)) {
         const price = getNightPrice(day, guests);
-        nightPrices.push(price.amount);
-        labels.add(price.label);
-        day = addDays(day, 1);
+        if (!price) return null;
+        airbnbSubtotal += price.airbnbAmount;
     }
-
-    const total = nightPrices.reduce((sum, amount) => sum + amount, 0);
-    const average = Math.round(total / nights);
-
-    return {
-        total,
-        average,
-        labels: Array.from(labels),
-        nights,
-    };
+    const lengthDiscount = nights >= 28 ? pricing.monthlyDiscount : nights >= 7 ? pricing.weeklyDiscount : 0;
+    // Apply the existing length discount before the returning-guest discount.
+    const comparisonCents = Math.round(airbnbSubtotal * 100 * (1 - lengthDiscount));
+    const discountCents = Math.round(comparisonCents * pricing.directDiscount);
+    const accommodation = (comparisonCents - discountCents) / 100;
+    const cleaning = pricing.cleaning;
+    const linen = (Number(guests) || 0) * pricing.linenPerGuest;
+    const total = Math.round((accommodation + cleaning + linen) * 100) / 100;
+    return { total, accommodation, cleaning, linen, comparison: comparisonCents / 100,
+        directDiscount: discountCents / 100, lengthDiscount, nights,
+        average: accommodation / nights, labels: [] };
 }
 
-function getSeasonSummary(labels) {
-    const highSeasonHits = labels.filter((label) => Object.values(highSeasonLabels).includes(label));
-    const midSeasonHits = labels.filter((label) => Object.values(midSeasonLabels).includes(label));
-
-    if (highSeasonHits.length) {
-        return highSeasonHits.map((label) => tr(label)).join(" + ");
-    }
-    if (midSeasonHits.length) {
-        return midSeasonHits.map((label) => tr(label)).join(" + ");
-    }
-
-    if (labels.includes("Weekend")) {
-        return tr("Regular dates, incl. weekend");
-    }
-
-    return tr("Regular dates");
+function getSeasonSummary() {
+    return tr("Returning guest rate");
 }
 
-function getSeasonNote(labels) {
-    const highSeasonHits = labels.filter((label) => Object.values(highSeasonLabels).includes(label));
-    const midSeasonHits = labels.filter((label) => Object.values(midSeasonLabels).includes(label));
-
-    if (highSeasonHits.length) {
-        return tr("High-season pricing is included in this estimate. Final price is confirmed before booking.");
-    }
-    if (midSeasonHits.length) {
-        return tr("Shoulder-season pricing is included in this estimate. Final price is confirmed before booking.");
-    }
-
-    return tr("Final price is confirmed before booking.");
+function getSeasonNote() {
+    return tr("Prices checked against Airbnb on 11 September 2026. Later Airbnb price changes are not automatic. Final price is confirmed before booking.");
 }
 
 function isUnavailable(date) {
@@ -381,6 +237,8 @@ function isSelectedRangeDate(key) {
 }
 
 function updateSummary() {
+    const priceLabels = { comparison: "Accommodation before direct discount", directDiscount: "Returning guest discount (10%)", accommodation: "Accommodation", cleaning: "Cleaning", linen: "Bed linen" };
+    document.querySelectorAll("[data-price-label]").forEach(element => { element.textContent = tr(priceLabels[element.dataset.priceLabel]); });
     const checkIn = checkInInput.value;
     const checkOut = checkOutInput.value;
     const guests = getSelectedGuests();
@@ -388,6 +246,13 @@ function updateSummary() {
     const unavailable = hasUnavailableBetween(checkIn, checkOut);
     const estimate = getStayEstimate(checkIn, checkOut, guests);
 
+    document.querySelectorAll("[data-price-breakdown] strong").forEach(element => {
+        const key = element.dataset.priceValue;
+        element.textContent = estimate && guests && !unavailable ? `${key === "directDiscount" ? "−" : ""}${formatSek(estimate[key])}` : "—";
+    });
+    const lengthNote = document.querySelector("[data-length-discount]");
+    lengthNote.textContent = estimate && guests && !unavailable && estimate.lengthDiscount
+        ? tr("Includes {percent}% length-of-stay discount before the direct discount.", { percent: estimate.lengthDiscount * 100 }) : "";
     summaryGuests.textContent = guests ? guestLabel(guests) : tr("Not selected");
     summaryNights.textContent = nights ? nightLabel(nights) : tr("Not selected");
     summarySeason.textContent = estimate ? getSeasonSummary(estimate.labels) : tr("Not selected");
@@ -404,8 +269,8 @@ function updateSummary() {
     if (!checkIn || !checkOut) {
         summaryStatus.textContent = tr("Choose dates");
         priceEstimate.textContent = tr("Choose dates");
-        priceDetails.textContent = tr("Choose dates and guests to see an estimated total. Guest price is 200 SEK per guest and night.");
-        seasonNote.textContent = tr("Low season starts from 2,400 SEK/night, shoulder season from 2,600 SEK/night and high season from 3,200 SEK/night.");
+        priceDetails.textContent = tr("Choose dates and guests to see the total, including cleaning and bed linen.");
+        seasonNote.textContent = tr("Returning guests receive 10% off accommodation, including extra guests. Cleaning is 850 SEK per stay and bed linen is 150 SEK per guest.");
         return;
     }
 
@@ -421,7 +286,7 @@ function updateSummary() {
         summaryStatus.textContent = tr("Choose guests");
         priceEstimate.textContent = tr("Choose guests");
         priceDetails.textContent = tr("Select the number of guests to calculate the estimated price.");
-        seasonNote.textContent = tr("The estimate uses the nightly date price plus 200 SEK per guest and night.");
+        seasonNote.textContent = tr("The first guest is included. Each additional guest costs 215.10 SEK per night after the direct discount.");
         return;
     }
 
@@ -433,9 +298,17 @@ function updateSummary() {
         return;
     }
 
+    if (!estimate) {
+        summaryStatus.textContent = tr("Price on request");
+        priceEstimate.textContent = tr("Price on request");
+        priceDetails.textContent = tr("A verified price is not available for every selected night. Send a request for a quote.");
+        seasonNote.textContent = getSeasonNote();
+        return;
+    }
+
     summaryStatus.textContent = tr("Looks available");
     priceEstimate.textContent = tr("{total} estimated", { total: formatSek(estimate.total) });
-    priceDetails.textContent = tr("{average} per night on average for {nights}, including {guests}. Final price is confirmed before booking.", {
+    priceDetails.textContent = tr("Accommodation averages {average} per night for {nights}, including {guests}. Cleaning and bed linen are included in the total below.", {
         average: formatSek(estimate.average),
         nights: nightLabel(nights),
         guests: guestLabel(guests),
@@ -477,7 +350,10 @@ function renderCalendar() {
 
         button.type = "button";
         button.className = "calendar-day";
-        button.innerHTML = `<span class="calendar-date">${day.getDate()}</span><span class="calendar-rate">${formatShortSek(getNightPrice(day, getSelectedGuests()).amount)} SEK</span>`;
+        const nightPrice = getNightPrice(day, getSelectedGuests());
+        const guide = nightPrice && !unavailable && !past ? formatShortSek(nightPrice.amount) : "—";
+        button.innerHTML = `<span class="calendar-date">${day.getDate()}</span><span class="calendar-rate">${guide}</span>`;
+        button.setAttribute("aria-label", `${key}: ${unavailable ? tr("Unavailable") : nightPrice ? formatSek(nightPrice.amount) : tr("Price on request")}`);
         button.dataset.date = key;
 
         if (outsideMonth) {
@@ -615,8 +491,12 @@ form.addEventListener("submit", (event) => {
         `Check-out: ${checkOut}`,
         `Nights: ${nights}`,
         `Guests: ${guests}`,
-        `Estimated price: ${estimate ? `${formatSek(estimate.total)} total (${formatSek(estimate.average)} per night average)` : "Not calculated"}`,
-        `Season: ${estimate ? getSeasonSummary(estimate.labels) : "Not calculated"}`,
+        `Estimated price: ${estimate ? `${formatSek(estimate.total)} total (${formatSek(estimate.average)} accommodation per night average)` : "Not calculated"}`,
+        `Accommodation: ${estimate ? formatSek(estimate.accommodation) : "Price on request"}`,
+        `Returning guest discount (10%): ${estimate ? formatSek(estimate.directDiscount) : "To be confirmed"}`,
+        `Length-of-stay discount before direct discount: ${estimate ? estimate.lengthDiscount * 100 : 0}%`,
+        `Cleaning: ${formatSek(pricing.cleaning)} per stay`,
+        `Bed linen: ${formatSek(Number(guests) * pricing.linenPerGuest)}`,
         "",
         `Name: ${name}`,
         `Email: ${email}`,

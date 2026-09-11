@@ -1,5 +1,21 @@
 const siteTranslations = {
     sv: {
+        "Rate": "Prisregel",
+        "Returning guest rate": "Pris för återkommande gäster",
+        "Accommodation before direct discount": "Boende före direktrabatt",
+        "Returning guest discount (10%)": "Rabatt för återkommande gäster (10 %)",
+        "Accommodation": "Boende",
+        "Cleaning": "Städning",
+        "Bed linen": "Sängkläder",
+        "Price on request": "Pris på förfrågan",
+        "Choose dates and guests to see the total, including cleaning and bed linen.": "Välj datum och antal gäster för att se totalpriset inklusive städning och sängkläder.",
+        "Returning guests receive 10% off accommodation, including extra guests. Cleaning is 850 SEK per stay and bed linen is 150 SEK per guest.": "Återkommande gäster får 10 % rabatt på boendet inklusive extra gäster. Städning kostar 850 kr per vistelse och sängkläder 150 kr per gäst.",
+        "The first guest is included. Each additional guest costs 215.10 SEK per night after the direct discount.": "Den första gästen ingår. Varje extra gäst kostar 215,10 kr per natt efter direktrabatten.",
+        "Calendar prices are in SEK, rounded to whole kronor after the 10% direct discount. Cleaning, bed linen and length-of-stay discounts are calculated in the total.": "Kalenderpriserna visas i SEK, avrundade till hela kronor efter 10 % direktrabatt. Städning, sängkläder och rabatt för längre vistelser räknas in i totalpriset.",
+        "Includes {percent}% length-of-stay discount before the direct discount.": "Inkluderar {percent} % rabatt för vistelsens längd före direktrabatten.",
+        "Prices checked against Airbnb on 11 September 2026. Later Airbnb price changes are not automatic. Final price is confirmed before booking.": "Priserna kontrollerades mot Airbnb den 11 september 2026. Senare prisändringar på Airbnb överförs inte automatiskt. Slutpriset bekräftas före bokning.",
+        "A verified price is not available for every selected night. Send a request for a quote.": "Ett kontrollerat pris saknas för någon av de valda nätterna. Skicka en förfrågan för prisbesked.",
+        "Accommodation averages {average} per night for {nights}, including {guests}. Cleaning and bed linen are included in the total below.": "Boendet kostar i snitt {average} per natt för {nights}, inklusive {guests}. Städning och sängkläder ingår i totalpriset.",
         "Welcome to Solsidan Dalarna": "Välkommen till Solsidan Dalarna",
         "WELCOME TO SOLSIDAN DALARNA": "VÄLKOMMEN TILL SOLSIDAN DALARNA",
         "Home": "Hem",
@@ -325,6 +341,22 @@ const siteTranslations = {
         "Not provided": "Ej angivet"
     },
     de: {
+        "Rate": "Tarif",
+        "Returning guest rate": "Preis für wiederkehrende Gäste",
+        "Accommodation before direct discount": "Unterkunft vor Direktbuchungsrabatt",
+        "Returning guest discount (10%)": "Rabatt für wiederkehrende Gäste (10 %)",
+        "Accommodation": "Unterkunft",
+        "Cleaning": "Reinigung",
+        "Bed linen": "Bettwäsche",
+        "Price on request": "Preis auf Anfrage",
+        "Choose dates and guests to see the total, including cleaning and bed linen.": "Wählen Sie Daten und Gäste für den Gesamtpreis inklusive Reinigung und Bettwäsche.",
+        "Returning guests receive 10% off accommodation, including extra guests. Cleaning is 850 SEK per stay and bed linen is 150 SEK per guest.": "Wiederkehrende Gäste erhalten 10 % Rabatt auf die Unterkunft einschließlich zusätzlicher Gäste. Reinigung: 850 SEK pro Aufenthalt. Bettwäsche: 150 SEK pro Gast.",
+        "The first guest is included. Each additional guest costs 215.10 SEK per night after the direct discount.": "Der erste Gast ist inbegriffen. Jeder weitere Gast kostet nach Direktbuchungsrabatt 215,10 SEK pro Nacht.",
+        "Calendar prices are in SEK, rounded to whole kronor after the 10% direct discount. Cleaning, bed linen and length-of-stay discounts are calculated in the total.": "Kalenderpreise in SEK, nach 10 % Direktbuchungsrabatt auf ganze Kronen gerundet. Reinigung, Bettwäsche und Rabatte für längere Aufenthalte werden im Gesamtpreis berechnet.",
+        "Includes {percent}% length-of-stay discount before the direct discount.": "Enthält {percent} % Rabatt für die Aufenthaltsdauer vor dem Direktbuchungsrabatt.",
+        "Prices checked against Airbnb on 11 September 2026. Later Airbnb price changes are not automatic. Final price is confirmed before booking.": "Preise am 11. September 2026 mit Airbnb abgeglichen. Spätere Airbnb-Preisänderungen werden nicht automatisch übernommen. Der Endpreis wird vor der Buchung bestätigt.",
+        "A verified price is not available for every selected night. Send a request for a quote.": "Für mindestens eine ausgewählte Nacht liegt kein geprüfter Preis vor. Senden Sie eine Preisanfrage.",
+        "Accommodation averages {average} per night for {nights}, including {guests}. Cleaning and bed linen are included in the total below.": "Unterkunft durchschnittlich {average} pro Nacht für {nights}, inklusive {guests}. Reinigung und Bettwäsche sind im Gesamtpreis enthalten.",
         "Welcome to Solsidan Dalarna": "Willkommen in Solsidan Dalarna",
         "WELCOME TO SOLSIDAN DALARNA": "WILLKOMMEN IN SOLSIDAN DALARNA",
         "Home": "Start",
@@ -814,7 +846,10 @@ function localizeInternalLanguageLinks(language) {
     });
 }
 
+let appliedLanguage = null;
+
 function applyLanguage(language) {
+    appliedLanguage = language;
     document.documentElement.lang = language;
     document.querySelectorAll("[data-language-switcher] button").forEach((button) => {
         const active = button.dataset.language === language;
@@ -865,7 +900,7 @@ function createLanguageSwitcher() {
 }
 
 function getCurrentLanguage() {
-    const language = languageFromUrl() || localStorage.getItem("lakeHouseLanguage") || "en";
+    const language = appliedLanguage || languageFromUrl() || localStorage.getItem("lakeHouseLanguage") || "en";
     return Object.prototype.hasOwnProperty.call(languageOptions, language) ? language : "en";
 }
 

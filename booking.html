@@ -104,7 +104,7 @@ booking request directly to us.
 <span><i class="legend-selected"></i>Selected</span>
 </div>
 <p class="calendar-pricing-note">
-Displayed prices are nightly guide prices. Final price is confirmed before booking.
+Calendar prices are in SEK, rounded to whole kronor after the 10% direct discount. Cleaning, bed linen and length-of-stay discounts are calculated in the total.
 </p>
 </div>
 
@@ -129,11 +129,19 @@ Number of guests
 <div class="price-lines">
 <div><span>Guests</span><strong data-summary-guests>Not selected</strong></div>
 <div><span>Nights</span><strong data-summary-nights>Not selected</strong></div>
-<div><span>Season</span><strong data-summary-season>Not selected</strong></div>
+<div><span>Rate</span><strong data-summary-season>Not selected</strong></div>
 <div><span>Status</span><strong data-summary-status>Choose dates</strong></div>
 </div>
+<div class="price-lines" data-price-breakdown data-no-translate>
+<div><span data-price-label="comparison"></span><strong data-price-value="comparison">—</strong></div>
+<div><span data-price-label="directDiscount"></span><strong data-price-value="directDiscount">—</strong></div>
+<div><span data-price-label="accommodation"></span><strong data-price-value="accommodation">—</strong></div>
+<div><span data-price-label="cleaning"></span><strong data-price-value="cleaning">—</strong></div>
+<div><span data-price-label="linen"></span><strong data-price-value="linen">—</strong></div>
+</div>
+<p data-length-discount data-no-translate></p>
 <p class="season-note" data-season-note>
-Low season starts from 2,400 SEK/night, shoulder season from 2,600 SEK/night and high season from 3,200 SEK/night.
+Returning guests receive 10% off accommodation, including extra guests. Cleaning is 850 SEK per stay and bed linen is 150 SEK per guest.
 </p>
 <ul class="trust-list">
 <li>Manual approval before payment</li>
@@ -242,8 +250,9 @@ Your email app will open with the request filled in.
 
 </footer>
 
-<script src="i18n.js?v=20260909b"></script>
-<script src="booking.js?v=20260907b"></script>
+<script src="i18n.js?v=20260911-prices"></script>
+<script src="pricing-data.js?v=20260911"></script>
+<script src="booking.js?v=20260911-prices"></script>
 
 </body>
 
