@@ -1,5 +1,11 @@
 const siteTranslations = {
     sv: {
+        "Booked or blocked": "Bokat eller blockerat",
+        "These dates are unavailable. Choose other dates.": "Datumen är upptagna eller blockerade. Välj andra datum.",
+        "Choose an available date range and guests before continuing.": "Välj ett ledigt datumintervall och antal gäster för att fortsätta.",
+        "Calendar unavailable": "Kalendern är inte tillgänglig",
+        "Dates cannot be selected until availability has loaded. Please try again later.": "Datum kan inte väljas förrän tillgängligheten har hämtats. Försök igen senare.",
+        "Availability could not be loaded. Date selection is temporarily closed.": "Tillgängligheten kunde inte hämtas. Datumval är tillfälligt stängt.",
         "Rate": "Prisregel",
         "Returning guest rate": "Pris för återkommande gäster",
         "Accommodation before direct discount": "Boende före direktrabatt",
@@ -343,6 +349,12 @@ const siteTranslations = {
         "Not provided": "Ej angivet"
     },
     de: {
+        "Booked or blocked": "Gebucht oder gesperrt",
+        "These dates are unavailable. Choose other dates.": "Diese Daten sind gebucht oder gesperrt. Bitte wählen Sie andere Daten.",
+        "Choose an available date range and guests before continuing.": "Wählen Sie einen verfügbaren Zeitraum und die Gästezahl, um fortzufahren.",
+        "Calendar unavailable": "Kalender nicht verfügbar",
+        "Dates cannot be selected until availability has loaded. Please try again later.": "Daten können erst nach dem Laden der Verfügbarkeit ausgewählt werden. Bitte versuchen Sie es später erneut.",
+        "Availability could not be loaded. Date selection is temporarily closed.": "Die Verfügbarkeit konnte nicht geladen werden. Die Datumsauswahl ist vorübergehend gesperrt.",
         "Rate": "Tarif",
         "Returning guest rate": "Preis für wiederkehrende Gäste",
         "Accommodation before direct discount": "Unterkunft vor Direktbuchungsrabatt",

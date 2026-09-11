@@ -53,6 +53,8 @@ let syncingGuests = false;
 let availabilityUpdatedAt = "";
 let availabilityLoaded = false;
 let availabilityLoadFailed = false;
+let coverageStart = "";
+let coverageEnd = "";
 
 visibleMonth.setDate(1);
 visibleMonth.setHours(0, 0, 0, 0);
@@ -207,7 +209,36 @@ function getSeasonNote() {
 }
 
 function isUnavailable(date) {
-    return bookedDates.has(toDateKey(date));
+    const key = toDateKey(date);
+    return !availabilityLoaded || availabilityLoadFailed || !coverageStart || !coverageEnd
+        || key < coverageStart || key >= coverageEnd || bookedDates.has(key);
+}
+
+function collectUnavailableDates(availability) {
+    const dates = new Set(availability.booked_dates || []);
+    for (const range of availability.blocked_ranges || []) {
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(range.start) || !/^\d{4}-\d{2}-\d{2}$/.test(range.end) || range.end <= range.start) {
+            throw new Error("Invalid blocked range");
+        }
+        for (let day = parseDateKey(range.start); day < parseDateKey(range.end); day = addDays(day, 1)) dates.add(toDateKey(day));
+    }
+    return dates;
+}
+
+function validateSelection() {
+    const checkIn = checkInInput.value;
+    const checkOut = checkOutInput.value;
+    const today = toDateKey(new Date());
+    const startBlocked = checkIn && (checkIn < today || isUnavailable(parseDateKey(checkIn)));
+    const rangeBlocked = checkIn && checkOut && hasUnavailableBetween(checkIn, checkOut);
+    const endInvalid = checkOut && (!nightsBetween(checkIn, checkOut) || rangeBlocked);
+    checkInInput.setCustomValidity(startBlocked ? tr("These dates are unavailable. Choose other dates.") : "");
+    checkOutInput.setCustomValidity(endInvalid ? tr("These dates are unavailable. Choose other dates.") : "");
+    const ready = availabilityLoaded && !availabilityLoadFailed && coverageStart && coverageEnd;
+    const valid = Boolean(ready && checkIn && checkOut && getSelectedGuests() && !startBlocked && !endInvalid);
+    form.querySelector("button[type='submit']").disabled = !valid;
+    sendRequestLink.setAttribute("aria-disabled", String(!valid));
+    return valid;
 }
 
 function hasUnavailableBetween(checkIn, checkOut) {
@@ -218,7 +249,7 @@ function hasUnavailableBetween(checkIn, checkOut) {
     let day = parseDateKey(checkIn);
     const end = parseDateKey(checkOut);
 
-    while (day < end) {
+    while (day <= end) {
         if (isUnavailable(day)) {
             return true;
         }
@@ -237,6 +268,7 @@ function isSelectedRangeDate(key) {
 }
 
 function updateSummary() {
+    validateSelection();
     const priceLabels = { comparison: "Accommodation before direct discount", directDiscount: "Returning guest discount (10%)", accommodation: "Accommodation", cleaning: "Cleaning", linen: "Bed linen" };
     document.querySelectorAll("[data-price-label]").forEach(element => { element.textContent = tr(priceLabels[element.dataset.priceLabel]); });
     const checkIn = checkInInput.value;
@@ -265,6 +297,14 @@ function updateSummary() {
             total: formatSek(estimate.total),
         })
         : tr("Choose dates and guests above to include them in your request.");
+
+    if (!availabilityLoaded || availabilityLoadFailed) {
+        summaryStatus.textContent = tr("Calendar unavailable");
+        priceEstimate.textContent = tr("Calendar unavailable");
+        priceDetails.textContent = tr("Dates cannot be selected until availability has loaded. Please try again later.");
+        seasonNote.textContent = "";
+        return;
+    }
 
     if (!checkIn || !checkOut) {
         summaryStatus.textContent = tr("Choose dates");
@@ -347,11 +387,13 @@ function renderCalendar() {
         const unavailable = isUnavailable(day);
         const outsideMonth = day.getMonth() !== month;
         const past = day < today;
+        const crossesBlockedDate = checkInInput.value && !checkOutInput.value && key > checkInInput.value
+            && hasUnavailableBetween(checkInInput.value, key);
 
         button.type = "button";
         button.className = "calendar-day";
         const nightPrice = getNightPrice(day, getSelectedGuests());
-        const guide = nightPrice && !unavailable && !past ? formatShortSek(nightPrice.amount) : "—";
+        const guide = unavailable && !past ? "×" : nightPrice && !past ? formatShortSek(nightPrice.amount) : "—";
         button.innerHTML = `<span class="calendar-date">${day.getDate()}</span><span class="calendar-rate">${guide}</span>`;
         button.setAttribute("aria-label", `${key}: ${unavailable ? tr("Unavailable") : nightPrice ? formatSek(nightPrice.amount) : tr("Price on request")}`);
         button.dataset.date = key;
@@ -365,20 +407,23 @@ function renderCalendar() {
         if (past) {
             button.classList.add("past");
         }
-        if (checkInInput.value === key || checkOutInput.value === key) {
+        if (!unavailable && (checkInInput.value === key || checkOutInput.value === key)) {
             button.classList.add("selected");
         }
-        if (isSelectedRangeDate(key)) {
+        if (!unavailable && isSelectedRangeDate(key) && !hasUnavailableBetween(checkInInput.value, checkOutInput.value)) {
             button.classList.add("range-selected");
         }
 
-        button.disabled = past || unavailable;
+        if (crossesBlockedDate && !unavailable) button.classList.add("range-unavailable");
+        button.disabled = past || unavailable || Boolean(crossesBlockedDate);
         button.addEventListener("click", () => selectDate(key));
         calendarGrid.appendChild(button);
     }
 }
 
 function selectDate(key) {
+    if (key < toDateKey(new Date()) || isUnavailable(parseDateKey(key))) return;
+    if (checkInInput.value && !checkOutInput.value && key > checkInInput.value && hasUnavailableBetween(checkInInput.value, key)) return;
     if (!checkInInput.value || checkOutInput.value || key < checkInInput.value) {
         checkInInput.value = key;
         checkOutInput.value = "";
@@ -407,7 +452,7 @@ function focusNextRequestField() {
 
 function updateCalendarStatus() {
     if (availabilityLoadFailed) {
-        calendarStatus.textContent = tr("Availability could not be loaded. Please confirm dates in your request.");
+        calendarStatus.textContent = tr("Availability could not be loaded. Date selection is temporarily closed.");
         return;
     }
 
@@ -441,7 +486,16 @@ async function loadAvailability() {
         }
 
         const availability = await response.json();
-        bookedDates = new Set(availability.booked_dates || []);
+        if (!availability.coverage_start || !availability.coverage_end || !availability.updated_at
+            || Date.now() - new Date(availability.updated_at).getTime() > 48 * 60 * 60 * 1000
+            || !Number.isFinite(Date.parse(availability.updated_at))) throw new Error("Calendar data is missing or stale");
+        bookedDates = collectUnavailableDates(availability);
+        coverageStart = availability.coverage_start;
+        coverageEnd = availability.coverage_end;
+        checkInInput.min = coverageStart;
+        checkOutInput.min = coverageStart;
+        checkInInput.max = toDateKey(addDays(parseDateKey(coverageEnd), -1));
+        checkOutInput.max = checkInInput.max;
         availabilityUpdatedAt = availability.updated_at || "";
         availabilityLoaded = true;
         availabilityLoadFailed = false;
@@ -457,6 +511,13 @@ async function loadAvailability() {
 
 form.addEventListener("submit", (event) => {
     event.preventDefault();
+
+    if (!validateSelection()) {
+        helpText.textContent = tr("These dates are unavailable. Choose other dates.");
+        helpText.classList.add("error");
+        form.reportValidity();
+        return;
+    }
 
     const formData = new FormData(form);
     const checkIn = formatValue(formData, "check_in");
@@ -521,6 +582,11 @@ sendRequestLink.addEventListener("click", (event) => {
     event.preventDefault();
     updateSummary();
     helpText.classList.remove("error");
+    if (!validateSelection()) {
+        helpText.textContent = tr("Choose an available date range and guests before continuing.");
+        helpText.classList.add("error");
+        return;
+    }
 
     if (!checkInInput.value || !checkOutInput.value || !getSelectedGuests()) {
         helpText.textContent = tr("Choose dates and guests above, then add your contact details here.");

@@ -82,11 +82,17 @@ def main():
 
     ics = fetch_ics(ical_url)
     today = date.today()
-    latest = today + timedelta(days=550)
+    # Do not advertise dates beyond the supported Airbnb export window.
+    latest = today + timedelta(days=365)
     ranges = []
     booked_dates = set()
 
-    for event in event_ranges(unfold_ics(ics)):
+    events = list(event_ranges(unfold_ics(ics)))
+    overrides = json.loads((ROOT / "availability-overrides.json").read_text(encoding="utf-8"))
+    for item in overrides.get("blocked_ranges", []):
+        events.append({"start": date.fromisoformat(item["start"]), "end": date.fromisoformat(item["end"])})
+
+    for event in events:
         start = max(event["start"], today)
         end = min(event["end"], latest)
         if start >= end:
@@ -95,7 +101,7 @@ def main():
         ranges.append({
             "start": start.isoformat(),
             "end": end.isoformat(),
-            "summary": event.get("summary", "Unavailable"),
+            "summary": "Unavailable",
         })
 
         for day in daterange(start, end):
@@ -104,6 +110,8 @@ def main():
     payload = {
         "updated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "source": "airbnb_ical",
+        "coverage_start": today.isoformat(),
+        "coverage_end": latest.isoformat(),
         "booked_dates": sorted(booked_dates),
         "blocked_ranges": sorted(ranges, key=lambda item: item["start"]),
     }

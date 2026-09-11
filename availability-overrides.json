@@ -1,0 +1,14 @@
+{
+  "reviewed_at": "2026-09-11",
+  "note": "Additional unavailable dates verified in the Airbnb host calendar but omitted from its iCal export. End dates are exclusive. Remove a range here if these dates are reopened.",
+  "blocked_ranges": [
+    {
+      "start": "2026-09-15",
+      "end": "2026-09-16"
+    },
+    {
+      "start": "2026-09-24",
+      "end": "2026-09-25"
+    }
+  ]
+}

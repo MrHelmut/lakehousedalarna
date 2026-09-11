@@ -3,12 +3,13 @@ const vm=require('vm');
 const assert=require('node:assert/strict');
 const root=require('path').resolve(__dirname, '..') + '/';
 const nodes=new Map();
-const element=()=>({value:'',textContent:'',dataset:{},setAttribute(){},addEventListener(){},appendChild(){},classList:{contains(){return false},add(){},remove(){}}});
+const element=()=>({value:'',textContent:'',dataset:{},setAttribute(){},setCustomValidity(message){this.validationMessage=message},querySelector(){return this.submitButton??=element()},reportValidity(){return false},handlers:{},addEventListener(name,fn){this.handlers[name]=fn},children:[],appendChild(child){this.children.push(child)},classList:{values:new Set(),contains(name){return this.values.has(name)},add(name){this.values.add(name)},remove(name){this.values.delete(name)}}});
 const context=vm.createContext({window:{addEventListener(){}},document:{querySelector(s){if(!nodes.has(s))nodes.set(s,element());return nodes.get(s)},querySelectorAll(){return []},createElement:element},Intl,Date,Set,console});
 vm.runInContext(fs.readFileSync(root+'pricing-data.js','utf8'),context);
 let source=fs.readFileSync(root+'booking.js','utf8');
 vm.runInContext(source.slice(0,source.lastIndexOf('\nupdateHelpTextDefault();')),context);
 const run=code=>vm.runInContext(code,context);
+run('availabilityLoaded=true; coverageStart="2026-09-11"; coverageEnd="2028-10-01";');
 assert.equal(run("Object.keys(pricing.nightlyPrices).length"),24);
 for(const [m,p] of Object.entries(context.window.lakeHousePricing.nightlyPrices)){
   const [y,n]=m.split('-').map(Number);assert.equal(p.length,new Date(y,n,0).getDate(),m);
@@ -71,3 +72,43 @@ vm.runInContext("appliedLanguage='de';",i18nContext);
 assert.equal(vm.runInContext('getCurrentLanguage()',i18nContext),'de');
 assert.equal(vm.runInContext("t('Accommodation')",i18nContext),'Unterkunft');
 console.log('PASS: dynamic pricing follows selected language.');
+
+// Regression: booked and blocked dates must be equally unselectable, including checkout.
+const actualAvailability=JSON.parse(fs.readFileSync(root+'availability.json','utf8'));
+context.testAvailability=actualAvailability;
+run('bookedDates=collectUnavailableDates(testAvailability); coverageStart=testAvailability.coverage_start; coverageEnd=testAvailability.coverage_end; availabilityLoaded=true; availabilityLoadFailed=false;');
+for(let day=21;day<=27;day++)assert.equal(run(`isUnavailable(parseDateKey('2026-09-${day}'))`),true);
+assert.equal(run("isUnavailable(parseDateKey('2026-09-28'))"),false);
+assert.equal(run("collectUnavailableDates({booked_dates:['2026-09-21'],blocked_ranges:[{start:'2026-09-24',end:'2026-09-28'}]}).has('2026-09-27')"),true);
+const checkIn=nodes.get('[data-check-in]'),checkOut=nodes.get('[data-check-out]');
+checkIn.value='';checkOut.value='';
+run("selectDate('2026-09-24')");assert.equal(checkIn.value,'');
+run("selectDate('2026-09-28'); selectDate('2026-10-01');");
+assert.equal(run('validateSelection()'),true);
+checkIn.value='2026-10-04';checkOut.value='2026-10-05';assert.equal(run('validateSelection()'),false);
+checkIn.value='2026-11-02';checkOut.value='';run("selectDate('2026-11-16')");assert.equal(checkOut.value,'');
+checkIn.value='2026-09-21';checkOut.value='2026-09-28';
+context.window.location={href:''};
+nodes.get('[data-booking-request-form]').handlers.submit({preventDefault(){}});
+assert.equal(context.window.location.href,'');
+assert.match(checkIn.validationMessage,/unavailable/);
+assert.equal(nodes.get('[data-booking-request-form]').submitButton.disabled,true);
+checkIn.value='';checkOut.value='';
+nodes.get('[data-calendar-grid]').children=[];
+run('visibleMonth=new Date(2026,8,1);renderCalendar();');
+for(let d=21;d<=27;d++){
+const button=nodes.get('[data-calendar-grid]').children.find(e=>e.dataset.date===`2026-09-${d}`);
+assert.equal(button.disabled,true);assert.equal(button.classList.contains('unavailable'),true);assert.match(button.innerHTML,/×/);
+}
+run('availabilityLoaded=false;');assert.equal(run('validateSelection()'),false);
+run("selectDate('2026-09-28')");assert.equal(checkIn.value,'');
+(async()=>{
+context.fetch=async()=>({ok:false});await run('loadAvailability()');
+assert.equal(run('availabilityLoadFailed'),true);assert.equal(run('validateSelection()'),false);
+context.fetch=async()=>({ok:true,json:async()=>({...actualAvailability,updated_at:'2026-01-01T00:00:00Z'})});
+await run('loadAvailability()');assert.equal(run('availabilityLoadFailed'),true);
+context.fetch=async()=>({ok:true,json:async()=>({...actualAvailability,updated_at:new Date().toISOString()})});
+await run('loadAvailability()');assert.equal(run('availabilityLoadFailed'),false);
+assert.equal(run("isUnavailable(parseDateKey('2026-09-24'))"),true);
+console.log('PASS: reserved/blocked dates, manual input, blocked checkout, crossing blocked ranges, disabled calendar cells, submit guard and failed/stale calendar loading.');
+})().catch(e=>{console.error(e);process.exitCode=1});
