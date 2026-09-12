@@ -4660,3 +4660,12 @@ background:#fff;
 .legend-booked{background:repeating-linear-gradient(135deg,#e0e3e5 0,#e0e3e5 4px,#9da5ab 4px,#9da5ab 6px);border:1px solid #9da5ab;}
 .calendar-day.range-unavailable{opacity:.5;cursor:not-allowed;}
 [data-send-request-link][aria-disabled="true"],.request-form button:disabled{opacity:.5;cursor:not-allowed;}
+
+/* The original family photograph is shown in full. */
+.history-layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:30px;align-items:start;}
+.history-photo{margin:0;min-width:0;}
+.history-photo img{display:block;width:100%;height:auto;border-radius:12px;}
+.history-photo figcaption{margin-top:12px;font-size:13px;line-height:1.6;color:#6f6557;}
+.history-copy{min-width:0;}
+#history{scroll-margin-top:150px;}
+@media(max-width:800px){.history-layout{grid-template-columns:1fr;gap:22px;}}

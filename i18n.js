@@ -1,5 +1,11 @@
 const siteTranslations = {
     sv: {
+        "OUR STORY": "VÅR HISTORIA",
+        "A house with a history": "Ett hus med historia",
+        "The story of the house began in the 1960s. This family photograph shows Alexander’s grandmother while the house was being completed. Since then, it has remained in the family, changing and growing through the generations.": "Husets historia började på 1960-talet. På familjebilden syns Alexanders mormor medan huset höll på att färdigställas. Sedan dess har platsen funnits kvar i familjen och utvecklats genom generationerna.",
+        "In 2024–2026, we extended the house with large windows facing the lake, a sauna and a relaxation area. Today, our guests can also enjoy the place that means so much to our family.": "Under 2024–2026 byggde vi ut huset med stora fönster mot sjön, bastu och relax. Nu får även våra gäster uppleva den plats som betyder så mycket för vår familj.",
+        "Alexander’s grandmother at the house in the 1960s. From the family album.": "Alexanders mormor vid huset på 1960-talet. Ur familjealbumet.",
+        "Family photograph of Alexander’s grandmother outside the wooden house in the 1960s": "Familjefotografi av Alexanders mormor utanför trähuset på 1960-talet",
         "Booked or blocked": "Bokat eller blockerat",
         "These dates are unavailable. Choose other dates.": "Datumen är upptagna eller blockerade. Välj andra datum.",
         "Choose an available date range and guests before continuing.": "Välj ett ledigt datumintervall och antal gäster för att fortsätta.",
@@ -349,6 +355,12 @@ const siteTranslations = {
         "Not provided": "Ej angivet"
     },
     de: {
+        "OUR STORY": "UNSERE GESCHICHTE",
+        "A house with a history": "Ein Haus mit Geschichte",
+        "The story of the house began in the 1960s. This family photograph shows Alexander’s grandmother while the house was being completed. Since then, it has remained in the family, changing and growing through the generations.": "Die Geschichte des Hauses begann in den 1960er-Jahren. Das Familienfoto zeigt Alexanders Großmutter, als das Haus fertiggestellt wurde. Seitdem ist es in Familienbesitz geblieben und hat sich über die Generationen weiterentwickelt.",
+        "In 2024–2026, we extended the house with large windows facing the lake, a sauna and a relaxation area. Today, our guests can also enjoy the place that means so much to our family.": "Von 2024 bis 2026 haben wir das Haus um große Fenster zum See, eine Sauna und einen Ruhebereich erweitert. Heute können auch unsere Gäste diesen Ort erleben, der unserer Familie so viel bedeutet.",
+        "Alexander’s grandmother at the house in the 1960s. From the family album.": "Alexanders Großmutter am Haus in den 1960er-Jahren. Aus dem Familienalbum.",
+        "Family photograph of Alexander’s grandmother outside the wooden house in the 1960s": "Familienfoto von Alexanders Großmutter vor dem Holzhaus in den 1960er-Jahren",
         "Booked or blocked": "Gebucht oder gesperrt",
         "These dates are unavailable. Choose other dates.": "Diese Daten sind gebucht oder gesperrt. Bitte wählen Sie andere Daten.",
         "Choose an available date range and guests before continuing.": "Wählen Sie einen verfügbaren Zeitraum und die Gästezahl, um fortzufahren.",
