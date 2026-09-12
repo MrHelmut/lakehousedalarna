@@ -1,5 +1,7 @@
 const siteTranslations = {
     sv: {
+        "The house seen from the lake, 2017.": "Huset sett från sjön, 2017.",
+        "The house seen from the lake, 2017": "Huset sett från sjön, 2017",
         "OUR STORY": "VÅR HISTORIA",
         "A house with a history": "Ett hus med historia",
         "The story of the house began in the 1960s. This family photograph shows Alexander’s grandmother while the house was being completed. Since then, it has remained in the family, changing and growing through the generations.": "Husets historia började på 1960-talet. På familjebilden syns Alexanders mormor medan huset höll på att färdigställas. Sedan dess har platsen funnits kvar i familjen och utvecklats genom generationerna.",
@@ -355,6 +357,8 @@ const siteTranslations = {
         "Not provided": "Ej angivet"
     },
     de: {
+        "The house seen from the lake, 2017.": "Das Haus vom See aus gesehen, 2017.",
+        "The house seen from the lake, 2017": "Das Haus vom See aus gesehen, 2017",
         "OUR STORY": "UNSERE GESCHICHTE",
         "A house with a history": "Ein Haus mit Geschichte",
         "The story of the house began in the 1960s. This family photograph shows Alexander’s grandmother while the house was being completed. Since then, it has remained in the family, changing and growing through the generations.": "Die Geschichte des Hauses begann in den 1960er-Jahren. Das Familienfoto zeigt Alexanders Großmutter, als das Haus fertiggestellt wurde. Seitdem ist es in Familienbesitz geblieben und hat sich über die Generationen weiterentwickelt.",

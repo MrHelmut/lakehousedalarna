@@ -4669,3 +4669,5 @@ background:#fff;
 .history-copy{min-width:0;}
 #history{scroll-margin-top:150px;}
 @media(max-width:800px){.history-layout{grid-template-columns:1fr;gap:22px;}}
+
+.history-photos{display:grid;gap:24px;min-width:0;}
