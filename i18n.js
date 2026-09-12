@@ -1,5 +1,7 @@
 const siteTranslations = {
     sv: {
+        "The house and lakeshore, 2019.": "Huset och strandplatsen, 2019.",
+        "The house and lakeshore, 2019": "Huset och strandplatsen, 2019",
         "Winter 2018 – a year with very heavy snowfall.": "Vintern 2018 – ett år med väldigt mycket snö.",
         "The house and grounds covered in deep snow in winter 2018": "Huset och tomten täckta av djup snö vintern 2018",
         "The house seen from the lake, 2017.": "Huset sett från sjön, 2017.",
@@ -359,6 +361,8 @@ const siteTranslations = {
         "Not provided": "Ej angivet"
     },
     de: {
+        "The house and lakeshore, 2019.": "Das Haus und der Uferbereich, 2019.",
+        "The house and lakeshore, 2019": "Das Haus und der Uferbereich, 2019",
         "Winter 2018 – a year with very heavy snowfall.": "Winter 2018 – ein Jahr mit besonders viel Schnee.",
         "The house and grounds covered in deep snow in winter 2018": "Das Haus und das Grundstück unter tiefem Schnee im Winter 2018",
         "The house seen from the lake, 2017.": "Das Haus vom See aus gesehen, 2017.",
