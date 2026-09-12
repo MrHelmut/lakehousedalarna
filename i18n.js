@@ -1,5 +1,7 @@
 const siteTranslations = {
     sv: {
+        "The jetty was renovated in 2024. The following year, it was destroyed in a storm.": "Bryggan renoverades 2024. Året därpå förstördes den i en storm.",
+        "The renovated jetty in 2024, with ice on the lake": "Den renoverade bryggan 2024, med is på sjön",
         "The house and lakeshore, 2019.": "Huset och strandplatsen, 2019.",
         "The house and lakeshore, 2019": "Huset och strandplatsen, 2019",
         "Winter 2018 – a year with very heavy snowfall.": "Vintern 2018 – ett år med väldigt mycket snö.",
@@ -361,6 +363,8 @@ const siteTranslations = {
         "Not provided": "Ej angivet"
     },
     de: {
+        "The jetty was renovated in 2024. The following year, it was destroyed in a storm.": "Der Steg wurde 2024 renoviert. Im darauffolgenden Jahr wurde er bei einem Sturm zerstört.",
+        "The renovated jetty in 2024, with ice on the lake": "Der renovierte Steg 2024, mit Eis auf dem See",
         "The house and lakeshore, 2019.": "Das Haus und der Uferbereich, 2019.",
         "The house and lakeshore, 2019": "Das Haus und der Uferbereich, 2019",
         "Winter 2018 – a year with very heavy snowfall.": "Winter 2018 – ein Jahr mit besonders viel Schnee.",
