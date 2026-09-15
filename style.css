@@ -1806,13 +1806,7 @@ box-shadow:0 8px 20px rgba(0,0,0,.08);
 
 }
 
-.calendar-day.outside-month{
 
-color:#bbb;
-
-background:#f5f5f1;
-
-}
 
 .calendar-day.past,
 .calendar-day.unavailable{
