@@ -4684,3 +4684,9 @@ background:#fff;
 @media(max-width:700px){.winter-hero{background-position:12% center;}.winter-hero.summer-hero{background-position:center;}.winter-hero .hero-overlay{background:linear-gradient(0deg,rgba(9,22,38,.83),rgba(9,22,38,.18));}.winter-hero .hero-content{margin:0;padding:110px 12px 25px;text-align:center;}.winter-hero .hero-buttons{justify-content:center;}.winter-feature{margin:30px 16px;padding:28px 18px;}.winter-grid{grid-template-columns:1fr;}.winter-grid img{aspect-ratio:3/4;object-position:center 55%;}}
 
 .season-switch{display:inline-flex;gap:4px;padding:5px;border:1px solid #ffffff80;border-radius:30px;background:#152b3d80;margin-bottom:22px;}.season-switch button{border:0;border-radius:24px;padding:10px 24px;background:transparent;color:white;font:inherit;cursor:pointer;}.season-switch button[aria-pressed="true"]{background:#f1e4c8;color:#203442;}.season-switch button:focus-visible{outline:3px solid white;outline-offset:2px;}.winter-hero.summer-hero{background-image:url("images/hero.png?v=20260910a");}.winter-only[hidden],.summer-only[hidden],#winter[hidden]{display:none!important;}
+/* Show the complete winter photograph above the copy on phones. */
+@media(max-width:700px){
+.winter-hero:not(.summer-hero){background-color:#14273b;background-size:100% auto;background-position:center 110px;padding:calc(110px + 56.3vw) 20px 30px;min-height:0;}
+.winter-hero:not(.summer-hero) .hero-overlay{background:linear-gradient(to bottom,transparent 0,transparent calc(110px + 43vw),#14273b calc(110px + 56.3vw));}
+.winter-hero:not(.summer-hero) .hero-content{padding:22px 0 0;width:100%;}
+}
