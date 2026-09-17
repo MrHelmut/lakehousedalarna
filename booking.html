@@ -7,27 +7,27 @@
     <meta http-equiv="Cache-Control" content="no-cache">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Direct Booking Request | Lake House Dalarna</title>
-    <meta name="description" content="Check availability, see pricing guidance and send a direct booking request for Lake House Dalarna.">
-    <meta property="og:title" content="Direct Booking Request | Lake House Dalarna">
-    <meta property="og:description" content="Check availability and send a direct booking request for Lake House Dalarna.">
-    <meta property="og:image" content="images/hero.png?v=20260910a">
+    <title>Availability & Booking | Lake House Dalarna</title>
+    <meta name="description" content="Plan your stay at Lake House Dalarna. Check available dates and estimated prices, then send a booking request directly to your hosts.">
+    <meta property="og:title" content="Availability & Booking | Lake House Dalarna">
+    <meta property="og:description" content="Plan your stay at Lake House Dalarna. Check available dates and estimated prices, then send a booking request directly to your hosts.">
+    <meta property="og:image" content="https://lakehousedalarna.com/images/hero.png">
     <meta property="og:type" content="website">
     <link rel="canonical" href="https://lakehousedalarna.com/booking.html">
-    <link rel="alternate" hreflang="en" href="https://lakehousedalarna.com/booking.html">
-    <link rel="alternate" hreflang="sv" href="https://lakehousedalarna.com/booking.html?lang=sv">
-    <link rel="alternate" hreflang="de" href="https://lakehousedalarna.com/booking.html?lang=de">
-    <link rel="alternate" hreflang="de-DE" href="https://lakehousedalarna.com/booking.html?lang=de">
-    <link rel="alternate" hreflang="de-AT" href="https://lakehousedalarna.com/booking.html?lang=de">
-    <link rel="alternate" hreflang="de-CH" href="https://lakehousedalarna.com/booking.html?lang=de">
-    <link rel="alternate" hreflang="x-default" href="https://lakehousedalarna.com/booking.html">
     <link rel="icon" href="favicon.ico">
     <link rel="preload" as="image" href="images/hero.png?v=20260910a" fetchpriority="high">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="style.css?v=20260915-calendar">
+    <link rel="stylesheet" href="style.css?v=20260917-direct">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="alternate" hreflang="en" href="https://lakehousedalarna.com/booking.html">
+    <link rel="alternate" hreflang="sv" href="https://lakehousedalarna.com/booking.html?lang=sv">
+    <link rel="alternate" hreflang="de" href="https://lakehousedalarna.com/booking.html?lang=de">
+    <link rel="alternate" hreflang="x-default" href="https://lakehousedalarna.com/booking.html">
+    <meta property="og:site_name" content="Lake House Dalarna">
+    <meta property="og:url" content="https://lakehousedalarna.com/booking.html">
+    <meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="booking-page">
@@ -47,10 +47,10 @@
 <li><a href="house.html">The House</a></li>
 <li><a href="index.html#explore">Explore Dalarna</a></li>
 <li><a href="index.html#contact">Contact</a></li>
-<li><a class="book-btn" href="https://airbnb.com/h/solsidan-dalarna" target="_blank">Book on Airbnb</a></li>
+<li><a class="book-btn" href="booking.html">Check availability</a></li>
 </ul>
 
-</nav>
+<div class="mobile-quick-nav"><a href="index.html#home">Home</a><a href="index.html#gallery">Gallery</a><a href="house.html">The House</a></div></nav>
 
 <section class="request-hero">
 <div class="request-hero-overlay"></div>
@@ -70,7 +70,7 @@ booking request directly to us.
 
 <section class="request-section">
 
-<div class="booking-steps">
+<section class="booking-choice"><h2>Plan your stay</h2><p>Choose dates, review the estimated price and send us a booking request.</p><p class="booking-explanation">Your booking is confirmed only when you have received a confirmation from us.</p></section><div class="booking-steps">
 <div>
 <p class="section-tag">HOW DIRECT BOOKING WORKS</p>
 <h2>Request first, payment after approval</h2>
@@ -141,7 +141,7 @@ Number of guests
 </div>
 <p data-length-discount data-no-translate></p>
 <p class="season-note" data-season-note>
-Returning guests receive 10% off accommodation, including extra guests. Cleaning is 850 SEK per stay and bed linen is 150 SEK per guest.
+Direct bookings receive 10% off accommodation, including extra guests. Cleaning is 850 SEK per stay and bed linen is 150 SEK per guest.
 </p>
 <ul class="trust-list">
 <li>Manual approval before payment</li>
@@ -213,13 +213,14 @@ Tell us a little about yourself and your stay
 </label>
 
 <button class="booking-button request-submit" type="submit">
-Prepare Email Request
+Send booking request
 </button>
 
 <p class="request-help" data-request-help>
 Your email app will open with the request filled in.
 </p>
 
+<p class="booking-alternative"><a href="https://airbnb.com/h/solsidan-dalarna" target="_blank" rel="noopener noreferrer">Prefer Airbnb? Book there</a></p>
 </form>
 
 </div>
@@ -240,7 +241,7 @@ Your email app will open with the request filled in.
 <a href="index.html#gallery">Gallery</a>
 <a href="house.html">The House</a>
 <a href="index.html#explore">Explore Dalarna</a>
-<a href="https://airbnb.com/h/solsidan-dalarna" target="_blank">Book</a>
+<a href="booking.html">Check availability</a>
 <a href="booking.html">Direct Request</a>
 <a href="de/ferienhaus-schweden.html">Ferienhaus Schweden</a>
 </div>
@@ -250,10 +251,11 @@ Your email app will open with the request filled in.
 
 </footer>
 
-<script src="i18n.js?v=20260911-availability"></script>
+<script src="i18n.js?v=20260917-direct"></script>
 <script src="pricing-data.js?v=20260911"></script>
-<script src="booking.js?v=20260911-availability"></script>
+<script src="booking.js?v=20260917-direct"></script>
 
+<script src="navigation.js?v=20260917-nav-spacing"></script><script src="seo.js?v=20260917"></script>
 </body>
 
 </html>

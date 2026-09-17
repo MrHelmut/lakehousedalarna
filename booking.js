@@ -188,7 +188,7 @@ function getStayEstimate(checkIn, checkOut, guests) {
         airbnbSubtotal += price.airbnbAmount;
     }
     const lengthDiscount = nights >= 28 ? pricing.monthlyDiscount : nights >= 7 ? pricing.weeklyDiscount : 0;
-    // Apply the existing length discount before the returning-guest discount.
+    // Apply the existing length discount before the direct-booking discount.
     const comparisonCents = Math.round(airbnbSubtotal * 100 * (1 - lengthDiscount));
     const discountCents = Math.round(comparisonCents * pricing.directDiscount);
     const accommodation = (comparisonCents - discountCents) / 100;
@@ -201,7 +201,7 @@ function getStayEstimate(checkIn, checkOut, guests) {
 }
 
 function getSeasonSummary() {
-    return tr("Returning guest rate");
+    return tr("Direct booking rate");
 }
 
 function getSeasonNote() {
@@ -269,7 +269,7 @@ function isSelectedRangeDate(key) {
 
 function updateSummary() {
     validateSelection();
-    const priceLabels = { comparison: "Accommodation before direct discount", directDiscount: "Returning guest discount (10%)", accommodation: "Accommodation", cleaning: "Cleaning", linen: "Bed linen" };
+    const priceLabels = { comparison: "Accommodation before direct discount", directDiscount: "Direct booking discount (10%)", accommodation: "Accommodation", cleaning: "Cleaning", linen: "Bed linen" };
     document.querySelectorAll("[data-price-label]").forEach(element => { element.textContent = tr(priceLabels[element.dataset.priceLabel]); });
     const checkIn = checkInInput.value;
     const checkOut = checkOutInput.value;
@@ -310,7 +310,7 @@ function updateSummary() {
         summaryStatus.textContent = tr("Choose dates");
         priceEstimate.textContent = tr("Choose dates");
         priceDetails.textContent = tr("Choose dates and guests to see the total, including cleaning and bed linen.");
-        seasonNote.textContent = tr("Returning guests receive 10% off accommodation, including extra guests. Cleaning is 850 SEK per stay and bed linen is 150 SEK per guest.");
+        seasonNote.textContent = tr("Direct bookings receive 10% off accommodation, including extra guests. Cleaning is 850 SEK per stay and bed linen is 150 SEK per guest.");
         return;
     }
 
@@ -554,7 +554,7 @@ form.addEventListener("submit", (event) => {
         `Guests: ${guests}`,
         `Estimated price: ${estimate ? `${formatSek(estimate.total)} total (${formatSek(estimate.average)} accommodation per night average)` : "Not calculated"}`,
         `Accommodation: ${estimate ? formatSek(estimate.accommodation) : "Price on request"}`,
-        `Returning guest discount (10%): ${estimate ? formatSek(estimate.directDiscount) : "To be confirmed"}`,
+        `Direct booking discount (10%): ${estimate ? formatSek(estimate.directDiscount) : "To be confirmed"}`,
         `Length-of-stay discount before direct discount: ${estimate ? estimate.lengthDiscount * 100 : 0}%`,
         `Cleaning: ${formatSek(pricing.cleaning)} per stay`,
         `Bed linen: ${formatSek(Number(guests) * pricing.linenPerGuest)}`,

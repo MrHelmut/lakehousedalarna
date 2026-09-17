@@ -4686,3 +4686,79 @@ background:#fff;
 .season-switch{display:inline-flex;gap:4px;padding:5px;border:1px solid #ffffff80;border-radius:30px;background:#152b3d80;margin-bottom:22px;}.season-switch button{border:0;border-radius:24px;padding:10px 24px;background:transparent;color:white;font:inherit;cursor:pointer;}.season-switch button[aria-pressed="true"]{background:#f1e4c8;color:#203442;}.season-switch button:focus-visible{outline:3px solid white;outline-offset:2px;}.winter-hero.summer-hero{background-image:url("images/hero.png?v=20260910a");}.winter-only[hidden],.summer-only[hidden],#winter[hidden]{display:none!important;}
 /* Same mobile hero layout for both seasons; focus the winter house. */
 @media(max-width:700px){.winter-hero:not(.summer-hero){background-color:#14273b;background-size:auto 145vw;background-position:18% 60px;}.winter-hero:not(.summer-hero) .hero-overlay{background:linear-gradient(to bottom,rgba(9,22,38,.12) 0,rgba(9,22,38,.18) 90vw,#14273b calc(60px + 145vw));}}
+/* Keep desktop navigation clear of the seasonal controls in every language. */
+.navbar{pointer-events:none;}
+.navbar .logo,.navbar .menu,.navbar .language-switcher{pointer-events:auto;}
+@media(min-width:1001px){
+.navbar,.navbar.scrolled{padding-left:3%;padding-right:3%;gap:20px;}
+.navbar .logo{flex-shrink:0;}
+.navbar .logo-title{font-size:24px;white-space:nowrap;}
+.navbar .logo-subtitle{font-size:10px;letter-spacing:1.5px;white-space:nowrap;}
+.navbar .menu{gap:clamp(12px,1.5vw,28px);margin-left:auto;}
+.navbar .menu a{white-space:nowrap;font-size:14px;}
+.navbar .book-btn{padding:12px 18px;}
+.navbar .language-switcher{flex-shrink:0;margin-left:0;}
+}
+@media(min-width:1001px) and (max-width:1200px){
+.navbar,.navbar.scrolled{gap:12px;padding-left:2%;padding-right:2%;}
+.navbar .logo-title{font-size:20px;}
+.navbar .logo-subtitle{font-size:8px;letter-spacing:1px;}
+.navbar .menu{gap:12px;}.navbar .menu a{font-size:12px;}
+.navbar .language-switcher button{width:32px;}
+}
+
+.mobile-menu-toggle,.mobile-navigation,.mobile-booking-bar{display:none;}.hero-benefits{font-size:15px;letter-spacing:1px;margin:0 0 24px;color:#f1e4c8;}.booking-choice{padding:26px;background:#edf2f4;border-radius:16px;margin-bottom:32px;}.booking-choice p{margin:15px 0;line-height:1.7;}.booking-explanation{font-size:14px;}.sleep-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:24px 0;}.sleep-cards>div{padding:22px;background:#f4f1eb;border-radius:12px;}
+@media(max-width:1000px){.mobile-menu-toggle{display:flex;align-items:center;gap:8px;pointer-events:auto;background:#203442;color:white;border:1px solid #ffffff80;border-radius:24px;padding:10px 16px;font:inherit;cursor:pointer;flex-shrink:0;}.mobile-navigation:not([hidden]){display:flex;flex-direction:column;position:absolute;top:100%;left:16px;right:16px;max-height:calc(100dvh - 130px);overflow:auto;background:#fff;color:#203442;border-radius:14px;padding:16px;box-shadow:0 14px 35px #0004;pointer-events:auto;}.mobile-navigation>a{padding:12px;color:#203442;text-decoration:none;border-bottom:1px solid #eee;}.mobile-navigation .language-switcher{margin:14px 0 0;align-self:center;background:#203442;}.mobile-menu-close{padding:12px;border:0;background:#edf2f4;color:#203442;font:inherit;cursor:pointer;margin-top:10px;}.mobile-booking-bar{display:block;position:fixed;bottom:0;left:0;right:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:#fff;box-shadow:0 -4px 20px #0002;z-index:1000;}.mobile-booking-bar a{display:block;text-align:center;background:#c3a46b;color:#152b3d;border-radius:24px;padding:12px;font-weight:600;text-decoration:none;}body:has(.mobile-booking-bar){padding-bottom:90px;}.sleep-cards{grid-template-columns:1fr;}}
+/* Keep language selection visible beside the mobile menu button. */
+@media(max-width:1000px){
+.navbar{gap:8px;padding-left:12px;padding-right:12px;}
+.navbar>.logo{min-width:0;flex:1;}
+.navbar>.language-switcher{margin-left:auto;flex-shrink:0;gap:2px;padding:3px;}
+.navbar>.language-switcher button{width:28px;height:30px;}
+.navbar>.language-switcher small{display:none;}
+.navbar>.language-switcher .flag{width:20px;height:13px;}
+.mobile-menu-toggle{padding:9px 10px;font-size:13px;gap:5px;}
+.navbar .logo-title{font-size:17px;line-height:1.2;}
+.navbar .logo-subtitle{font-size:8px;letter-spacing:.6px;}
+}
+
+.mobile-quick-nav{display:none;}
+@media(max-width:1000px){.navbar{flex-wrap:wrap;}.mobile-quick-nav{display:flex;align-items:center;justify-content:space-between;flex-basis:100%;gap:8px;pointer-events:auto;padding-top:8px;}.mobile-quick-nav a,.mobile-quick-nav .mobile-menu-toggle{color:inherit;font:inherit;font-size:14px;text-decoration:none;padding:8px 10px;white-space:nowrap;}.mobile-quick-nav{color:white;}.navbar.scrolled .mobile-quick-nav,.request-header .mobile-quick-nav{color:#203442;}.mobile-quick-nav .mobile-menu-toggle{background:transparent;border:1px solid currentColor;border-radius:20px;}.mobile-navigation{top:100%;}}
+
+@media(max-width:1000px){.mobile-quick-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px 6px;padding-top:6px;}.mobile-quick-nav a{padding:8px 2px;text-align:center;font-size:12px;white-space:normal;line-height:1.35;}.navbar.scrolled{padding:12px;}}
+/* Clearly outlined mobile navigation buttons. */
+@media(max-width:1000px){
+.mobile-quick-nav{gap:7px;padding-top:8px;}
+.mobile-quick-nav a{display:flex;align-items:center;justify-content:center;min-height:42px;padding:8px 5px;border:1px solid rgba(255,255,255,.8);border-radius:24px;background:rgba(15,35,50,.68);color:#fff;font-weight:500;text-decoration:none;}
+.navbar.scrolled .mobile-quick-nav a,.request-header .mobile-quick-nav a{color:#203442;border-color:#89969e;background:#fff;}
+.mobile-quick-nav a:hover,.mobile-quick-nav a:focus-visible{background:#eadbb9;color:#203442;border-color:#c3a46b;outline:2px solid #c3a46b;outline-offset:2px;}
+}
+/* Reserve space for the two visible navigation rows above seasonal controls. */
+@media(max-width:1000px){
+.winter-hero{padding-top:0;}
+.winter-hero .hero-content{padding-top:calc(var(--mobile-nav-height, 186px) + 24px);}
+}
+
+.house-next{max-width:1100px;margin:50px auto 70px;padding:48px 28px;text-align:center;background:#f4f1eb;border-radius:18px;}.house-next h2{font-size:clamp(28px,4vw,40px);margin-bottom:16px;}.house-next p{line-height:1.8;margin:0 auto 26px;max-width:650px;}.house-next-button{display:inline-flex;align-items:center;justify-content:space-between;gap:30px;min-width:280px;max-width:100%;padding:20px 30px;background:#c3a46b;color:#172e3c;border-radius:32px;font-weight:600;text-decoration:none;}.house-next-button:hover{background:#ddc69b;}.house-next-button:focus-visible{outline:3px solid #203442;outline-offset:4px;}
+@media(max-width:1000px){.mobile-quick-nav a{min-height:40px;background:rgba(15,35,50,.35);border-color:rgba(255,255,255,.45);font-size:13px;}.house-next{margin:32px 16px;padding:32px 20px;}.house-next-button{min-width:0;width:100%;padding:18px 22px;}}
+
+.house-booking-options{display:grid;gap:12px;margin-top:24px;}.house-booking-option{display:flex;align-items:center;justify-content:center;text-align:center;min-height:58px;padding:16px 22px;border:1px solid #c3a46b;border-radius:30px;background:#c3a46b;color:#203442;font-weight:600;font-size:15px;line-height:1.45;text-decoration:none;box-sizing:border-box;}.house-booking-option-secondary{background:transparent;border-color:#8c806c;color:inherit;}.booking-actions .house-booking-option{flex:1;}.house-booking-option:focus-visible{outline:3px solid #c3a46b;outline-offset:3px;}
+
+.house-page .house-detail-hero{background-image:url("images/site/history-finished-garden-2026.png");background-position:center;}
+/* Keep the garden-side house visible below the fixed navigation. */
+.house-page .house-detail-hero{margin-top:var(--mobile-nav-height,120px);background-position:center 25%;min-height:72vh;align-items:flex-end;padding:240px 8% 48px;}
+.house-page .house-detail-hero .request-hero-overlay{background:linear-gradient(to bottom,rgba(0,0,0,.08),rgba(0,0,0,.15) 35%,rgba(0,0,0,.7));}
+.house-page .house-detail-hero h1{font-size:clamp(32px,4vw,56px);line-height:1.15;}
+.house-page .house-detail-hero .request-hero-content p{font-size:18px;line-height:1.6;}
+@media(max-width:700px){.house-page .house-detail-hero{padding:220px 22px 32px;background-position:48% top;min-height:620px;}.house-page .house-detail-hero .request-hero-content p{font-size:16px;}}
+
+/* Accessible room photo enlargement. */
+.house-photo-open{display:block;width:100%;padding:0;border:0;background:transparent;cursor:zoom-in;border-radius:inherit;overflow:hidden}
+.house-photo-open:focus-visible{outline:3px solid #c5a56a;outline-offset:4px}
+.house-photo-open img{display:block;width:100%}
+.house-photo-dialog{padding:40px 12px 12px;border:0;border-radius:12px;background:#142838;max-width:95vw;max-height:95vh}
+.house-photo-dialog::backdrop{background:rgba(0,0,0,.85)}
+.house-photo-dialog img{display:block;max-width:88vw;max-height:80vh;object-fit:contain}
+.house-photo-dialog button{position:absolute;right:5px;top:0;width:40px;height:40px;border:0;background:transparent;color:white;font-size:30px;cursor:pointer}
+
+.booking-alternative{text-align:center;margin-top:24px;font-size:15px}.booking-alternative a{color:#334e60;text-decoration:underline;text-underline-offset:4px}

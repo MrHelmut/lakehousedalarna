@@ -1,5 +1,29 @@
 const siteTranslations = {
     sv: {
+"New guests – book on Airbnb":"Nya gäster – boka via Airbnb",
+"Returning guests – send a request":"Återkommande gäster – skicka förfrågan",
+"Open loft sleeping area, about 35 m², with a walk-in closet.":"Öppen sovyta på loftet, cirka 35 m², med klädkammare.",
+"Located on the lower floor.":"På det nedre våningsplanet.",
+"Panoramic lake views and space to relax together.":"Panoramautsikt över sjön och plats att koppla av tillsammans.",
+"Returning guests (Direct request)": "Återkommande gäster – direktförfrågan",
+"See more of the house":"Se mer av huset",
+"Discover the bedrooms, the sauna and the story behind our house by the lake.":"Upptäck sovrummen, bastun och berättelsen bakom vårt hus vid sjön.",
+"Read more about the house":"Läs mer om huset",
+"Photos":"Bilder",
+"More":"Mer",
+"Sledding · Lake views · Sauna":"Pulka · Sjöutsikt · Bastu",
+"Direct request": "Direktförfrågan",
+"Menu":"Meny",
+"Close menu":"Stäng menyn",
+"Check availability":"Se lediga datum",
+"Private beach · Sauna · Boat":"Privat strand · Bastu · Båt",
+"Choose how to book":"Välj hur du vill boka",
+"New guests book through Airbnb. Returning guests can send a direct request.":"Nya gäster bokar via Airbnb. Återkommande gäster kan skicka en direktförfrågan.",
+"Prices shown here are estimates for returning guests. Airbnb prices and fees may differ. A request is not a confirmed booking.":"Priserna här är uppskattningar för återkommande gäster. Airbnbs priser och avgifter kan skilja sig. En förfrågan är inte en bekräftad bokning.",
+"Sleeping arrangements":"Så sover ni",
+"One 180 cm bed":"En 180 cm säng",
+"One 160 cm bed":"En 160 cm säng",
+"Two 90 cm beds + one 140 cm bed":"Två 90 cm sängar + en 140 cm säng",
 "Winter":"Vinter",
 "Summer":"Sommar",
 "Summer by the lake":"Sommar vid sjön",
@@ -7,7 +31,7 @@ const siteTranslations = {
 "Winter by the lake": "Vinter vid sjön",
 "Snowy days outside. Warm evenings by the fire. Discover winter at Lake House Dalarna.": "Snöiga dagar ute. Varma kvällar framför brasan. Upptäck vintern på Lake House Dalarna.",
 "Winter days, at your own pace": "Vinterdagar i din egen takt",
-"Skating in front of the house when ice conditions allow, sledding in the snow and quiet moments overlooking the lake. Then come inside and warm up by the fire.": "Skridskor framför huset när isförhållandena tillåter, pulka i snön och lugna stunder med utsikt över sjön. Sedan väntar värmen framför brasan.",
+"Skating in front of the house when ice conditions allow, sledding in the snow and quiet moments overlooking the lake. Then warm up by the fire, or enjoy an evening in the sauna with a refreshing roll in the snow.": "Skridskor framför huset när isförhållandena tillåter, pulka i snön och lugna stunder med utsikt över sjön. Sedan väntar värmen framför brasan – eller en skön bastukväll med en uppfriskande tur ut i snön.",
 "Skating in front of the house": "Skridskor framför huset",
 "When ice conditions allow.": "När isförhållandena tillåter.",
 "A front-row seat to winter": "Vintern på första parkett",
@@ -75,15 +99,15 @@ const siteTranslations = {
         "Dates cannot be selected until availability has loaded. Please try again later.": "Datum kan inte väljas förrän tillgängligheten har hämtats. Försök igen senare.",
         "Availability could not be loaded. Date selection is temporarily closed.": "Tillgängligheten kunde inte hämtas. Datumval är tillfälligt stängt.",
         "Rate": "Prisregel",
-        "Returning guest rate": "Pris för återkommande gäster",
+        "Direct booking rate": "Direktbokningspris",
         "Accommodation before direct discount": "Boende före direktrabatt",
-        "Returning guest discount (10%)": "Rabatt för återkommande gäster (10 %)",
+        "Direct booking discount (10%)": "Direktbokningsrabatt (10 %)",
         "Accommodation": "Boende",
         "Cleaning": "Städning",
         "Bed linen": "Sängkläder",
         "Price on request": "Pris på förfrågan",
         "Choose dates and guests to see the total, including cleaning and bed linen.": "Välj datum och antal gäster för att se totalpriset inklusive städning och sängkläder.",
-        "Returning guests receive 10% off accommodation, including extra guests. Cleaning is 850 SEK per stay and bed linen is 150 SEK per guest.": "Återkommande gäster får 10 % rabatt på boendet inklusive extra gäster. Städning kostar 850 kr per vistelse och sängkläder 150 kr per gäst.",
+        "Direct bookings receive 10% off accommodation, including extra guests. Cleaning is 850 SEK per stay and bed linen is 150 SEK per guest.": "Vid direktbokning får du 10 % rabatt på boendet inklusive extra gäster. Städning kostar 850 kr per vistelse och sängkläder 150 kr per gäst.",
         "The first guest is included. Each additional guest costs 215.10 SEK per night after the direct discount.": "Den första gästen ingår. Varje extra gäst kostar 215,10 kr per natt efter direktrabatten.",
         "Calendar prices are in SEK, rounded to whole kronor after the 10% direct discount. Cleaning, bed linen and length-of-stay discounts are calculated in the total.": "Kalenderpriserna visas i SEK, avrundade till hela kronor efter 10 % direktrabatt. Städning, sängkläder och rabatt för längre vistelser räknas in i totalpriset.",
         "Includes {percent}% length-of-stay discount before the direct discount.": "Inkluderar {percent} % rabatt för vistelsens längd före direktrabatten.",
@@ -178,12 +202,12 @@ const siteTranslations = {
         "Luxury lakeside house in Dalarna": "Lyxigt hus vid sjö i Dalarna",
         "Wake up with lake views, take your morning coffee on the veranda and end the evening in the sauna as the sun sets over the water.": "Föreställ er att vakna med utsikt över sjön, ta morgonkaffet på verandan och avsluta kvällen i bastun medan solen går ner över vattnet.",
         "AT A GLANCE": "ÖVERBLICK",
-        "Sleeping areas": "Sovplatser",
+        "Sleeping areas": "Sovytor",
         "Living space": "Boyta",
         "To the beach": "Till stranden",
         "WELCOME": "VÄLKOMMEN",
         "Designed for lake views, space and quiet days": "Skapat för sjöutsikt, rymd och lugna dagar",
-        "On a headland, only 25 metres from a private sandy beach, this newly built architect-designed house of about 200 m² offers panoramic windows, 5.7 metre ceiling height and room for up to six guests.": "På en udde, endast 25 meter från en privat sandstrand, väntar detta nybyggda arkitektritade hus på cirka 200 kvm med panoramafönster, 5,7 meter i takhöjd och plats för upp till sex gäster.",
+        "On a headland, only 25 metres from a private sandy beach, this family holiday home combines its original 1960s character with a new extension completed in 2026. Around 200 m², panoramic windows and a 5.7-metre ceiling create space for up to six guests.": "På en udde, endast 25 meter från en privat sandstrand, möter husets ursprungliga 1960-talskaraktär en ny tillbyggnad färdigställd 2026. Cirka 200 kvm, panoramafönster och 5,7 meter i takhöjd ger plats för upp till sex gäster.",
         "It is a peaceful place for swimming, nature, sauna evenings and long dinners on the terrace, while still being only about 25 minutes from Falun.": "En perfekt plats för avkoppling, bad och natur, bara cirka 25 minuter från Falun.",
         "Highlights": "Därför älskar våra gäster Solsidan",
         "Panoramic lake views and magical sunsets": "Panoramautsikt och magiska solnedgångar",
@@ -238,7 +262,8 @@ const siteTranslations = {
         "BBQ grill · outdoor dining · lounge furniture · lakeside sunsets": "BBQ-grill · matplats utomhus · loungemöbler · solnedgångar vid sjön",
         "Exterior": "Exteriör",
         "Lakefront · EV charger · outdoor dining · beach access · boat place": "Vid vattnet · laddare för elbil · matplats utomhus · strandtillgång · båtplats",
-        "Wellness room": "Temarum",
+        "Living room": "Vardagsrum",
+        "Wellness room": "Bastu och relax",
         "Private sauna · relaxation area · gym · outdoor shower · lake views": "Privat bastu · relaxdel · gym · utedusch · sjöutsikt",
         "GUEST ACCESS": "GÄSTERNAS TILLGÅNG",
         "What guests can use": "Detta ingår för gäster",
@@ -417,6 +442,30 @@ const siteTranslations = {
         "Not provided": "Ej angivet"
     },
     de: {
+"New guests – book on Airbnb":"Neue Gäste – über Airbnb buchen",
+"Returning guests – send a request":"Wiederkehrende Gäste – Anfrage senden",
+"Open loft sleeping area, about 35 m², with a walk-in closet.":"Offener Schlafbereich auf der Galerie, etwa 35 m², mit begehbarem Kleiderschrank.",
+"Located on the lower floor.":"Im unteren Geschoss.",
+"Panoramic lake views and space to relax together.":"Panoramablick auf den See und Platz zum gemeinsamen Entspannen.",
+"Returning guests (Direct request)": "Wiederkehrende Gäste – Direktanfrage",
+"See more of the house":"Entdecken Sie das Haus",
+"Discover the bedrooms, the sauna and the story behind our house by the lake.":"Entdecken Sie die Schlafzimmer, die Sauna und die Geschichte unseres Hauses am See.",
+"Read more about the house":"Mehr über das Haus erfahren",
+"Photos":"Bilder",
+"More":"Mehr",
+"Sledding · Lake views · Sauna":"Rodeln · Seeblick · Sauna",
+"Direct request": "Direktanfrage",
+"Menu":"Menü",
+"Close menu":"Menü schließen",
+"Check availability":"Verfügbarkeit prüfen",
+"Private beach · Sauna · Boat":"Privater Strand · Sauna · Boot",
+"Choose how to book":"So können Sie buchen",
+"New guests book through Airbnb. Returning guests can send a direct request.":"Neue Gäste buchen über Airbnb. Wiederkehrende Gäste können eine Direktanfrage senden.",
+"Prices shown here are estimates for returning guests. Airbnb prices and fees may differ. A request is not a confirmed booking.":"Die hier angezeigten Preise sind Richtwerte für wiederkehrende Gäste. Airbnb-Preise und Gebühren können abweichen. Eine Anfrage ist keine bestätigte Buchung.",
+"Sleeping arrangements":"Schlafmöglichkeiten",
+"One 180 cm bed":"Ein 180 cm breites Bett",
+"One 160 cm bed":"Ein 160 cm breites Bett",
+"Two 90 cm beds + one 140 cm bed":"Zwei 90 cm breite Betten + ein 140 cm breites Bett",
 "Winter":"Winter",
 "Summer":"Sommer",
 "Summer by the lake":"Sommer am See",
@@ -424,7 +473,7 @@ const siteTranslations = {
 "Winter by the lake": "Winter am See",
 "Snowy days outside. Warm evenings by the fire. Discover winter at Lake House Dalarna.": "Verschneite Tage draußen. Warme Abende am Kamin. Entdecken Sie den Winter im Lake House Dalarna.",
 "Winter days, at your own pace": "Wintertage im eigenen Tempo",
-"Skating in front of the house when ice conditions allow, sledding in the snow and quiet moments overlooking the lake. Then come inside and warm up by the fire.": "Schlittschuhlaufen vor dem Haus, wenn die Eisverhältnisse es zulassen, Rodeln im Schnee und ruhige Momente mit Seeblick. Danach wartet die Wärme am Kamin.",
+"Skating in front of the house when ice conditions allow, sledding in the snow and quiet moments overlooking the lake. Then warm up by the fire, or enjoy an evening in the sauna with a refreshing roll in the snow.": "Schlittschuhlaufen vor dem Haus, wenn die Eisverhältnisse es zulassen, Rodeln im Schnee und ruhige Momente mit Seeblick. Danach wartet die Wärme am Kamin – oder ein gemütlicher Saunaabend mit einer erfrischenden Abkühlung im Schnee.",
 "Skating in front of the house": "Schlittschuhlaufen vor dem Haus",
 "When ice conditions allow.": "Wenn die Eisverhältnisse es zulassen.",
 "A front-row seat to winter": "Winter aus der ersten Reihe",
@@ -492,15 +541,15 @@ const siteTranslations = {
         "Dates cannot be selected until availability has loaded. Please try again later.": "Daten können erst nach dem Laden der Verfügbarkeit ausgewählt werden. Bitte versuchen Sie es später erneut.",
         "Availability could not be loaded. Date selection is temporarily closed.": "Die Verfügbarkeit konnte nicht geladen werden. Die Datumsauswahl ist vorübergehend gesperrt.",
         "Rate": "Tarif",
-        "Returning guest rate": "Preis für wiederkehrende Gäste",
+        "Direct booking rate": "Direktbuchungspreis",
         "Accommodation before direct discount": "Unterkunft vor Direktbuchungsrabatt",
-        "Returning guest discount (10%)": "Rabatt für wiederkehrende Gäste (10 %)",
+        "Direct booking discount (10%)": "Direktbuchungsrabatt (10 %)",
         "Accommodation": "Unterkunft",
         "Cleaning": "Reinigung",
         "Bed linen": "Bettwäsche",
         "Price on request": "Preis auf Anfrage",
         "Choose dates and guests to see the total, including cleaning and bed linen.": "Wählen Sie Daten und Gäste für den Gesamtpreis inklusive Reinigung und Bettwäsche.",
-        "Returning guests receive 10% off accommodation, including extra guests. Cleaning is 850 SEK per stay and bed linen is 150 SEK per guest.": "Wiederkehrende Gäste erhalten 10 % Rabatt auf die Unterkunft einschließlich zusätzlicher Gäste. Reinigung: 850 SEK pro Aufenthalt. Bettwäsche: 150 SEK pro Gast.",
+        "Direct bookings receive 10% off accommodation, including extra guests. Cleaning is 850 SEK per stay and bed linen is 150 SEK per guest.": "Bei Direktbuchungen erhalten Sie 10 % Rabatt auf die Unterkunft einschließlich zusätzlicher Gäste. Reinigung: 850 SEK pro Aufenthalt. Bettwäsche: 150 SEK pro Gast.",
         "The first guest is included. Each additional guest costs 215.10 SEK per night after the direct discount.": "Der erste Gast ist inbegriffen. Jeder weitere Gast kostet nach Direktbuchungsrabatt 215,10 SEK pro Nacht.",
         "Calendar prices are in SEK, rounded to whole kronor after the 10% direct discount. Cleaning, bed linen and length-of-stay discounts are calculated in the total.": "Kalenderpreise in SEK, nach 10 % Direktbuchungsrabatt auf ganze Kronen gerundet. Reinigung, Bettwäsche und Rabatte für längere Aufenthalte werden im Gesamtpreis berechnet.",
         "Includes {percent}% length-of-stay discount before the direct discount.": "Enthält {percent} % Rabatt für die Aufenthaltsdauer vor dem Direktbuchungsrabatt.",
@@ -598,7 +647,7 @@ const siteTranslations = {
         "To the beach": "Zum Strand",
         "WELCOME": "WILLKOMMEN",
         "Designed for lake views, space and quiet days": "Entworfen für Seeblick, Raum und ruhige Tage",
-        "On a headland, only 25 metres from a private sandy beach, this newly built architect-designed house of about 200 m² offers panoramic windows, 5.7 metre ceiling height and room for up to six guests.": "Auf einer Landzunge, nur 25 Meter von einem privaten Sandstrand entfernt, bietet dieses neu gebaute Architektenhaus mit etwa 200 m² Panoramafenster, 5,7 Meter Deckenhöhe und Platz für bis zu sechs Gäste.",
+        "On a headland, only 25 metres from a private sandy beach, this family holiday home combines its original 1960s character with a new extension completed in 2026. Around 200 m², panoramic windows and a 5.7-metre ceiling create space for up to six guests.": "Auf einer Landzunge, nur 25 Meter vom privaten Sandstrand entfernt, verbindet dieses Ferienhaus seinen ursprünglichen Charakter aus den 1960er-Jahren mit einem 2026 fertiggestellten Anbau. Rund 200 m², Panoramafenster und 5,7 Meter Deckenhöhe bieten Platz für bis zu sechs Gäste.",
         "It is a peaceful place for swimming, nature, sauna evenings and long dinners on the terrace, while still being only about 25 minutes from Falun.": "Ein ruhiger Ort zum Baden, für Natur, Saunaabende und lange Abendessen auf der Terrasse, nur etwa 25 Minuten von Falun entfernt.",
         "Highlights": "Warum Gäste Solsidan lieben",
         "Panoramic lake views and magical sunsets": "Panoramablick auf den See und magische Sonnenuntergänge",
@@ -653,6 +702,7 @@ const siteTranslations = {
         "BBQ grill · outdoor dining · lounge furniture · lakeside sunsets": "BBQ-Grill · Essbereich im Freien · Loungemöbel · Sonnenuntergänge am See",
         "Exterior": "Außenbereich",
         "Lakefront · EV charger · outdoor dining · beach access · boat place": "Direkt am Wasser · EV-Ladestation · Essbereich im Freien · Strandzugang · Bootsplatz",
+        "Living room": "Wohnzimmer",
         "Wellness room": "Wellnessbereich",
         "Private sauna · relaxation area · gym · outdoor shower · lake views": "Private Sauna · Relaxbereich · Gym · Außendusche · Seeblick",
         "GUEST ACCESS": "GÄSTEZUGANG",
@@ -833,6 +883,8 @@ const siteTranslations = {
     }
 };
 
+Object.assign(siteTranslations.sv,{"Plan your stay":"Planera din vistelse","Choose dates, review the estimated price and send us a booking request.":"Välj datum, se uppskattat pris och skicka en bokningsförfrågan till oss.","Your booking is confirmed only when you have received a confirmation from us.":"Din bokning är bekräftad först när du har fått en bekräftelse från oss.","Prefer Airbnb? Book there":"Föredrar du Airbnb? Boka där","Send booking request":"Skicka bokningsförfrågan"});
+Object.assign(siteTranslations.de,{"Plan your stay":"Planen Sie Ihren Aufenthalt","Choose dates, review the estimated price and send us a booking request.":"Wählen Sie Ihre Reisedaten, prüfen Sie den geschätzten Preis und senden Sie uns eine Buchungsanfrage.","Your booking is confirmed only when you have received a confirmation from us.":"Ihre Buchung ist erst bestätigt, wenn Sie eine Bestätigung von uns erhalten haben.","Prefer Airbnb? Book there":"Lieber über Airbnb? Hier buchen","Send booking request":"Buchungsanfrage senden"});
 const languageOptions = {
     en: { label: "English" },
     sv: { label: "Svenska" },
@@ -841,59 +893,59 @@ const languageOptions = {
 
 const localizedPageMeta = {
     "/": {
-        en: {
-            title: "Lake House Dalarna | Luxury Lakeside Accommodation in Sweden",
-            description: "Luxury lakeside accommodation in Dalarna, Sweden with private sandy beach, sauna, panoramic lake views and Scandinavian design."
+        "en": {
+            "title": "Lakeside Holiday Home with Sauna | Lake House Dalarna",
+            "description": "Stay by Lake Rogsjön in Dalarna, Sweden. A holiday home for up to 6 guests with a private sandy beach, sauna and lake views, in summer and winter."
         },
-        sv: {
-            title: "Lake House Dalarna | Lyxigt hus vid sjö i Dalarna",
-            description: "Lyxigt hus vid sjö i Dalarna med privat sandstrand, bastu, panoramautsikt och skandinavisk design."
+        "sv": {
+            "title": "Semesterhus vid sjön med bastu | Lake House Dalarna",
+            "description": "Hyr ett semesterhus vid Rogsjön i Dalarna för upp till 6 gäster. Privat sandstrand, bastu och sjöutsikt för en avkopplande vistelse sommar som vinter."
         },
-        de: {
-            title: "Ferienhaus Schweden am See | Lake House Dalarna",
-            description: "Ferienhaus in Schweden am See in Dalarna mit Sauna, privatem Sandstrand, Panoramablick und Platz für bis zu 6 Gäste."
-        }
-    },
-    "/index.html": {
-        en: {
-            title: "Lake House Dalarna | Luxury Lakeside Accommodation in Sweden",
-            description: "Luxury lakeside accommodation in Dalarna, Sweden with private sandy beach, sauna, panoramic lake views and Scandinavian design."
-        },
-        sv: {
-            title: "Lake House Dalarna | Lyxigt hus vid sjö i Dalarna",
-            description: "Lyxigt hus vid sjö i Dalarna med privat sandstrand, bastu, panoramautsikt och skandinavisk design."
-        },
-        de: {
-            title: "Ferienhaus Schweden am See | Lake House Dalarna",
-            description: "Ferienhaus in Schweden am See in Dalarna mit Sauna, privatem Sandstrand, Panoramablick und Platz für bis zu 6 Gäste."
+        "de": {
+            "title": "Ferienhaus am See mit Sauna in Dalarna | Lake House Dalarna",
+            "description": "Ferienhaus am Rogsjön in Dalarna, Schweden, für bis zu 6 Gäste. Privater Sandstrand, Sauna und Seeblick für Ihren Urlaub im Sommer und Winter."
         }
     },
     "/house.html": {
-        en: {
-            title: "The House | Lake House Dalarna",
-            description: "Detailed information about Lake House Dalarna, including bedrooms, layout, outdoor spaces, amenities, rules and distances."
+        "en": {
+            "title": "Rooms, Sauna & Amenities | Lake House Dalarna",
+            "description": "Explore our 200 m² lakeside house in Dalarna for up to 6 guests: sleeping areas, living room, private sauna, workspace, terrace and the story of the house."
         },
-        sv: {
-            title: "Huset | Lake House Dalarna",
-            description: "Detaljer om Lake House Dalarna: sovrum, planlösning, uteplatser, bastu, bekvämligheter, regler och avstånd."
+        "sv": {
+            "title": "Huset, rummen och bastun | Lake House Dalarna",
+            "description": "Se vårt 200 m² stora hus vid sjön i Dalarna för upp till 6 gäster. Bilder på sovrum, vardagsrum, bastu, arbetsplats och terrass samt husets historia."
         },
-        de: {
-            title: "Das Haus | Ferienhaus Schweden am See in Dalarna",
-            description: "Details zum Ferienhaus in Schweden am See: Schlafzimmer, Sauna, privater Strand, Ausstattung, Regeln und Entfernungen in Dalarna."
+        "de": {
+            "title": "Zimmer, Sauna & Ausstattung | Lake House Dalarna",
+            "description": "Entdecken Sie das 200 m² große Ferienhaus am See in Dalarna für bis zu 6 Gäste: Schlafbereiche, Wohnzimmer, Sauna, Arbeitsplatz, Terrasse und Geschichte."
         }
     },
     "/booking.html": {
-        en: {
-            title: "Direct Booking Request | Lake House Dalarna",
-            description: "Check availability, see pricing guidance and send a direct booking request for Lake House Dalarna."
+        "en": {
+            "title": "Availability & Booking | Lake House Dalarna",
+            "description": "Plan your stay at Lake House Dalarna. Check available dates and estimated prices, then send a booking request directly to your hosts."
         },
-        sv: {
-            title: "Direkt bokningsförfrågan | Lake House Dalarna",
-            description: "Se tillgänglighet, få prisindikation och skicka en direkt bokningsförfrågan för Lake House Dalarna."
+        "sv": {
+            "title": "Lediga datum och bokning | Lake House Dalarna",
+            "description": "Planera din vistelse på Lake House Dalarna. Se lediga datum och uppskattat pris och skicka en bokningsförfrågan direkt till oss."
         },
-        de: {
-            title: "Direktanfrage | Ferienhaus Schweden am See",
-            description: "Verfügbarkeit prüfen, Preisindikation sehen und eine Direktanfrage für Lake House Dalarna in Schweden senden."
+        "de": {
+            "title": "Verfügbarkeit & Buchung | Lake House Dalarna",
+            "description": "Planen Sie Ihren Aufenthalt am See in Dalarna. Prüfen Sie freie Termine und geschätzte Preise und senden Sie eine Buchungsanfrage direkt an Ihre Gastgeber."
+        }
+    },
+    "/index.html": {
+        "en": {
+            "title": "Lakeside Holiday Home with Sauna | Lake House Dalarna",
+            "description": "Stay by Lake Rogsjön in Dalarna, Sweden. A holiday home for up to 6 guests with a private sandy beach, sauna and lake views, in summer and winter."
+        },
+        "sv": {
+            "title": "Semesterhus vid sjön med bastu | Lake House Dalarna",
+            "description": "Hyr ett semesterhus vid Rogsjön i Dalarna för upp till 6 gäster. Privat sandstrand, bastu och sjöutsikt för en avkopplande vistelse sommar som vinter."
+        },
+        "de": {
+            "title": "Ferienhaus am See mit Sauna in Dalarna | Lake House Dalarna",
+            "description": "Ferienhaus am Rogsjön in Dalarna, Schweden, für bis zu 6 Gäste. Privater Sandstrand, Sauna und Seeblick für Ihren Urlaub im Sommer und Winter."
         }
     }
 };
