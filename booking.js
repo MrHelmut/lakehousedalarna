@@ -175,22 +175,25 @@ function getNightPrice(date, guests = "") {
     if (!Number.isFinite(base)) return null;
     const extraGuests = Math.max(0, (Number(guests) || 1) - pricing.includedGuests);
     const airbnbAmount = base + extraGuests * pricing.extraGuestNightly;
-    return { airbnbAmount, amount: Math.round(airbnbAmount * 100 * (1 - pricing.directDiscount)) / 100 };
+    const discountRate = (pricing.directDiscountExclusions || []).some(range => key >= range.start && key < range.end) ? 0 : pricing.directDiscount;
+    return { airbnbAmount, discountRate, amount: Math.round(airbnbAmount * 100 * (1 - discountRate)) / 100 };
 }
 
 function getStayEstimate(checkIn, checkOut, guests) {
     const nights = nightsBetween(checkIn, checkOut);
     if (!nights) return null;
     let airbnbSubtotal = 0;
+    let discountSubtotal = 0;
     for (let day = parseDateKey(checkIn); day < parseDateKey(checkOut); day = addDays(day, 1)) {
         const price = getNightPrice(day, guests);
         if (!price) return null;
         airbnbSubtotal += price.airbnbAmount;
+        discountSubtotal += price.airbnbAmount * price.discountRate;
     }
     const lengthDiscount = nights >= 28 ? pricing.monthlyDiscount : nights >= 7 ? pricing.weeklyDiscount : 0;
     // Apply the existing length discount before the direct-booking discount.
     const comparisonCents = Math.round(airbnbSubtotal * 100 * (1 - lengthDiscount));
-    const discountCents = Math.round(comparisonCents * pricing.directDiscount);
+    const discountCents = Math.round(discountSubtotal * 100 * (1 - lengthDiscount));
     const accommodation = (comparisonCents - discountCents) / 100;
     const cleaning = pricing.cleaning;
     const linen = (Number(guests) || 0) * pricing.linenPerGuest;
@@ -269,7 +272,7 @@ function isSelectedRangeDate(key) {
 
 function updateSummary() {
     validateSelection();
-    const priceLabels = { comparison: "Accommodation before direct discount", directDiscount: "Direct booking discount (10%)", accommodation: "Accommodation", cleaning: "Cleaning", linen: "Bed linen" };
+    const priceLabels = { comparison: "Accommodation before direct discount", directDiscount: "Direct booking discount (eligible nights)", accommodation: "Accommodation", cleaning: "Cleaning", linen: "Bed linen" };
     document.querySelectorAll("[data-price-label]").forEach(element => { element.textContent = tr(priceLabels[element.dataset.priceLabel]); });
     const checkIn = checkInInput.value;
     const checkOut = checkOutInput.value;
@@ -310,7 +313,7 @@ function updateSummary() {
         summaryStatus.textContent = tr("Choose dates");
         priceEstimate.textContent = tr("Choose dates");
         priceDetails.textContent = tr("Choose dates and guests to see the total, including cleaning and bed linen.");
-        seasonNote.textContent = tr("Direct bookings receive 10% off accommodation, including extra guests. Cleaning is 850 SEK per stay and bed linen is 150 SEK per guest.");
+        seasonNote.textContent = tr("Direct bookings receive 10% off accommodation, including extra guests, except 22–27 December 2026. Cleaning is 850 SEK per stay and bed linen is 150 SEK per guest.");
         return;
     }
 
@@ -554,7 +557,7 @@ form.addEventListener("submit", (event) => {
         `Guests: ${guests}`,
         `Estimated price: ${estimate ? `${formatSek(estimate.total)} total (${formatSek(estimate.average)} accommodation per night average)` : "Not calculated"}`,
         `Accommodation: ${estimate ? formatSek(estimate.accommodation) : "Price on request"}`,
-        `Direct booking discount (10%): ${estimate ? formatSek(estimate.directDiscount) : "To be confirmed"}`,
+        `Direct booking discount (eligible nights): ${estimate ? formatSek(estimate.directDiscount) : "To be confirmed"}`,
         `Length-of-stay discount before direct discount: ${estimate ? estimate.lengthDiscount * 100 : 0}%`,
         `Cleaning: ${formatSek(pricing.cleaning)} per stay`,
         `Bed linen: ${formatSek(Number(guests) * pricing.linenPerGuest)}`,

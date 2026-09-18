@@ -4762,3 +4762,22 @@ background:#fff;
 .house-photo-dialog button{position:absolute;right:5px;top:0;width:40px;height:40px;border:0;background:transparent;color:white;font-size:30px;cursor:pointer}
 
 .booking-alternative{text-align:center;margin-top:24px;font-size:15px}.booking-alternative a{color:#334e60;text-decoration:underline;text-underline-offset:4px}
+
+/* Keep booking content within narrow phone viewports. */
+.request-hero-content{width:100%;min-width:0;overflow-wrap:anywhere}
+.direct-booking-layout{grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr)}
+.direct-booking-layout>*{min-width:0;max-width:100%;box-sizing:border-box}
+.calendar-grid{grid-template-columns:repeat(7,minmax(0,1fr))}
+.calendar-grid>*{min-width:0}
+@media(max-width:1000px){.direct-booking-layout{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){
+ .request-hero{padding:calc(var(--mobile-nav-height,120px) + 32px) 20px 48px;min-height:0;box-sizing:border-box}
+ .request-hero-content h1{font-size:clamp(26px,7.4vw,40px);line-height:1.18}
+ .request-hero-content p{font-size:16px;line-height:1.6}
+ .request-section{padding:40px 12px}
+ .availability-panel,.price-panel,.request-form{padding:22px 12px}
+ .calendar-toolbar{gap:8px}.calendar-toolbar h3{font-size:20px;min-width:0;text-align:center}
+ .calendar-grid{gap:4px}.calendar-day{padding:7px 2px;font-size:13px}
+ .calendar-day span{font-size:10px}.calendar-pricing-note{white-space:normal}
+ .form-grid>*{min-width:0}.form-grid input,.form-grid select{min-width:0;max-width:100%;box-sizing:border-box}
+}

@@ -16,3 +16,6 @@ Edit pricing-data.js. Monthly arrays contain Airbnb nightly SEK values in date o
 Prices are a manual snapshot. The availability workflow only updates availability.json and does not synchronize prices. Airbnb guest-specific promotions and service fees are not included in the comparison. Confirm the final quote before accepting a booking.
 
 Run: node scripts/test_pricing.cjs
+
+## Owner update 18 September 2026
+December 2026 base nightly price: 3000 SEK, or 3200 SEK for nights 22–27 inclusive. The 10% direct discount is excluded on 22–27 December (including extra guests); other nights retain it. Existing extra-guest, weekly/monthly, cleaning and linen rules remain unchanged. These are owner-set website prices, not a new Airbnb price snapshot.

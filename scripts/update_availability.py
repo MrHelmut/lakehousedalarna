@@ -92,6 +92,9 @@ def main():
     for item in overrides.get("blocked_ranges", []):
         events.append({"start": date.fromisoformat(item["start"]), "end": date.fromisoformat(item["end"])})
 
+    direct_open = {day.isoformat() for item in overrides.get("direct_only_open_ranges", [])
+                   for day in daterange(date.fromisoformat(item["start"]), date.fromisoformat(item["end"]))}
+
     for event in events:
         start = max(event["start"], today)
         end = min(event["end"], latest)
@@ -105,7 +108,20 @@ def main():
         })
 
         for day in daterange(start, end):
+            # Only the explicit Airbnb owner-block label may be opened.
+            # Reservations, unknown labels and local blocks always remain unavailable.
+            if day.isoformat() in direct_open and event.get("summary") == "Airbnb (Not available)":
+                continue
             booked_dates.add(day.isoformat())
+
+    # Rebuild ranges from the final set so public fields always agree.
+    ranges = []
+    for key in sorted(booked_dates):
+        next_key = (date.fromisoformat(key) + timedelta(days=1)).isoformat()
+        if ranges and ranges[-1]["end"] == key:
+            ranges[-1]["end"] = next_key
+        else:
+            ranges.append({"start": key, "end": next_key, "summary": "Unavailable"})
 
     payload = {
         "updated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),

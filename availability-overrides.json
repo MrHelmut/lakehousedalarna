@@ -10,5 +10,12 @@
       "start": "2026-09-24",
       "end": "2026-09-25"
     }
+  ],
+  "direct_only_open_ranges": [
+    {
+      "start": "2026-12-22",
+      "end": "2026-12-28",
+      "reason": "Owner authorized website-only Christmas availability on 2026-09-18. Never override reservations."
+    }
   ]
 }

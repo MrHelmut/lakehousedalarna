@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-18T05:15:53+00:00",
+  "updated_at": "2026-09-18T05:25:49+00:00",
   "source": "airbnb_ical",
   "coverage_start": "2026-09-18",
   "coverage_end": "2027-09-18",
@@ -45,12 +45,6 @@
     "2026-11-27",
     "2026-11-28",
     "2026-11-29",
-    "2026-12-22",
-    "2026-12-23",
-    "2026-12-24",
-    "2026-12-25",
-    "2026-12-26",
-    "2026-12-27",
     "2026-12-28",
     "2026-12-29",
     "2026-12-30",
@@ -97,41 +91,11 @@
   "blocked_ranges": [
     {
       "start": "2026-09-18",
-      "end": "2026-09-19",
-      "summary": "Unavailable"
-    },
-    {
-      "start": "2026-09-19",
-      "end": "2026-09-21",
-      "summary": "Unavailable"
-    },
-    {
-      "start": "2026-09-21",
-      "end": "2026-09-24",
-      "summary": "Unavailable"
-    },
-    {
-      "start": "2026-09-24",
-      "end": "2026-09-25",
-      "summary": "Unavailable"
-    },
-    {
-      "start": "2026-09-25",
-      "end": "2026-09-27",
-      "summary": "Unavailable"
-    },
-    {
-      "start": "2026-09-27",
       "end": "2026-09-28",
       "summary": "Unavailable"
     },
     {
       "start": "2026-10-05",
-      "end": "2026-10-18",
-      "summary": "Unavailable"
-    },
-    {
-      "start": "2026-10-18",
       "end": "2026-10-20",
       "summary": "Unavailable"
     },
@@ -151,7 +115,7 @@
       "summary": "Unavailable"
     },
     {
-      "start": "2026-12-22",
+      "start": "2026-12-28",
       "end": "2027-01-11",
       "summary": "Unavailable"
     },

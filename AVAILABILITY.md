@@ -9,3 +9,5 @@ The export window is limited to 365 days. Outside this coverage, during loading,
 GitHub Actions is scheduled every six hours and requires the private AIRBNB_ICAL_URL repository secret. Never commit the private URL or guest names. Public data contains only unavailable dates and generic ranges.
 
 Validation: node scripts/test_pricing.cjs
+
+Owner authorized website-only availability for 22–27 December 2026 on 18 September. direct_only_open_ranges only excludes explicit Airbnb (Not available) events; reservations and unknown event types always stay blocked. Airbnb itself remains unchanged.
