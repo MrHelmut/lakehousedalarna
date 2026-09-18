@@ -1,5 +1,9 @@
 const siteTranslations = {
     sv: {
+"Boat with motor included":"Båt med motor ingår",
+"Our boat with a Mercury outboard motor":"Vår båt med Mercury-utombordsmotor",
+"Explore the lake at your own pace. A boat with a Mercury outboard motor, life jackets and some fishing equipment are available for guests.":"Upptäck sjön i egen takt. Båt med Mercury-utombordsmotor ingår, och det finns flytvästar och viss fiskeutrustning för gästerna.",
+"Guests pay for the petrol they use and refill the fuel can before departure. If you cannot refill it in time, please let us know in advance so we can try to arrange a solution.":"Gästerna betalar själva för bensinen de använder och fyller på dunken före avresa. Om ni inte hinner fylla på, meddela oss i förväg så försöker vi ordna en lösning.",
 "New guests – book on Airbnb":"Nya gäster – boka via Airbnb",
 "Returning guests – send a request":"Återkommande gäster – skicka förfrågan",
 "Open loft sleeping area, about 35 m², with a walk-in closet.":"Öppen sovyta på loftet, cirka 35 m², med klädkammare.",
@@ -278,7 +282,7 @@ const siteTranslations = {
         "Safety and property": "Säkerhet och fastighet",
         "Lakefront property with nearby water. The plot has a swing and playhouse. Only paying guests may visit the property.": "Fastighet vid sjön med vatten nära huset. På tomten finns gunga och koja. Endast betalande gäster får besöka fastigheten.",
         "Check-in from 15:00, flexible when possible. Check-out before 11:00.": "Incheckning från 15:00, flexibelt när det är möjligt. Utcheckning före 11:00.",
-        "Final cleaning is required and costs 850 SEK.": "Slutstädning är obligatorisk och kostar 850 kr.",
+        "Final cleaning by our cleaning company is mandatory. The 850 SEK fee is already included in the total booking price and is not added afterwards.": "Slutstädning utförs obligatoriskt av vår städfirma. Avgiften på 850 kr är redan medräknad i bokningens totalpris och tillkommer inte i efterhand.",
         "Minimum booking age is 30 years.": "Minst 30 år gammal för att boka boendet.",
         "Only paying guests may visit the property.": "Endast betalande gäster får besöka fastigheten.",
         "When sending a booking request, please write a few lines about yourselves and the purpose of your stay.": "Vid bokningsförfrågan, skriv gärna några rader om er själva och syftet med er vistelse.",
@@ -442,6 +446,10 @@ const siteTranslations = {
         "Not provided": "Ej angivet"
     },
     de: {
+"Boat with motor included":"Boot mit Motor inklusive",
+"Our boat with a Mercury outboard motor":"Unser Boot mit Mercury-Außenbordmotor",
+"Explore the lake at your own pace. A boat with a Mercury outboard motor, life jackets and some fishing equipment are available for guests.":"Entdecken Sie den See in Ihrem eigenen Tempo. Ein Boot mit Mercury-Außenbordmotor ist inklusive. Schwimmwesten und etwas Angelausrüstung stehen Gästen zur Verfügung.",
+"Guests pay for the petrol they use and refill the fuel can before departure. If you cannot refill it in time, please let us know in advance so we can try to arrange a solution.":"Gäste bezahlen das verbrauchte Benzin selbst und füllen den Kanister vor der Abreise wieder auf. Falls Sie dies nicht rechtzeitig schaffen, informieren Sie uns bitte im Voraus, damit wir eine Lösung finden können.",
 "New guests – book on Airbnb":"Neue Gäste – über Airbnb buchen",
 "Returning guests – send a request":"Wiederkehrende Gäste – Anfrage senden",
 "Open loft sleeping area, about 35 m², with a walk-in closet.":"Offener Schlafbereich auf der Galerie, etwa 35 m², mit begehbarem Kleiderschrank.",
@@ -718,7 +726,7 @@ const siteTranslations = {
         "Safety and property": "Sicherheit und Grundstück",
         "Lakefront property with nearby water. The plot has a swing and playhouse. Only paying guests may visit the property.": "Grundstück direkt am See mit Wasser in der Nähe. Auf dem Grundstück gibt es eine Schaukel und ein Spielhaus. Nur zahlende Gäste dürfen das Grundstück besuchen.",
         "Check-in from 15:00, flexible when possible. Check-out before 11:00.": "Anreise ab 15:00 Uhr, flexibel wenn möglich. Abreise vor 11:00 Uhr.",
-        "Final cleaning is required and costs 850 SEK.": "Die Endreinigung ist obligatorisch und kostet 850 SEK.",
+        "Final cleaning by our cleaning company is mandatory. The 850 SEK fee is already included in the total booking price and is not added afterwards.": "Die Endreinigung durch unsere Reinigungsfirma ist obligatorisch. Die Gebühr von 850 SEK ist bereits im Gesamtpreis der Buchung enthalten und wird nicht nachträglich berechnet.",
         "Minimum booking age is 30 years.": "Mindestalter für die Buchung: 30 Jahre.",
         "Only paying guests may visit the property.": "Nur zahlende Gäste dürfen das Grundstück besuchen.",
         "When sending a booking request, please write a few lines about yourselves and the purpose of your stay.": "Bitte schreiben Sie bei einer Buchungsanfrage ein paar Zeilen über sich und den Zweck Ihres Aufenthalts.",

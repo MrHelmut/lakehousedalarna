@@ -4781,3 +4781,5 @@ background:#fff;
  .calendar-day span{font-size:10px}.calendar-pricing-note{white-space:normal}
  .form-grid>*{min-width:0}.form-grid input,.form-grid select{min-width:0;max-width:100%;box-sizing:border-box}
 }
+
+.boat-information{max-width:1100px;margin:0 auto;padding:60px 24px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center}.boat-information img{width:100%;height:auto;border-radius:18px}.boat-information h2{font-size:32px;color:var(--primary)}.boat-information p{line-height:1.8}@media(max-width:700px){.boat-information{grid-template-columns:1fr;gap:24px;padding:36px 20px}}
