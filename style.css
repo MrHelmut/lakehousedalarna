@@ -231,7 +231,7 @@ backdrop-filter:blur(12px);
 
 }
 
-.language-switcher button{
+.language-switcher :is(button, a){
 
 width:42px;
 
@@ -335,8 +335,8 @@ letter-spacing:0;
 
 }
 
-.language-switcher button.active,
-.language-switcher button:hover{
+.language-switcher :is(button, a).active,
+.language-switcher :is(button, a):hover{
 
 background:white;
 
@@ -353,17 +353,17 @@ background:rgba(255,255,255,.76);
 
 }
 
-.navbar.scrolled .language-switcher button,
-.request-header .language-switcher button{
+.navbar.scrolled .language-switcher :is(button, a),
+.request-header .language-switcher :is(button, a){
 
 color:var(--primary);
 
 }
 
-.navbar.scrolled .language-switcher button.active,
-.navbar.scrolled .language-switcher button:hover,
-.request-header .language-switcher button.active,
-.request-header .language-switcher button:hover{
+.navbar.scrolled .language-switcher :is(button, a).active,
+.navbar.scrolled .language-switcher :is(button, a):hover,
+.request-header .language-switcher :is(button, a).active,
+.request-header .language-switcher :is(button, a):hover{
 
 background:var(--secondary);
 
@@ -3940,7 +3940,7 @@ padding:4px;
 
 }
 
-.language-switcher button{
+.language-switcher :is(button, a){
 
 width:30px;
 
@@ -4704,7 +4704,7 @@ background:#fff;
 .navbar .logo-title{font-size:20px;}
 .navbar .logo-subtitle{font-size:8px;letter-spacing:1px;}
 .navbar .menu{gap:12px;}.navbar .menu a{font-size:12px;}
-.navbar .language-switcher button{width:32px;}
+.navbar .language-switcher :is(button, a){width:32px;}
 }
 
 .mobile-menu-toggle,.mobile-navigation,.mobile-booking-bar{display:none;}.hero-benefits{font-size:15px;letter-spacing:1px;margin:0 0 24px;color:#f1e4c8;}.booking-choice{padding:26px;background:#edf2f4;border-radius:16px;margin-bottom:32px;}.booking-choice p{margin:15px 0;line-height:1.7;}.booking-explanation{font-size:14px;}.sleep-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:24px 0;}.sleep-cards>div{padding:22px;background:#f4f1eb;border-radius:12px;}
@@ -4714,7 +4714,7 @@ background:#fff;
 .navbar{gap:8px;padding-left:12px;padding-right:12px;}
 .navbar>.logo{min-width:0;flex:1;}
 .navbar>.language-switcher{margin-left:auto;flex-shrink:0;gap:2px;padding:3px;}
-.navbar>.language-switcher button{width:28px;height:30px;}
+.navbar>.language-switcher :is(button, a){width:28px;height:30px;}
 .navbar>.language-switcher small{display:none;}
 .navbar>.language-switcher .flag{width:20px;height:13px;}
 .mobile-menu-toggle{padding:9px 10px;font-size:13px;gap:5px;}

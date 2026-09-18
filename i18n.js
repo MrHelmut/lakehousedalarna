@@ -1003,7 +1003,7 @@ function translateAttributes(language) {
 }
 
 function updatePageMeta(language) {
-    const path = window.location.pathname.endsWith("/") ? "/" : window.location.pathname;
+    const path = document.documentElement.dataset.pageSource ? "/" + document.documentElement.dataset.pageSource : (window.location.pathname.endsWith("/") ? "/" : window.location.pathname);
     const meta = localizedPageMeta[path]?.[language];
     if (!meta) {
         return;
@@ -1055,6 +1055,13 @@ function localizeInternalLanguageLinks(language) {
 let appliedLanguage = null;
 
 function applyLanguage(language) {
+    const staticLanguage = document.documentElement.dataset.staticLanguage;
+    if (staticLanguage) {
+        appliedLanguage = staticLanguage;
+        translateAttributes(staticLanguage);
+        window.dispatchEvent(new CustomEvent("site-language-change", { detail: { language: staticLanguage } }));
+        return;
+    }
     appliedLanguage = language;
     document.documentElement.lang = language;
     document.querySelectorAll("[data-language-switcher] button").forEach((button) => {
@@ -1106,7 +1113,7 @@ function createLanguageSwitcher() {
 }
 
 function getCurrentLanguage() {
-    const language = appliedLanguage || languageFromUrl() || localStorage.getItem("lakeHouseLanguage") || "en";
+    const language = document.documentElement.dataset.staticLanguage || appliedLanguage || languageFromUrl() || localStorage.getItem("lakeHouseLanguage") || "en";
     return Object.prototype.hasOwnProperty.call(languageOptions, language) ? language : "en";
 }
 

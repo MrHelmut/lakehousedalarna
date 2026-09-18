@@ -483,7 +483,7 @@ function updateHelpTextDefault() {
 
 async function loadAvailability() {
     try {
-        const response = await fetch(`availability.json?v=${Date.now()}`);
+        const response = await fetch(`/availability.json?v=${Date.now()}`);
         if (!response.ok) {
             throw new Error("Availability data could not be loaded.");
         }

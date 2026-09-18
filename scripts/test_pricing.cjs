@@ -66,7 +66,7 @@ assert.equal(nodes.get('[data-price-estimate]').textContent,'Price on request');
 console.log('PASS: 24 months, date overrides, guest threshold, fees, weekly/monthly discounts, DST, unknown dates, availability and summary rendering.');
 
 // Language switches must also change dynamic pricing text when a URL has ?lang=sv.
-const i18nContext=vm.createContext({window:{location:{search:'?lang=sv'}},document:{addEventListener(){}},localStorage:{getItem(){return 'sv'}},URLSearchParams,console});
+const i18nContext=vm.createContext({window:{location:{search:'?lang=sv'}},document:{documentElement:{dataset:{}},addEventListener(){}},localStorage:{getItem(){return 'sv'}},URLSearchParams,console});
 vm.runInContext(fs.readFileSync(root+'i18n.js','utf8'),i18nContext);
 vm.runInContext("appliedLanguage='de';",i18nContext);
 assert.equal(vm.runInContext('getCurrentLanguage()',i18nContext),'de');
@@ -120,3 +120,7 @@ assert.equal(night('2026-12-28').amount,2700);
 assert.equal(stay('2026-12-21','2026-12-23',1).accommodation,5900);
 assert.equal(stay('2026-12-22','2026-12-27',2).accommodation,17195);
 console.log('PASS: December prices, Christmas exclusion, extra guests and mixed-rate stay.');
+
+i18nContext.document.documentElement.dataset.staticLanguage='en';
+assert.equal(vm.runInContext('getCurrentLanguage()',i18nContext),'en');
+console.log('PASS: static route language overrides saved language and query.');
