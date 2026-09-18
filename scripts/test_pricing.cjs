@@ -4,7 +4,7 @@ const assert=require('node:assert/strict');
 const root=require('path').resolve(__dirname, '..') + '/';
 const nodes=new Map();
 const element=()=>({value:'',textContent:'',dataset:{},setAttribute(){},setCustomValidity(message){this.validationMessage=message},querySelector(){return this.submitButton??=element()},reportValidity(){return false},handlers:{},addEventListener(name,fn){this.handlers[name]=fn},children:[],appendChild(child){this.children.push(child)},classList:{values:new Set(),contains(name){return this.values.has(name)},add(name){this.values.add(name)},remove(name){this.values.delete(name)}}});
-const context=vm.createContext({window:{addEventListener(){}},document:{querySelector(s){if(!nodes.has(s))nodes.set(s,element());return nodes.get(s)},querySelectorAll(){return []},createElement:element},Intl,Date,Set,console});
+const context=vm.createContext({window:{addEventListener(){}},document:{querySelector(s){if(!nodes.has(s))nodes.set(s,element());return nodes.get(s)},querySelectorAll(){return []},createElement:element},Intl,Date,Set,URLSearchParams,console});
 vm.runInContext(fs.readFileSync(root+'pricing-data.js','utf8'),context);
 let source=fs.readFileSync(root+'booking.js','utf8');
 vm.runInContext(source.slice(0,source.lastIndexOf('\nupdateHelpTextDefault();')),context);
@@ -118,9 +118,15 @@ assert.equal(night('2026-12-22').amount,3200);
 assert.equal(night('2026-12-27',2).amount,3439);
 assert.equal(night('2026-12-28').amount,2700);
 assert.equal(stay('2026-12-21','2026-12-23',1).accommodation,5900);
-assert.equal(stay('2026-12-22','2026-12-27',2).accommodation,17195);
+assert.equal(stay('2026-12-22','2026-12-27',2).accommodation,20395);
 console.log('PASS: December prices, Christmas exclusion, extra guests and mixed-rate stay.');
 
 i18nContext.document.documentElement.dataset.staticLanguage='en';
 assert.equal(vm.runInContext('getCurrentLanguage()',i18nContext),'en');
 console.log('PASS: static route language overrides saved language and query.');
+
+for(const day of [23,24,25,26]){assert.equal(night('2026-12-'+day).amount,4000);assert.equal(night('2026-12-'+day,2).amount,4239);}
+assert.equal(night('2026-12-23').amount,4000);
+assert.equal(stay('2026-12-23','2026-12-25',1).accommodation,8000);
+assert.equal(stay('2026-12-26','2026-12-28',1).accommodation,7200);
+console.log('PASS: Christmas peak nights, guest surcharge and mixed prices.');

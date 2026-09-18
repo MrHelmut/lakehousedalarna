@@ -19,3 +19,8 @@ Run: node scripts/test_pricing.cjs
 
 ## Owner update 18 September 2026
 December 2026 base nightly price: 3000 SEK, or 3200 SEK for nights 22–27 inclusive. The 10% direct discount is excluded on 22–27 December (including extra guests); other nights retain it. Existing extra-guest, weekly/monthly, cleaning and linen rules remain unchanged. These are owner-set website prices, not a new Airbnb price snapshot.
+
+## Christmas peak update (2026-09-18)
+Owner-approved nightly base prices: 24, 25 and 26 December 2026: SEK 4,000; 22, 23 and 27 December: SEK 3,200. The direct-booking 10% discount remains excluded for 22–27 December inclusive. Guest surcharges, cleaning, linen and length-of-stay rules are unchanged.
+
+Owner correction: 23 December 2026 also has a SEK 4,000 nightly base price. Peak dates are now 23–26 December inclusive; 22 and 27 December remain SEK 3,200.

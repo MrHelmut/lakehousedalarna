@@ -49,6 +49,11 @@ const pricing = window.lakeHousePricing;
 
 let bookedDates = new Set();
 let visibleMonth = new Date();
+const requestedMonth = new URLSearchParams(window.location?.search || '').get('month');
+if (/^20\d{2}-(0[1-9]|1[0-2])$/.test(requestedMonth || '')) {
+    const [year, month] = requestedMonth.split('-').map(Number);
+    visibleMonth = new Date(year, month - 1, 1);
+}
 let syncingGuests = false;
 let availabilityUpdatedAt = "";
 let availabilityLoaded = false;

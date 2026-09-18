@@ -4,6 +4,7 @@ Run with Python 3 from any directory. Root HTML remains the editable source.
 import json, subprocess, re, html
 from pathlib import Path
 from html.parser import HTMLParser
+from seo_markup import add_markup
 ROOT = Path(__file__).resolve().parents[1]
 ROUTES = {'en': ['en/', 'en/house/', 'en/booking/'], 'sv': ['sv/', 'sv/huset/', 'sv/boka/'], 'de': ['de/', 'de/ferienhaus/', 'de/buchen/']}
 SOURCE = ['index.html', 'house.html', 'booking.html']
@@ -39,7 +40,7 @@ class Page(HTMLParser):
             if v and not v.startswith(('#','/','http:','https:','mailto:','tel:','data:')):
                 path=v.split('?')[0].split('#')[0]
                 if path in SOURCE:
-                    a[key]='/'+ROUTES[self.lang][SOURCE.index(path)]+('#'+v.split('#',1)[1] if '#' in v else '')
+                    a[key]='/'+ROUTES[self.lang][SOURCE.index(path)]+(('?'+v.split('?',1)[1].split('#')[0]) if '?' in v else '')+('#'+v.split('#',1)[1] if '#' in v else '')
                 else: a[key]='/'+v
         for key in ['alt','title','placeholder','aria-label']:
             if a.get(key): a[key]=self.text(a[key])
@@ -63,6 +64,8 @@ for lang in ROUTES:
         # Real crawlable language links also work without JavaScript.
         switch='<div class="language-switcher" data-language-switcher aria-label="Language">'+''.join(f'<a href="/{ROUTES[l][i]}" data-language="{l}" class="'+('active' if l==lang else '')+f'" aria-label="{label}"'+(' aria-current="true"' if l==lang else '')+f'><span class="flag flag-{l}" aria-hidden="true"></span><small>{l.upper()}</small></a>' for l,label in [('en','English'),('sv','Svenska'),('de','Deutsch')])+'</div>'
         result=result.replace('</nav>',switch+'</nav>',1)
+        meta=DATA['meta']['/'+SOURCE[i]][lang]
+        result=add_markup(result,lang,BASE+ROUTES[lang][i],meta['title'],meta['description'])
         dest=ROOT/ROUTES[lang][i]/'index.html';dest.parent.mkdir(parents=True,exist_ok=True);dest.write_text(result,encoding='utf-8')
 urls=[]
 for i in range(3):

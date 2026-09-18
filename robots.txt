@@ -3,3 +3,8 @@ Disallow: /mobile-preview.html
 Allow: /
 
 Sitemap: https://lakehousedalarna.com/sitemap.xml
+
+# ChatGPT Search may crawl public guest pages.
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /mobile-preview.html

@@ -4783,3 +4783,10 @@ background:#fff;
 }
 
 .boat-information{max-width:1100px;margin:0 auto;padding:60px 24px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center}.boat-information img{width:100%;height:auto;border-radius:18px}.boat-information h2{font-size:32px;color:var(--primary)}.boat-information p{line-height:1.8}@media(max-width:700px){.boat-information{grid-template-columns:1fr;gap:24px;padding:36px 20px}}
+
+.christmas-feature{max-width:1100px;margin:auto;padding:56px 24px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center}.christmas-feature[hidden]{display:none}.christmas-feature img{width:100%;height:auto;border-radius:18px}.christmas-feature h2{font-size:34px;color:var(--primary)}.christmas-feature p{line-height:1.8}.christmas-feature .christmas-note{font-size:14px;margin-top:24px}@media(max-width:700px){.christmas-feature{grid-template-columns:1fr;padding:32px 20px;gap:24px}}
+
+#availability{scroll-margin-top:calc(var(--mobile-nav-height,120px) + 24px)}
+
+.guest-faq{margin:48px 0}.guest-faq details{border-bottom:1px solid #d6dfe3;padding:18px 0}.guest-faq summary{cursor:pointer;font-weight:600;color:var(--primary);line-height:1.5}.guest-faq p{line-height:1.8;max-width:850px}
+#guest-questions,#christmas{scroll-margin-top:calc(var(--mobile-nav-height,120px) + 24px)}
