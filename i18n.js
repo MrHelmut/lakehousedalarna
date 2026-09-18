@@ -1,5 +1,8 @@
 const siteTranslations = {
     sv: {
+"Lake map for your boat trip":"Karta för båtturen",
+"Open the map on your phone to see marked rocks and shallows. Use it as a reference during your boat trip, keep a lookout and travel slowly near the shore. Not all obstacles may be marked.":"Öppna kartan i telefonen för att se markerade stenar och grund. Använd den som stöd under båtturen, håll uppsikt och kör långsamt nära land. Alla hinder behöver inte vara markerade.",
+"Open the lake map":"Öppna sjökartan",
 "Boat with motor included":"Båt med motor ingår",
 "Our boat with a Mercury outboard motor":"Vår båt med Mercury-utombordsmotor",
 "Explore the lake at your own pace. A boat with a Mercury outboard motor, life jackets and some fishing equipment are available for guests.":"Upptäck sjön i egen takt. Båt med Mercury-utombordsmotor ingår, och det finns flytvästar och viss fiskeutrustning för gästerna.",
@@ -446,6 +449,9 @@ const siteTranslations = {
         "Not provided": "Ej angivet"
     },
     de: {
+"Lake map for your boat trip":"Karte für Ihre Bootsfahrt",
+"Open the map on your phone to see marked rocks and shallows. Use it as a reference during your boat trip, keep a lookout and travel slowly near the shore. Not all obstacles may be marked.":"Öffnen Sie die Karte auf Ihrem Handy, um markierte Felsen und Untiefen zu sehen. Nutzen Sie sie als Orientierung während der Bootsfahrt, halten Sie Ausschau und fahren Sie in Ufernähe langsam. Möglicherweise sind nicht alle Hindernisse eingezeichnet.",
+"Open the lake map":"Seekarte öffnen",
 "Boat with motor included":"Boot mit Motor inklusive",
 "Our boat with a Mercury outboard motor":"Unser Boot mit Mercury-Außenbordmotor",
 "Explore the lake at your own pace. A boat with a Mercury outboard motor, life jackets and some fishing equipment are available for guests.":"Entdecken Sie den See in Ihrem eigenen Tempo. Ein Boot mit Mercury-Außenbordmotor ist inklusive. Schwimmwesten und etwas Angelausrüstung stehen Gästen zur Verfügung.",
