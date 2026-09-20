@@ -38,7 +38,7 @@ const observer = new IntersectionObserver((entries) => {
     threshold:0
 });
 
-document.querySelectorAll("section").forEach(section=>{
+document.querySelectorAll("section:not(.hero):not(.house-detail-hero):not(.request-hero)").forEach(section=>{
 
     section.classList.add("fade-up");
 
@@ -76,51 +76,7 @@ const images=document.querySelectorAll(".gallery-grid img");
 
 if (images.length) {
 
-const warmGalleryImages = () => {
-
-    images.forEach(image => {
-
-        image.loading = "eager";
-
-        const preloader = new Image();
-
-        preloader.decoding = "async";
-
-        preloader.src = image.currentSrc || image.src;
-
-    });
-
-};
-
-document.querySelectorAll('a[href="#gallery"]').forEach(link => {
-
-    link.addEventListener("click", warmGalleryImages, { once: true });
-
-});
-
-if ("IntersectionObserver" in window) {
-
-    const gallery = document.querySelector(".gallery-section");
-
-    if (gallery) {
-
-        const galleryObserver = new IntersectionObserver((entries) => {
-
-            if (entries.some(entry => entry.isIntersecting)) {
-
-                warmGalleryImages();
-
-                galleryObserver.disconnect();
-
-            }
-
-        }, { rootMargin: "500px 0px" });
-
-        galleryObserver.observe(gallery);
-
-    }
-
-}
+// Let native lazy loading request only gallery images near the viewport.
 
 const lightbox=document.createElement("div");
 
@@ -233,37 +189,5 @@ card.addEventListener("mouseleave",()=>{
 card.style.background="white";
 
 });
-
-});
-
-/* ==========================================================
-   HERO FADE
-========================================================== */
-
-window.addEventListener("load",()=>{
-
-const heroContent = document.querySelector(".hero-content");
-
-if (!heroContent || typeof heroContent.animate !== "function") return;
-
-heroContent.animate(
-
-[
-{
-opacity:0,
-transform:"translateY(50px)"
-},
-{
-opacity:1,
-transform:"translateY(0)"
-}
-],
-
-{
-duration:1400,
-fill:"forwards"
-}
-
-);
 
 });

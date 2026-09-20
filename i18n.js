@@ -1,5 +1,21 @@
 const siteTranslations = {
     sv: {
+"★★★★★ 5.0 on Airbnb · Top 1%":"★★★★★ 5,0 på Airbnb · Topp 1 %",
+"Among the top 1% of homes on Airbnb, based on ratings, reviews and reliability.":"Bland de bästa 1 % av boendena på Airbnb, baserat på betyg, omdömen och tillförlitlighet.",
+"Panoramic lake views, a fireplace and a 75-inch TV.":"Panoramautsikt över sjön, braskamin och en 75-tums-TV.",
+"Open the area map":"Öppna områdeskartan",
+"Map of the Rogsjön area":"Karta över området kring Rogsjön",
+"Living room with lake views, fireplace and 75-inch TV":"Vardagsrum med sjöutsikt, braskamin och 75-tums-TV",
+"Bathroom with washing machine and drying cabinet":"Badrum med tvättmaskin och torkskåp",
+"Bathroom with shower":"Badrum med dusch",
+"★★★★★ 5.0 on Airbnb · Guest Favorite":"★★★★★ 5,0 på Airbnb · Gästfavorit",
+"Bedrooms":"Sovrum",
+"A private setting on Lake Rogsjön, panoramic views and Scandinavian architecture. Around 200 m² to share with family or friends, with your own sandy beach, sauna and boat.":"Privat läge vid Rogsjön, panoramautsikt och skandinavisk arkitektur. Cirka 200 m² att dela med familj eller vänner, med egen sandstrand, bastu och båt.",
+"Known as Solsidan Dalarna, our house is a peaceful base just 25 minutes from Falun.":"Vårt hus, känt som Solsidan Dalarna, är en lugn utgångspunkt bara 25 minuter från Falun.",
+"Explore Lake Rogsjön at your own pace. A boat with a Mercury outboard motor and life jackets is included during your stay.":"Upptäck Rogsjön i egen takt. Båt med Mercury-utombordsmotor och flytvästar ingår under vistelsen.",
+"Spacious loft bedroom, about 35 m², with a walk-in closet.":"Rymligt sovrum på loftet, cirka 35 m², med klädkammare.",
+"Practical information for your boat trip":"Praktisk information inför båtturen",
+
 "Who is the house suitable for?":"Vilka passar huset för?",
 "The whole house accommodates up to six guests and suits families, couples and friends. Lake House Dalarna, also known as Solsidan Dalarna, is by Lake Rogsjön in Dalarna, Sweden, about 25 minutes from Falun.":"Hela huset rymmer upp till sex gäster och passar familjer, par och vänner. Lake House Dalarna, även känt som Solsidan Dalarna, ligger vid Rogsjön i Dalarna, Sverige, cirka 25 minuter från Falun.",
 "Are the sauna and boat included?":"Ingår bastu och båt?",
@@ -468,6 +484,22 @@ const siteTranslations = {
         "Not provided": "Ej angivet"
     },
     de: {
+"★★★★★ 5.0 on Airbnb · Top 1%":"★★★★★ 5,0 auf Airbnb · Top 1 %",
+"Among the top 1% of homes on Airbnb, based on ratings, reviews and reliability.":"Unter den besten 1 % der Unterkünfte auf Airbnb, basierend auf Bewertungen, Rezensionen und Zuverlässigkeit.",
+"Panoramic lake views, a fireplace and a 75-inch TV.":"Panoramablick auf den See, Kaminofen und ein 75-Zoll-Fernseher.",
+"Open the area map":"Umgebungskarte öffnen",
+"Map of the Rogsjön area":"Karte der Umgebung des Rogsjön",
+"Living room with lake views, fireplace and 75-inch TV":"Wohnzimmer mit Seeblick, Kaminofen und 75-Zoll-Fernseher",
+"Bathroom with washing machine and drying cabinet":"Badezimmer mit Waschmaschine und Trockenschrank",
+"Bathroom with shower":"Badezimmer mit Dusche",
+"★★★★★ 5.0 on Airbnb · Guest Favorite":"★★★★★ 5,0 auf Airbnb · Gästefavorit",
+"Bedrooms":"Schlafzimmer",
+"A private setting on Lake Rogsjön, panoramic views and Scandinavian architecture. Around 200 m² to share with family or friends, with your own sandy beach, sauna and boat.":"Private Lage am Rogsjön, Panoramablick und skandinavische Architektur. Rund 200 m² für Familie oder Freunde, mit eigenem Sandstrand, Sauna und Boot.",
+"Known as Solsidan Dalarna, our house is a peaceful base just 25 minutes from Falun.":"Unser Haus, auch als Solsidan Dalarna bekannt, liegt ruhig und nur 25 Minuten von Falun entfernt.",
+"Explore Lake Rogsjön at your own pace. A boat with a Mercury outboard motor and life jackets is included during your stay.":"Entdecken Sie den Rogsjön in Ihrem eigenen Tempo. Ein Boot mit Mercury-Außenbordmotor und Schwimmwesten steht Ihnen während Ihres Aufenthalts zur Verfügung.",
+"Spacious loft bedroom, about 35 m², with a walk-in closet.":"Geräumiges Schlafzimmer auf der Galerie, etwa 35 m², mit begehbarem Kleiderschrank.",
+"Practical information for your boat trip":"Praktische Informationen für Ihre Bootsfahrt",
+
 "Who is the house suitable for?":"Für wen eignet sich das Ferienhaus?",
 "The whole house accommodates up to six guests and suits families, couples and friends. Lake House Dalarna, also known as Solsidan Dalarna, is by Lake Rogsjön in Dalarna, Sweden, about 25 minutes from Falun.":"Das ganze Haus bietet Platz für bis zu sechs Gäste und eignet sich für Familien, Paare und Freunde. Lake House Dalarna, auch Solsidan Dalarna genannt, liegt am Rogsjön in Dalarna, Schweden, etwa 25 Minuten von Falun entfernt.",
 "Are the sauna and boat included?":"Sind Sauna und Boot inklusive?",
@@ -963,7 +995,7 @@ const localizedPageMeta = {
     "/house.html": {
         "en": {
             "title": "Rooms, Sauna & Amenities | Lake House Dalarna",
-            "description": "Explore our 200 m² lakeside house in Dalarna for up to 6 guests: sleeping areas, living room, private sauna, workspace, terrace and the story of the house."
+            "description": "Explore our 200 m² lakeside house in Dalarna for up to 6 guests: bedrooms, living room, private sauna, workspace, terrace and the story of the house."
         },
         "sv": {
             "title": "Huset, rummen och bastun | Lake House Dalarna",
@@ -971,7 +1003,7 @@ const localizedPageMeta = {
         },
         "de": {
             "title": "Zimmer, Sauna & Ausstattung | Lake House Dalarna",
-            "description": "Entdecken Sie das 200 m² große Ferienhaus am See in Dalarna für bis zu 6 Gäste: Schlafbereiche, Wohnzimmer, Sauna, Arbeitsplatz, Terrasse und Geschichte."
+            "description": "Entdecken Sie das 200 m² große Ferienhaus am See in Dalarna für bis zu 6 Gäste: Schlafzimmer, Wohnzimmer, Sauna, Arbeitsplatz, Terrasse und Geschichte."
         }
     },
     "/booking.html": {
