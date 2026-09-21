@@ -12,9 +12,9 @@ for p in pages:
     for node in graph:
         assert 'aggregateRating' not in node
         if node['@type']=='FAQPage':
-            assert len(node['mainEntity'])==6
+            assert len(node['mainEntity'])==(7 if p.parent.name in ('house','huset','ferienhaus') else 6)
             for qa in node['mainEntity']:
                 assert html.escape(qa['name'],quote=False) in text
                 assert html.escape(qa['acceptedAnswer']['text'],quote=False) in text
 assert 'User-agent: OAI-SearchBot\nAllow: /' in (root/'robots.txt').read_text()
-print('PASS: structured JSON, canonical consistency, six visible matching FAQ answers per language, search crawler access.')
+print('PASS: structured JSON, canonical consistency, visible matching FAQ answers per page and language, search crawler access.')
