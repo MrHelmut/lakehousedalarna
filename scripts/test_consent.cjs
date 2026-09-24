@@ -17,7 +17,7 @@ p.click('declined');assert.equal(p.scripts.length,0);assert.equal(JSON.parse(p.s
 p=page({saved:p.store.get(KEY),lang:'de',path:'/de/'});assert.equal(p.scripts.length,0);assert(p.elements.some(e=>e.innerHTML?.includes('Ablehnen')));
 p.click('accepted');assert.equal(p.scripts.length,1);assert.equal(p.window['ga-disable-'+ID],false);
 let config=p.window.dataLayer.find(x=>x[0]==='config')[2];assert(!config.page_location.includes('?'));assert(!config.page_referrer.includes('private'));assert.equal(config.campaign_source,'instagram');assert.equal(config.cookie_update,false);
-for(const [url,event] of [['/de/buchen/','booking_click'],['https://airbnb.com/h/solsidan-dalarna','airbnb_click'],['https://airbnb.se/rooms/123','airbnb_click'],['https://wa.me/123?text=private','whatsapp_click'],['mailto:private@example.com?body=secret','contact_click']]){p.click(null,new URL(url,'https://lakehousedalarna.com').href);assert.equal(p.window.dataLayer.at(-1)[1],event);assert(!JSON.stringify(p.window.dataLayer.at(-1)).includes('private'));}
+for(const [url,event] of [['/de/buchen/','booking_click'],['https://airbnb.com/h/solsidan-dalarna','airbnb_click'],['https://airbnb.se/rooms/123','airbnb_click'],['https://wa.me/123?text=private','click_whatsapp'],['mailto:private@example.com?body=secret','contact_click']]){p.click(null,new URL(url,'https://lakehousedalarna.com').href);assert.equal(p.window.dataLayer.at(-1)[1],event);assert(!JSON.stringify(p.window.dataLayer.at(-1)).includes('private'));}
 p.click('accepted');assert.equal(p.scripts.length,1);
 p.click('declined');assert.equal(p.window['ga-disable-'+ID],true);let count=p.window.dataLayer.length;p.click(null,'https://airbnb.com/h/example');assert.equal(p.window.dataLayer.length,count);
 assert(p.writes.every(x=>!x.startsWith('other=')));
@@ -41,3 +41,9 @@ for(const event of ['click_check_availability','click_airbnb','booking_click','a
 console.log('PASS: new funnel events preserve legacy events, consent and explicit email handoff status.');
 
 p.winListeners['lakehouse-booking-received']();assert.equal(p.window.dataLayer.at(-1)[1],'submit_booking_request');assert.equal(p.window.dataLayer.at(-1)[2].delivery_status,'received');
+
+let whatsappBefore=p.window.dataLayer.filter(x=>x[0]==='event'&&x[1]==='click_whatsapp').length;
+p.click(null,'https://wa.me/46703021094');
+assert.equal(p.window.dataLayer.filter(x=>x[0]==='event'&&x[1]==='click_whatsapp').length,whatsappBefore+1);
+assert(!p.window.dataLayer.some(x=>x[0]==='event'&&x[1]==='whatsapp_click'));
+console.log('PASS: one canonical click_whatsapp event per click, no duplicate WhatsApp alias.');

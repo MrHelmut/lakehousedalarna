@@ -17,3 +17,6 @@ Existing GA4 ID, configuration, consent and legacy booking_click / airbnb_click 
 No names, email, phone, country, dates or messages go into custom events. Events require analytics consent. Provider delivery does not require analytics consent.
 
 In GA4, mark submit_booking_request as a key event after direct delivery is activated. Existing events are retained; do not combine old and new click names into one conversion count. Verify in DebugView/Realtime with analytics consent. No GA4 property settings were changed.
+
+## Organic discovery update — 24 September 2026
+Seasonal landing pages link directly to the existing booking routes. WhatsApp now emits click_whatsapp instead of whatsapp_click, exactly once per click. Historical whatsapp_click data remains in GA4; compare the two names across this change date rather than counting a duplicate alias. GA4 property settings, measurement ID and consent are unchanged.

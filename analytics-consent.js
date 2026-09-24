@@ -95,7 +95,7 @@
       if(target.tagName!=='A')return;
       const u=new URL(target.href,location.href);let event,kind;
       if(/(^|\.)airbnb\.(com|se|de|nl|at|ch|co\.uk)$/.test(u.hostname)){event='airbnb_click';kind='airbnb';}
-      else if(u.hostname==='wa.me'||u.hostname==='api.whatsapp.com'){event='whatsapp_click';kind='whatsapp';}
+      else if(u.hostname==='wa.me'||u.hostname==='api.whatsapp.com'){event='click_whatsapp';kind='whatsapp';}
       else if(['mailto:','tel:'].includes(u.protocol)){event='contact_click';kind=u.protocol==='mailto:'?'email':'phone';}
       else if(u.origin===location.origin && /^\/(en\/booking\/|sv\/boka\/|de\/buchen\/|booking\.html)$/.test(u.pathname)){event='booking_click';kind='booking';}
       if(event==='booking_click')track('click_check_availability',{destination:'booking'});

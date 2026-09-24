@@ -4830,3 +4830,6 @@ a.lake-map-button:focus-visible,.whatsapp-contact a:focus-visible,.whatsapp-floa
 .booking-review-link{font-size:14px;margin:16px 0}.booking-review-link a,.booking-airbnb-alternative a{color:#143042;text-underline-offset:4px}
 .booking-airbnb-alternative{grid-column:1/-1;border-top:1px solid #d9dfdc;padding:28px 0 0;max-width:760px}
 .booking-airbnb-alternative h3{font-size:19px;margin:0 0 10px}.booking-airbnb-alternative p{font-size:15px;line-height:1.7;margin:0 0 12px}.booking-airbnb-alternative a{font-size:14px}
+
+/* Keep discovery links readable on the light seasonal-page background. */
+.seo-section .footer-links a,.seo-section p a:not(.primary-btn){color:var(--primary);text-decoration:underline;text-underline-offset:4px}

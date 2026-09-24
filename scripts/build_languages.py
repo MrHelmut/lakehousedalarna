@@ -5,6 +5,7 @@ import json, subprocess, re, html
 from pathlib import Path
 from html.parser import HTMLParser
 from seo_markup import add_markup
+from build_landing_pages import build as build_landings, PAIRS
 ROOT = Path(__file__).resolve().parents[1]
 ROUTES = {'en': ['en/', 'en/house/', 'en/booking/'], 'sv': ['sv/', 'sv/huset/', 'sv/boka/'], 'de': ['de/', 'de/ferienhaus/', 'de/buchen/']}
 SOURCE = ['index.html', 'house.html', 'booking.html']
@@ -38,6 +39,9 @@ class Page(HTMLParser):
         for key in ['href','src','poster','data-full']:
             v=a.get(key,'')
             if v and not v.startswith(('#','/','http:','https:','mailto:','tel:','data:')):
+                if key=='href' and self.lang=='de' and v in ('sweden-lake-house.html','ski-holiday-sweden.html'):
+                    a[key]='/de/'+('ferienhaus-schweden.html' if v=='sweden-lake-house.html' else 'skiurlaub-schweden.html')
+                    continue
                 path=v.split('?')[0].split('#')[0]
                 if path in SOURCE:
                     a[key]='/'+ROUTES[self.lang][SOURCE.index(path)]+(('?'+v.split('?',1)[1].split('#')[0]) if '?' in v else '')+('#'+v.split('#',1)[1] if '#' in v else '')
@@ -59,6 +63,8 @@ for lang in ROUTES:
     for i,source in enumerate(SOURCE):
         p=Page(lang,i);p.feed((ROOT/source).read_text(encoding='utf-8'))
         result=''.join(p.out)
+        if 'property="og:url"' not in result:
+            result=result.replace('</head>',f'<meta property="og:url" content="{BASE+ROUTES[lang][i]}"></head>')
         locale={'en':'en_GB','sv':'sv_SE','de':'de_DE'}[lang]
         result=result.replace('</head>',f'<meta property="og:locale" content="{locale}"></head>')
         # Real crawlable language links also work without JavaScript.
@@ -67,11 +73,14 @@ for lang in ROUTES:
         meta=DATA['meta']['/'+SOURCE[i]][lang]
         result=add_markup(result,lang,BASE+ROUTES[lang][i],meta['title'],meta['description'])
         dest=ROOT/ROUTES[lang][i]/'index.html';dest.parent.mkdir(parents=True,exist_ok=True);dest.write_text(result,encoding='utf-8')
+build_landings()
 urls=[]
 for i in range(3):
     alternate=''.join(f'<xhtml:link rel="alternate" hreflang="{l}" href="{BASE+ROUTES[l][i]}"/>' for l in ROUTES)+f'<xhtml:link rel="alternate" hreflang="x-default" href="{BASE+ROUTES["en"][i]}"/>'
     urls += [f'<url><loc>{BASE+ROUTES[l][i]}</loc>{alternate}</url>' for l in ROUTES]
-urls.append(f'<url><loc>{BASE}de/ferienhaus-schweden.html</loc></url>')
+for pair in PAIRS:
+    alternate=''.join(f'<xhtml:link rel="alternate" hreflang="{l}" href="{BASE+r}"/>' for l,r in pair.items())+f'<xhtml:link rel="alternate" hreflang="x-default" href="{BASE+pair["en"]}"/>'
+    urls += [f'<url><loc>{BASE+r}</loc>{alternate}</url>' for r in pair.values()]
 (ROOT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'+''.join(urls)+'</urlset>',encoding='utf-8')
-print('Generated 9 static language pages and sitemap.')
+print('Generated 9 core pages, 4 seasonal pages and sitemap.')
 
