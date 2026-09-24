@@ -1,5 +1,6 @@
 const siteTranslations = {
     sv: {
+"Check the northern lights forecast":"Se norrskensprognosen",
 "Questions? Chat with us on WhatsApp":"Frågor? Chatta med oss på WhatsApp",
 "★★★★★ 5.0 on Airbnb · Top 1%":"★★★★★ 5,0 på Airbnb · Topp 1 %",
 "Among the top 1% of homes on Airbnb, based on ratings, reviews and reliability.":"Bland de bästa 1 % av boendena på Airbnb, baserat på betyg, omdömen och tillförlitlighet.",
@@ -485,6 +486,7 @@ const siteTranslations = {
         "Not provided": "Ej angivet"
     },
     de: {
+"Check the northern lights forecast":"Nordlichtvorhersage ansehen",
 "Questions? Chat with us on WhatsApp":"Fragen? Schreiben Sie uns auf WhatsApp",
 "★★★★★ 5.0 on Airbnb · Top 1%":"★★★★★ 5,0 auf Airbnb · Top 1 %",
 "Among the top 1% of homes on Airbnb, based on ratings, reviews and reliability.":"Unter den besten 1 % der Unterkünfte auf Airbnb, basierend auf Bewertungen, Rezensionen und Zuverlässigkeit.",
