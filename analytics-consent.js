@@ -87,17 +87,6 @@
     }
     choice=read();render();
     if(choice==='accepted')start();else {eraseCookies();if(!choice)show();}
-    document.querySelectorAll('iframe[data-consent-map]').forEach(frame=>{
-      const w=words[lang()], panel=document.createElement('div');panel.className='map-consent';
-      const title=document.createElement('h3');title.textContent=w.mapTitle;
-      const p=document.createElement('p');p.textContent=w.mapText;
-      const button=document.createElement('button');button.type='button';button.textContent=w.map;
-      panel.append(title,button,p);frame.before(panel);frame.hidden=true;
-      button.addEventListener('click',()=>{
-        if(frame.hidden){frame.src=frame.dataset.consentMap;frame.hidden=false;button.textContent=w.mapOff;}
-        else {frame.removeAttribute('src');frame.hidden=true;button.textContent=w.map;}
-      });
-    });
     document.addEventListener('click',e=>{
       const target=e.target.closest('button,a');if(!target)return;
       if(target.hasAttribute('data-cookie-settings')){show(true);banner.scrollIntoView({block:'start'});return;}
