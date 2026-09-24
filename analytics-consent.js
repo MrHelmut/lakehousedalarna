@@ -6,9 +6,9 @@
   const ID = 'G-MN82629B7R', KEY = 'lakehouse-consent-v1', AGE = 180 * 86400000;
   const denied = {analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'};
   const words = {
-    en: {title:'Your privacy',text:'We use Google Analytics cookies, with your permission, to understand how visitors use our website and help us improve it.',accept:'Accept',decline:'Decline',settings:'Cookie settings',policy:'Privacy & cookies',close:'Close',map:'Load Google map',mapText:'Loading the map connects to Google, which receives your IP address and may use cookies. This does not enable analytics.',mapOff:'Hide Google map'},
-    sv: {title:'Din integritet',text:'Med ditt samtycke använder vi Google Analytics-cookies för att förstå hur besökare använder webbplatsen och förbättra den.',accept:'Acceptera',decline:'Neka',settings:'Cookieinställningar',policy:'Integritet & cookies',close:'Stäng',map:'Ladda Google-kartan',mapText:'När du laddar kartan ansluts du till Google, som tar emot din IP-adress och kan använda cookies. Detta aktiverar inte statistik.',mapOff:'Dölj Google-kartan'},
-    de: {title:'Ihre Privatsphäre',text:'Mit Ihrer Einwilligung verwenden wir Google-Analytics-Cookies, um zu verstehen, wie Besucher unsere Website nutzen, und sie zu verbessern.',accept:'Akzeptieren',decline:'Ablehnen',settings:'Cookie-Einstellungen',policy:'Datenschutz & Cookies',close:'Schließen',map:'Google-Karte laden',mapText:'Beim Laden der Karte wird eine Verbindung zu Google hergestellt. Google erhält Ihre IP-Adresse und kann Cookies verwenden. Die Analyse wird dadurch nicht aktiviert.',mapOff:'Google-Karte ausblenden'}
+    en: {title:'Your privacy',text:'We use Google Analytics cookies, with your permission, to understand how visitors use our website and help us improve it.',accept:'Accept',decline:'Decline',settings:'Cookie settings',policy:'Privacy & cookies',close:'Close',mapTitle:'Discover Lake Rogsjön',map:'Show map',mapText:'Google receives your IP address and may use cookies when you open the map.',mapOff:'Hide Google map'},
+    sv: {title:'Din integritet',text:'Med ditt samtycke använder vi Google Analytics-cookies för att förstå hur besökare använder webbplatsen och förbättra den.',accept:'Acceptera',decline:'Neka',settings:'Cookieinställningar',policy:'Integritet & cookies',close:'Stäng',mapTitle:'Upptäck Rogsjön',map:'Visa karta',mapText:'Google tar emot din IP-adress och kan använda cookies när du öppnar kartan.',mapOff:'Dölj Google-kartan'},
+    de: {title:'Ihre Privatsphäre',text:'Mit Ihrer Einwilligung verwenden wir Google-Analytics-Cookies, um zu verstehen, wie Besucher unsere Website nutzen, und sie zu verbessern.',accept:'Akzeptieren',decline:'Ablehnen',settings:'Cookie-Einstellungen',policy:'Datenschutz & Cookies',close:'Schließen',mapTitle:'Entdecken Sie den Rogsjön',map:'Karte anzeigen',mapText:'Beim Öffnen der Karte erhält Google Ihre IP-Adresse und kann Cookies verwenden.',mapOff:'Google-Karte ausblenden'}
   };
   let choice = null, loaded = false, banner, returnFocus;
   const lang = () => words[document.documentElement.lang] ? document.documentElement.lang : 'en';
@@ -89,9 +89,10 @@
     if(choice==='accepted')start();else {eraseCookies();if(!choice)show();}
     document.querySelectorAll('iframe[data-consent-map]').forEach(frame=>{
       const w=words[lang()], panel=document.createElement('div');panel.className='map-consent';
+      const title=document.createElement('h3');title.textContent=w.mapTitle;
       const p=document.createElement('p');p.textContent=w.mapText;
       const button=document.createElement('button');button.type='button';button.textContent=w.map;
-      panel.append(p,button);frame.before(panel);frame.hidden=true;
+      panel.append(title,button,p);frame.before(panel);frame.hidden=true;
       button.addEventListener('click',()=>{
         if(frame.hidden){frame.src=frame.dataset.consentMap;frame.hidden=false;button.textContent=w.mapOff;}
         else {frame.removeAttribute('src');frame.hidden=true;button.textContent=w.map;}
