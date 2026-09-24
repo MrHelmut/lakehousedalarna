@@ -20,3 +20,6 @@ In GA4, mark submit_booking_request as a key event after direct delivery is acti
 
 ## Organic discovery update — 24 September 2026
 Seasonal landing pages link directly to the existing booking routes. WhatsApp now emits click_whatsapp instead of whatsapp_click, exactly once per click. Historical whatsapp_click data remains in GA4; compare the two names across this change date rather than counting a duplicate alias. GA4 property settings, measurement ID and consent are unchanged.
+
+## Activation 2026-09-24
+Owner-supplied public access key configured. Direct submission enabled. Actual inbox delivery still requires a real test and recipient confirmation.
