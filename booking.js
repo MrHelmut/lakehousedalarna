@@ -356,8 +356,8 @@ function updateSummary() {
     }
 
     if (!guests) {
-        summaryStatus.textContent = tr("Choose guests");
-        priceEstimate.textContent = tr("Choose guests");
+        summaryStatus.textContent = tr("Choose number of guests");
+        priceEstimate.textContent = tr("Choose number of guests");
         priceDetails.textContent = tr("Select the number of guests to calculate the estimated price.");
         seasonNote.textContent = tr("The first guest is included. Each additional guest costs 239 SEK per night.");
         return;
