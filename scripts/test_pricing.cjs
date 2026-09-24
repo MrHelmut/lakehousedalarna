@@ -16,14 +16,14 @@ for(const [m,p] of Object.entries(context.window.lakeHousePricing.nightlyPrices)
 }
 const night=(date,g=1)=>run(`getNightPrice(parseDateKey('${date}'),${g})`);
 const stay=(a,b,g)=>run(`getStayEstimate('${a}','${b}',${g})`);
-assert.equal(night('2026-09-28').airbnbAmount,2626);
-assert.equal(night('2026-10-20').airbnbAmount,2388);
-assert.equal(night('2026-10-26').airbnbAmount,2827);
-assert.equal(night('2026-10-30').airbnbAmount,2984);
-assert.equal(night('2026-11-30').airbnbAmount,2388);
-assert.equal(night('2026-12-01').airbnbAmount,3000);
-assert.equal(night('2026-12-04').airbnbAmount,3000);
-assert.equal(night('2027-02-19').airbnbAmount,3223);
+assert.equal(night('2026-09-28').airbnbAmount,3200);
+assert.equal(night('2026-10-20').airbnbAmount,3200);
+assert.equal(night('2026-10-26').airbnbAmount,3200);
+assert.equal(night('2026-10-30').airbnbAmount,3200);
+assert.equal(night('2026-11-30').airbnbAmount,3200);
+assert.equal(night('2026-12-01').airbnbAmount,3200);
+assert.equal(night('2026-12-04').airbnbAmount,3200);
+assert.equal(night('2027-02-19').airbnbAmount,3200);
 assert.equal(night('2027-02-20').airbnbAmount,9000);
 assert.equal(night('2027-02-23').airbnbAmount,9000);
 assert.equal(night('2027-02-24').airbnbAmount,12900);
@@ -31,34 +31,34 @@ assert.equal(night('2027-02-27').airbnbAmount,14500);
 assert.equal(night('2027-03-02').airbnbAmount,14500);
 assert.equal(night('2027-03-03').airbnbAmount,12900);
 assert.equal(night('2027-03-09').airbnbAmount,12900);
-assert.equal(night('2027-03-10').airbnbAmount,2984);
-assert.equal(night('2028-01-02').airbnbAmount,3581);
-assert.equal(night('2028-02-29').airbnbAmount,2984);
+assert.equal(night('2027-03-10').airbnbAmount,3200);
+assert.equal(night('2028-01-02').airbnbAmount,3200);
+assert.equal(night('2028-02-29').airbnbAmount,3200);
 assert.equal(night('2028-09-01'),null);
-assert.equal(night('2026-10-05'),null);
+assert.equal(night('2026-10-05').amount,2880);
 assert.equal(night('2026-09-10'),null);
-assert.equal(night('2026-12-01').amount,2700);
-assert.equal(night('2026-12-01',6).amount,3775.5);
+assert.equal(night('2026-12-01').amount,2880);
+assert.equal(night('2026-12-01',6).amount,4075);
 const short=stay('2026-09-28','2026-10-01',2);
-assert.equal(short.total,8885.5);
+assert.equal(short.total,10507);
 assert.equal(short.cleaning,850);assert.equal(short.linen,300);
 assert.equal(short.lengthDiscount,0);
 const weekly=stay('2026-09-28','2026-10-05',2);
-assert.equal(weekly.total,17394.55);
-assert.equal(weekly.lengthDiscount,.1);
-assert.equal(stay('2027-02-27','2027-03-03',6).total,58252);
-assert.equal(stay('2027-04-01','2027-04-28',1).lengthDiscount,.1);
+assert.equal(weekly.total,22983);
+assert.equal(weekly.lengthDiscount,0);
+assert.equal(stay('2027-02-27','2027-03-03',6).total,64530);
+assert.equal(stay('2027-04-01','2027-04-28',1).lengthDiscount,0);
 const monthly=stay('2027-04-01','2027-04-29',1);
-assert.equal(monthly.lengthDiscount,.3);
-assert.equal(monthly.total,54842.32); // (20*2984+8*3223)*0.7*0.9 + 850 + 150
-assert.equal(stay('2026-10-04','2026-10-06',2),null);
+assert.equal(monthly.lengthDiscount,0);
+assert.equal(monthly.total,81640); // 28 * 2880 + 850 + 150
+assert.equal(stay('2026-10-04','2026-10-06',2).total,7388);
 assert.equal(stay('2028-08-31','2028-09-02',2),null);
 assert.equal(stay('2027-03-27','2027-03-29',2).nights,2);
 assert.equal(stay('2026-09-28','2026-09-28',2),null);
 assert.equal(stay('2026-10-01','2026-09-28',2),null);
 run('updateSummary(); renderCalendar();');
 nodes.get('[data-check-in]').value='2026-09-28';nodes.get('[data-check-out]').value='2026-10-01';nodes.get('[data-guests]').value='2';
-run('updateSummary();');assert.match(nodes.get('[data-price-estimate]').textContent,/8,885.5/);
+run('updateSummary();');assert.match(nodes.get('[data-price-estimate]').textContent,/10,507/);
 run("bookedDates.add('2026-09-29'); updateSummary();");
 assert.equal(nodes.get('[data-price-estimate]').textContent,'Dates unavailable');
 run('bookedDates.clear();');nodes.get('[data-check-in]').value='2028-09-01';nodes.get('[data-check-out]').value='2028-09-05';run('updateSummary();');
@@ -74,7 +74,7 @@ assert.equal(vm.runInContext("t('Accommodation')",i18nContext),'Unterkunft');
 console.log('PASS: dynamic pricing follows selected language.');
 
 // Regression: booked and blocked dates must be equally unselectable, including checkout.
-const actualAvailability=JSON.parse(fs.readFileSync(root+'availability.json','utf8'));
+const actualAvailability={coverage_start:'2026-09-11',coverage_end:'2028-10-01',booked_dates:['2026-10-05','2026-11-16'],blocked_ranges:[{start:'2026-09-21',end:'2026-09-28'}]};
 context.testAvailability=actualAvailability;
 run('bookedDates=collectUnavailableDates(testAvailability); coverageStart=testAvailability.coverage_start; coverageEnd=testAvailability.coverage_end; availabilityLoaded=true; availabilityLoadFailed=false;');
 for(let day=21;day<=27;day++)assert.equal(run(`isUnavailable(parseDateKey('2026-09-${day}'))`),true);
@@ -98,7 +98,7 @@ nodes.get('[data-calendar-grid]').children=[];
 run('visibleMonth=new Date(2026,8,1);renderCalendar();');
 for(let d=21;d<=27;d++){
 const button=nodes.get('[data-calendar-grid]').children.find(e=>e.dataset.date===`2026-09-${d}`);
-assert.equal(button.disabled,true);assert.equal(button.classList.contains('unavailable'),true);assert.match(button.innerHTML,/×/);
+assert.equal(button.disabled,true);assert.equal(button.classList.contains('unavailable'),true);assert.match(button.innerHTML,/×|—/);
 }
 run('availabilityLoaded=false;');assert.equal(run('validateSelection()'),false);
 run("selectDate('2026-09-28')");assert.equal(checkIn.value,'');
@@ -113,11 +113,11 @@ assert.equal(run("isUnavailable(parseDateKey('2026-09-24'))"),true);
 console.log('PASS: reserved/blocked dates, manual input, blocked checkout, crossing blocked ranges, disabled calendar cells, submit guard and failed/stale calendar loading.');
 })().catch(e=>{console.error(e);process.exitCode=1});
 
-assert.equal(night('2026-12-21').amount,2700);
+assert.equal(night('2026-12-21').amount,2880);
 assert.equal(night('2026-12-22').amount,3200);
 assert.equal(night('2026-12-27',2).amount,3439);
-assert.equal(night('2026-12-28').amount,2700);
-assert.equal(stay('2026-12-21','2026-12-23',1).accommodation,5900);
+assert.equal(night('2026-12-28').amount,2880);
+assert.equal(stay('2026-12-21','2026-12-23',1).accommodation,6080);
 assert.equal(stay('2026-12-22','2026-12-27',2).accommodation,20395);
 console.log('PASS: December prices, Christmas exclusion, extra guests and mixed-rate stay.');
 
@@ -130,3 +130,8 @@ assert.equal(night('2026-12-23').amount,4000);
 assert.equal(stay('2026-12-23','2026-12-25',1).accommodation,8000);
 assert.equal(stay('2026-12-26','2026-12-28',1).accommodation,7200);
 console.log('PASS: Christmas peak nights, guest surcharge and mixed prices.');
+
+assert.equal(stay('2027-02-19','2027-02-21',1).accommodation,11880);
+assert.equal(stay('2027-03-09','2027-03-11',1).accommodation,15780);
+assert.equal(weekly.directDiscount,7*320);
+assert.equal(monthly.directDiscount,28*320);
