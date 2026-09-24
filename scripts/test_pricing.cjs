@@ -4,7 +4,7 @@ const assert=require('node:assert/strict');
 const root=require('path').resolve(__dirname, '..') + '/';
 const nodes=new Map();
 const element=()=>({value:'',textContent:'',dataset:{},setAttribute(){},setCustomValidity(message){this.validationMessage=message},querySelector(){return this.submitButton??=element()},reportValidity(){return false},handlers:{},addEventListener(name,fn){this.handlers[name]=fn},children:[],appendChild(child){this.children.push(child)},classList:{values:new Set(),contains(name){return this.values.has(name)},add(name){this.values.add(name)},remove(name){this.values.delete(name)}}});
-const context=vm.createContext({window:{addEventListener(){}},document:{querySelector(s){if(!nodes.has(s))nodes.set(s,element());return nodes.get(s)},querySelectorAll(){return []},createElement:element},Intl,Date,Set,URLSearchParams,console});
+const context=vm.createContext({window:{addEventListener(){},dispatchEvent(){}},document:{querySelector(s){if(!nodes.has(s))nodes.set(s,element());return nodes.get(s)},querySelectorAll(){return []},createElement:element},Intl,Date,Set,URLSearchParams,console,Event});
 vm.runInContext(fs.readFileSync(root+'pricing-data.js','utf8'),context);
 let source=fs.readFileSync(root+'booking.js','utf8');
 vm.runInContext(source.slice(0,source.lastIndexOf('\nupdateHelpTextDefault();')),context);

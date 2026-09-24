@@ -17,7 +17,7 @@
     <link rel="icon" href="/favicon.ico">
     <link rel="preload" as="image" href="/images/hero.png?v=20260910a" fetchpriority="high">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="/style.css?v=20260924-weeks">
+    <link rel="stylesheet" href="/style.css?v=20260924-direct-request">
     <link rel="alternate" hreflang="en" href="https://lakehousedalarna.com/en/booking/">
     <link rel="alternate" hreflang="sv" href="https://lakehousedalarna.com/sv/boka/">
     <link rel="alternate" hreflang="de" href="https://lakehousedalarna.com/de/buchen/">
@@ -27,7 +27,7 @@
     <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="/fonts-local.css">
 <link rel="stylesheet" href="/consent.css?v=20260924-map-card">
-<script defer src="/analytics-consent.js?v=20260924-map-card"></script>
+<script defer src="/analytics-consent.js?v=20260924-direct-request"></script>
 <meta property="og:locale" content="sv_SE"><script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "WebSite", "@id": "https://lakehousedalarna.com/#website", "url": "https://lakehousedalarna.com/", "name": "Lake House Dalarna", "alternateName": "Solsidan Dalarna", "inLanguage": ["sv", "en", "de"]}, {"@type": "LodgingBusiness", "@id": "https://lakehousedalarna.com/#lodging", "name": "Lake House Dalarna", "alternateName": "Solsidan Dalarna", "url": "https://lakehousedalarna.com/", "image": "https://lakehousedalarna.com/images/hero.png", "address": {"@type": "PostalAddress", "addressLocality": "Falun", "addressRegion": "Dalarna", "addressCountry": "SE"}, "petsAllowed": false, "sameAs": ["https://airbnb.com/h/solsidan-dalarna", "https://www.instagram.com/solsidan_dalarna/"]}, {"@type": "WebPage", "@id": "https://lakehousedalarna.com/sv/boka/#webpage", "url": "https://lakehousedalarna.com/sv/boka/", "name": "Lediga datum och bokning | Lake House Dalarna", "description": "Planera din vistelse på Lake House Dalarna. Se lediga datum och uppskattat pris och skicka en bokningsförfrågan direkt till oss.", "inLanguage": "sv", "isPartOf": {"@id": "https://lakehousedalarna.com/#website"}, "about": {"@id": "https://lakehousedalarna.com/#lodging"}}]}</script></head>
 
 <body class="booking-page">
@@ -69,16 +69,16 @@ Se lediga datum, få en prisindikation och skicka en personlig bokningsförfråg
 
 <section class="request-section">
 
-<section class="booking-choice"><h2>Planera din vistelse</h2><p>Välj datum, se uppskattat pris och skicka en bokningsförfrågan till oss.</p><p class="booking-explanation">Din bokning är bekräftad först när du har fått en bekräftelse från oss.</p></section><div class="booking-steps">
+<section class="booking-choice"><h2>Planera din vistelse</h2><p>Oavsett om det är ditt första besök eller om du återvänder är du varmt välkommen att skicka en förfrågan direkt till oss.</p><p class="booking-explanation">Vi ser fram emot att höra om era planer. Vistelsen är bekräftad först när du har fått en personlig bokningsbekräftelse från oss.</p></section><div class="booking-steps">
 <div>
 <p class="section-tag">SÅ FUNGERAR DIREKTBOKNING</p>
-<h2>Förfrågan först, betalning efter godkännande</h2>
+<h2>Din vistelse, med personlig kontakt</h2>
 </div>
 <ol>
 <li><strong>Välj datum</strong><span>Välj datum och antal gäster för att se ett ungefärligt pris.</span></li>
 <li><strong>Skicka förfrågan</strong><span>Berätta vilka som reser och syftet med vistelsen.</span></li>
-<li><strong>Vi bekräftar</strong><span>Vi kontrollerar tillgänglighet, slutpris och husregler.</span></li>
-<li><strong>Säker betalning</strong><span>Om allt passar skickar vi en säker betalningslänk innan bokningen bekräftas.</span></li>
+<li><strong>Vi granskar din förfrågan</strong><span>Vi läser er presentation och kontrollerar datum och detaljer innan vi godkänner vistelsen.</span></li>
+<li><strong>Personlig bekräftelse</strong><span>När allt är överenskommet skickar vi din bokningsbekräftelse. Ingen omedelbar bokning eller betalning online.</span></li>
 </ol>
 </div>
 
@@ -143,10 +143,11 @@ Antal gäster
 10 % rabatt när du bokar direkt hos oss. Rabatten gäller nattens grundpris, förutom jul och VM i Falun. Städning kostar 850 kr per vistelse och sängkläder 150 kr per gäst.
 </p>
 <ul class="trust-list">
-<li>Manuellt godkännande innan betalning</li>
-<li>Säker betalningslänk efter godkännande</li>
-<li>Ingen automatisk bokning utan bekräftelse</li>
+<li>Gästfavorit på Airbnb</li>
+<li>Personlig kontakt med din värd</li>
+<li>Varje förfrågan granskas personligen</li>
 </ul>
+<p class="booking-review-link"><a href="/sv/#reviews">Läs gästrecensioner</a></p>
 <a class="primary-btn" href="#booking-request" data-send-request-link>
 Skicka förfrågan
 </a>
@@ -154,10 +155,11 @@ Skicka förfrågan
 
 <form class="request-form" id="booking-request" data-booking-request-form>
 
+<input type="checkbox" name="botcheck" tabindex="-1" hidden aria-hidden="true">
 <p class="section-tag">DIREKTFÖRFRÅGAN</p>
 <h2>Berätta om er vistelse</h2>
 <p class="request-intro">
-Detta bekräftar inte en bokning automatiskt. Vi återkommer med tillgänglighet, pris och nästa steg.
+Vi ser fram emot att höra om era planer. Vistelsen är bekräftad först när du har fått en personlig bokningsbekräftelse från oss.
 </p>
 <p class="request-selection" data-request-selection>
 Välj datum och gäster ovan så följer de med i din förfrågan.
@@ -175,52 +177,44 @@ Utcheckning
 <input type="date" name="check_out" data-check-out required>
 </label>
 
-<label>
-Gäster
-<select name="guests" data-guests required>
-<option value="">Välj antal gäster</option>
-<option value="1">1 gäst</option>
-<option value="2">2 gäster</option>
-<option value="3">3 gäster</option>
-<option value="4">4 gäster</option>
-<option value="5">5 gäster</option>
-<option value="6">6 gäster</option>
-</select>
-</label>
-
-<label>
-Ditt namn
-<input type="text" name="guest_name" placeholder="Name" required>
-</label>
-
+<input type="hidden" name="guests" data-guests>
+<label>Antal vuxna<select name="adults" data-adults required><option value="">Välj</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></label>
+<label>Antal barn<select name="children" data-children required><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></label>
+<label>Förnamn<input type="text" name="first_name" autocomplete="given-name" maxlength="80" required></label>
+<label>Efternamn<input type="text" name="last_name" autocomplete="family-name" maxlength="80" required></label>
 <label>
 E-post
-<input type="email" name="guest_email" placeholder="you@example.com" required>
+<input type="email" name="guest_email" autocomplete="email" maxlength="254" placeholder="you@example.com" required>
 </label>
 
 <label>
-Telefon
-<input type="tel" name="guest_phone" placeholder="+46 ...">
+Telefonnummer / WhatsApp
+<input type="tel" name="guest_phone" autocomplete="tel" maxlength="40" placeholder="+46 ..." required>
 </label>
 
+<label>Land<input type="text" name="country" autocomplete="country-name" maxlength="80" required></label>
 </div>
+<p class="request-help">Högst sex gäster totalt, inklusive barn. Minst en vuxen behöver ingå.</p>
 
 <label>
 Berätta lite om dig/er och vistelsen
-<textarea name="message" rows="6" placeholder="Who is travelling, what brings you to Dalarna, and anything helpful for us to know." required></textarea>
+<textarea name="message" rows="6" maxlength="2000" placeholder="Who is travelling, what brings you to Dalarna, and anything helpful for us to know." required></textarea>
 </label>
 
 <button class="booking-button request-submit" type="submit">
 Skicka bokningsförfrågan
 </button>
 
-<p class="request-help" data-request-help>
-Din mejlapp öppnas med förfrågan ifylld.
+<p class="request-help" data-request-help role="status" aria-live="polite">
+Din mejlapp öppnas med förfrågan färdig att skicka. Skicka mejlet för att slutföra din förfrågan.
 </p>
 
+<p class="request-help"><a data-email-fallback hidden>Skicka förfrågan via mejl i stället</a></p>
+<p class="request-help">Dina uppgifter används för att besvara din förfrågan och ordna din vistelse. <a data-privacy-link href="/privacy/en.html">Privacy &amp; cookies</a></p>
 <p class="whatsapp-contact"><a href="https://wa.me/46703021094?text=Hi%21%20I%27m%20interested%20in%20staying%20at%20Solsidan%20Dalarna%20and%20have%20a%20question%20about..." target="_blank" rel="noopener noreferrer">Frågor? Chatta med oss på WhatsApp</a></p>
 
 </form>
+<aside class="booking-airbnb-alternative"><h3>Föredrar du att boka via Airbnb?</h3><p>Solsidan Dalarna finns också på Airbnb. Välj det bokningsalternativ som känns tryggast för dig.</p><a href="https://airbnb.com/h/solsidan-dalarna" target="_blank" rel="noopener noreferrer">Se Solsidan Dalarna på Airbnb</a></aside>
 
 </div>
 
@@ -250,9 +244,10 @@ Din mejlapp öppnas med förfrågan ifylld.
 
 </footer>
 
-<script src="/i18n.js?v=20260924-direct-prices"></script>
+<script src="/i18n.js?v=20260924-direct-request"></script>
 <script src="/pricing-data.js?v=20260924-direct-prices"></script>
-<script src="/booking.js?v=20260924-weeks"></script>
+<script src="/booking-config.js?v=20260924-direct-request"></script>
+<script src="/booking.js?v=20260924-direct-request"></script>
 
 <script src="/navigation.js?v=20260917-nav-spacing"></script><script src="/seo.js?v=20260918-static"></script>
 <a class="whatsapp-float" href="https://wa.me/46703021094?text=Hi%21%20I%27m%20interested%20in%20staying%20at%20Solsidan%20Dalarna%20and%20have%20a%20question%20about..." target="_blank" rel="noopener noreferrer" aria-label="Frågor? Chatta med oss på WhatsApp"><svg viewbox="0 0 32 32" width="26" height="26" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="2" d="M27 15.5a11.5 11.5 0 0 1-17 10L4 27l1.5-6A11.5 11.5 0 1 1 27 15.5Z"></path><path fill="currentColor" d="M11 9c-1 0-2 2-1 5 1 4 5 7 9 8 3 0 4-2 3-3l-3-2-2 2c-2-1-4-3-5-5l2-1-1-4Z"></path></svg></a>

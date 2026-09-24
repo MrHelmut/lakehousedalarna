@@ -27,3 +27,17 @@ p=page({saved:'invalid'});assert.equal(p.scripts.length,0);
 p=page({storageFails:true});assert.equal(p.scripts.length,0);p.click('accepted');assert.equal(p.scripts.length,1);
 p=page({path:'/'});assert.equal(p.scripts.length,0);
 console.log('PASS: default/decline blocking, persistence, expiry, invalid storage, consent order, single tag, all click events, no contact/query data, revocation, language, redirect exclusion. Uses simulated DOM; live Google receipt tested separately.');
+
+p=page();let before=p.window.dataLayer.length;
+p.winListeners['lakehouse-booking-start']();p.winListeners['lakehouse-booking-submit']();
+assert.equal(p.window.dataLayer.length,before);
+p.click('accepted');
+p.winListeners['lakehouse-booking-start']();assert.equal(p.window.dataLayer.at(-1)[1],'start_booking_request');
+p.winListeners['lakehouse-booking-submit']();assert.equal(p.window.dataLayer.at(-1)[1],'booking_request_email_handoff');
+assert.equal(p.window.dataLayer.at(-1)[2].delivery_status,'handoff');
+p.click(null,'https://lakehousedalarna.com/en/booking/');
+p.click(null,'https://airbnb.com/h/solsidan-dalarna');
+for(const event of ['click_check_availability','click_airbnb','booking_click','airbnb_click'])assert(p.window.dataLayer.some(x=>x[0]==='event'&&x[1]===event));
+console.log('PASS: new funnel events preserve legacy events, consent and explicit email handoff status.');
+
+p.winListeners['lakehouse-booking-received']();assert.equal(p.window.dataLayer.at(-1)[1],'submit_booking_request');assert.equal(p.window.dataLayer.at(-1)[2].delivery_status,'received');

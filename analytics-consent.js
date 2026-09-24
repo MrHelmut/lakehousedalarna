@@ -109,10 +109,15 @@
       else if(u.hostname==='wa.me'||u.hostname==='api.whatsapp.com'){event='whatsapp_click';kind='whatsapp';}
       else if(['mailto:','tel:'].includes(u.protocol)){event='contact_click';kind=u.protocol==='mailto:'?'email':'phone';}
       else if(u.origin===location.origin && /^\/(en\/booking\/|sv\/boka\/|de\/buchen\/|booking\.html)$/.test(u.pathname)){event='booking_click';kind='booking';}
+      if(event==='booking_click')track('click_check_availability',{destination:'booking'});
+      if(event==='airbnb_click')track('click_airbnb',{destination:'airbnb'});
       if(event)track(event,{destination:kind,placement:target.closest('footer')?'footer':target.closest('nav')?'navigation':target.classList.contains('whatsapp-float')?'floating':'content'});
     });
     window.addEventListener('storage',e=>{if(e.key===KEY){apply(read(),false);if(!choice)show();}});
     window.addEventListener('site-language-change',render);
+    window.addEventListener('lakehouse-booking-start',()=>track('start_booking_request',{placement:'booking_form'}));
+    window.addEventListener('lakehouse-booking-received',()=>track('submit_booking_request',{placement:'booking_form',delivery_method:'web3forms',delivery_status:'received'}));
+    window.addEventListener('lakehouse-booking-submit',()=>track('booking_request_email_handoff',{placement:'booking_form',delivery_method:'email_app',delivery_status:'handoff'}));
     window.addEventListener('lakehouse-contact-intent',()=>track('contact_click',{destination:'email',placement:'booking_form'}));
     window.addEventListener('pageshow',()=>{if(read()!==choice){apply(read(),false);if(!choice)show();}});
   }

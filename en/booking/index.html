@@ -17,7 +17,7 @@
     <link rel="icon" href="/favicon.ico">
     <link rel="preload" as="image" href="/images/hero.png?v=20260910a" fetchpriority="high">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="/style.css?v=20260924-weeks">
+    <link rel="stylesheet" href="/style.css?v=20260924-direct-request">
     <link rel="alternate" hreflang="en" href="https://lakehousedalarna.com/en/booking/">
     <link rel="alternate" hreflang="sv" href="https://lakehousedalarna.com/sv/boka/">
     <link rel="alternate" hreflang="de" href="https://lakehousedalarna.com/de/buchen/">
@@ -27,7 +27,7 @@
     <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="/fonts-local.css">
 <link rel="stylesheet" href="/consent.css?v=20260924-map-card">
-<script defer src="/analytics-consent.js?v=20260924-map-card"></script>
+<script defer src="/analytics-consent.js?v=20260924-direct-request"></script>
 <meta property="og:locale" content="en_GB"><script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "WebSite", "@id": "https://lakehousedalarna.com/#website", "url": "https://lakehousedalarna.com/", "name": "Lake House Dalarna", "alternateName": "Solsidan Dalarna", "inLanguage": ["sv", "en", "de"]}, {"@type": "LodgingBusiness", "@id": "https://lakehousedalarna.com/#lodging", "name": "Lake House Dalarna", "alternateName": "Solsidan Dalarna", "url": "https://lakehousedalarna.com/", "image": "https://lakehousedalarna.com/images/hero.png", "address": {"@type": "PostalAddress", "addressLocality": "Falun", "addressRegion": "Dalarna", "addressCountry": "SE"}, "petsAllowed": false, "sameAs": ["https://airbnb.com/h/solsidan-dalarna", "https://www.instagram.com/solsidan_dalarna/"]}, {"@type": "WebPage", "@id": "https://lakehousedalarna.com/en/booking/#webpage", "url": "https://lakehousedalarna.com/en/booking/", "name": "Availability & Booking | Lake House Dalarna", "description": "Plan your stay at Lake House Dalarna. Check available dates and estimated prices, then send a booking request directly to your hosts.", "inLanguage": "en", "isPartOf": {"@id": "https://lakehousedalarna.com/#website"}, "about": {"@id": "https://lakehousedalarna.com/#lodging"}}]}</script></head>
 
 <body class="booking-page">
@@ -70,16 +70,16 @@ booking request directly to us.
 
 <section class="request-section">
 
-<section class="booking-choice"><h2>Plan your stay</h2><p>Choose dates, review the estimated price and send us a booking request.</p><p class="booking-explanation">Your booking is confirmed only when you have received a confirmation from us.</p></section><div class="booking-steps">
+<section class="booking-choice"><h2>Plan your stay</h2><p>Whether this is your first visit or you are returning, you are welcome to request your stay directly with us.</p><p class="booking-explanation">We look forward to hearing about your plans. Your stay is confirmed only when you receive a personal booking confirmation from us.</p></section><div class="booking-steps">
 <div>
 <p class="section-tag">HOW DIRECT BOOKING WORKS</p>
-<h2>Request first, payment after approval</h2>
+<h2>Your stay, personally arranged</h2>
 </div>
 <ol>
 <li><strong>Choose dates</strong><span>Pick dates and guests to see a guide price.</span></li>
 <li><strong>Send request</strong><span>Tell us who is travelling and the purpose of your stay.</span></li>
-<li><strong>We confirm</strong><span>We review availability, final price and house rules.</span></li>
-<li><strong>Secure payment</strong><span>If everything fits, we send a secure payment link before the booking is confirmed.</span></li>
+<li><strong>We review your request</strong><span>We read your introduction and check the dates and details before approving your stay.</span></li>
+<li><strong>Personal confirmation</strong><span>Once everything is agreed, we send your booking confirmation. No instant booking or online payment.</span></li>
 </ol>
 </div>
 
@@ -144,10 +144,11 @@ Number of guests
 10% off when you book directly with us. The discount applies to the nightly base price, excluding Christmas and the World Championships in Falun. Cleaning is 850 SEK per stay and bed linen is 150 SEK per guest.
 </p>
 <ul class="trust-list">
-<li>Manual approval before payment</li>
-<li>Secure payment link after approval</li>
-<li>No automatic booking without confirmation</li>
+<li>Airbnb Guest Favourite</li>
+<li>Personal contact with your host</li>
+<li>Every request is reviewed personally</li>
 </ul>
+<p class="booking-review-link"><a href="/en/#reviews">Read guest reviews</a></p>
 <a class="primary-btn" href="#booking-request" data-send-request-link>
 Send Request
 </a>
@@ -155,11 +156,11 @@ Send Request
 
 <form class="request-form" id="booking-request" data-booking-request-form>
 
+<input type="checkbox" name="botcheck" tabindex="-1" hidden aria-hidden="true">
 <p class="section-tag">DIRECT REQUEST</p>
 <h2>Tell Us About Your Stay</h2>
 <p class="request-intro">
-This does not confirm a booking automatically. We will reply with availability,
-price and next steps.
+We look forward to hearing about your plans. Your stay is confirmed only when you receive a personal booking confirmation from us.
 </p>
 <p class="request-selection" data-request-selection>
 Choose dates and guests above to include them in your request.
@@ -177,52 +178,44 @@ Check-out
 <input type="date" name="check_out" data-check-out required>
 </label>
 
-<label>
-Guests
-<select name="guests" data-guests required>
-<option value="">Select guests</option>
-<option value="1">1 guest</option>
-<option value="2">2 guests</option>
-<option value="3">3 guests</option>
-<option value="4">4 guests</option>
-<option value="5">5 guests</option>
-<option value="6">6 guests</option>
-</select>
-</label>
-
-<label>
-Your name
-<input type="text" name="guest_name" placeholder="Name" required>
-</label>
-
+<input type="hidden" name="guests" data-guests>
+<label>Number of adults<select name="adults" data-adults required><option value="">Select</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></label>
+<label>Number of children<select name="children" data-children required><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></label>
+<label>First name<input type="text" name="first_name" autocomplete="given-name" maxlength="80" required></label>
+<label>Last name<input type="text" name="last_name" autocomplete="family-name" maxlength="80" required></label>
 <label>
 Email
-<input type="email" name="guest_email" placeholder="you@example.com" required>
+<input type="email" name="guest_email" autocomplete="email" maxlength="254" placeholder="you@example.com" required>
 </label>
 
 <label>
-Phone
-<input type="tel" name="guest_phone" placeholder="+46 ...">
+Phone number / WhatsApp
+<input type="tel" name="guest_phone" autocomplete="tel" maxlength="40" placeholder="+46 ..." required>
 </label>
 
+<label>Country<input type="text" name="country" autocomplete="country-name" maxlength="80" required></label>
 </div>
+<p class="request-help">Up to six guests in total, including children. Please include at least one adult.</p>
 
 <label>
 Tell us a little about yourself and your stay
-<textarea name="message" rows="6" placeholder="Who is travelling, what brings you to Dalarna, and anything helpful for us to know." required></textarea>
+<textarea name="message" rows="6" maxlength="2000" placeholder="Who is travelling, what brings you to Dalarna, and anything helpful for us to know." required></textarea>
 </label>
 
 <button class="booking-button request-submit" type="submit">
 Send booking request
 </button>
 
-<p class="request-help" data-request-help>
-Your email app will open with the request filled in.
+<p class="request-help" data-request-help role="status" aria-live="polite">
+Your email app will open with your request ready to send. Please send the email to complete your enquiry.
 </p>
 
+<p class="request-help"><a data-email-fallback hidden>Send this request by email instead</a></p>
+<p class="request-help">Your details are used to answer your enquiry and arrange your stay. <a data-privacy-link href="/privacy/en.html">Privacy &amp; cookies</a></p>
 <p class="whatsapp-contact"><a href="https://wa.me/46703021094?text=Hi%21%20I%27m%20interested%20in%20staying%20at%20Solsidan%20Dalarna%20and%20have%20a%20question%20about..." target="_blank" rel="noopener noreferrer">Questions? Chat with us on WhatsApp</a></p>
 
 </form>
+<aside class="booking-airbnb-alternative"><h3>Prefer to book through Airbnb?</h3><p>Solsidan Dalarna is also available on Airbnb. Choose the booking option you feel most comfortable with.</p><a href="https://airbnb.com/h/solsidan-dalarna" target="_blank" rel="noopener noreferrer">View Solsidan Dalarna on Airbnb</a></aside>
 
 </div>
 
@@ -252,9 +245,10 @@ Your email app will open with the request filled in.
 
 </footer>
 
-<script src="/i18n.js?v=20260924-direct-prices"></script>
+<script src="/i18n.js?v=20260924-direct-request"></script>
 <script src="/pricing-data.js?v=20260924-direct-prices"></script>
-<script src="/booking.js?v=20260924-weeks"></script>
+<script src="/booking-config.js?v=20260924-direct-request"></script>
+<script src="/booking.js?v=20260924-direct-request"></script>
 
 <script src="/navigation.js?v=20260917-nav-spacing"></script><script src="/seo.js?v=20260918-static"></script>
 <a class="whatsapp-float" href="https://wa.me/46703021094?text=Hi%21%20I%27m%20interested%20in%20staying%20at%20Solsidan%20Dalarna%20and%20have%20a%20question%20about..." target="_blank" rel="noopener noreferrer" aria-label="Questions? Chat with us on WhatsApp"><svg viewbox="0 0 32 32" width="26" height="26" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="2" d="M27 15.5a11.5 11.5 0 0 1-17 10L4 27l1.5-6A11.5 11.5 0 1 1 27 15.5Z"></path><path fill="currentColor" d="M11 9c-1 0-2 2-1 5 1 4 5 7 9 8 3 0 4-2 3-3l-3-2-2 2c-2-1-4-3-5-5l2-1-1-4Z"></path></svg></a>

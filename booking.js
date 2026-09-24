@@ -10,6 +10,8 @@ const nextButton = document.querySelector("[data-next-month]");
 const checkInInput = document.querySelector("[data-check-in]");
 const checkOutInput = document.querySelector("[data-check-out]");
 const guestsInput = document.querySelector("[data-guests]");
+const adultsInput = document.querySelector("[data-adults]");
+const childrenInput = document.querySelector("[data-children]");
 const priceGuestsInput = document.querySelector("[data-guests-price]");
 const priceEstimate = document.querySelector("[data-price-estimate]");
 const priceDetails = document.querySelector("[data-price-details]");
@@ -54,6 +56,8 @@ if (/^20\d{2}-(0[1-9]|1[0-2])$/.test(requestedMonth || '')) {
     const [year, month] = requestedMonth.split('-').map(Number);
     visibleMonth = new Date(year, month - 1, 1);
 }
+let requestSending = false;
+let requestComplete = false;
 let syncingGuests = false;
 let availabilityUpdatedAt = "";
 let availabilityLoaded = false;
@@ -145,7 +149,28 @@ function syncGuestControls(value) {
     syncingGuests = true;
     guestsInput.value = value;
     priceGuestsInput.value = value;
+    adultsInput.value = value;
+    childrenInput.value = "0";
+    childrenInput.setCustomValidity("");
     syncingGuests = false;
+}
+
+function syncPartyComposition() {
+    const adults = Number(adultsInput.value), children = Number(childrenInput.value);
+    const valid = Number.isInteger(adults) && adults >= 1 && Number.isInteger(children) && children >= 0 && adults + children <= 6;
+    childrenInput.setCustomValidity(valid ? "" : tr("Please choose at least one adult and no more than six guests in total."));
+    guestsInput.value = valid ? String(adults + children) : "";
+    priceGuestsInput.value = guestsInput.value;
+    updateSummary();
+    renderCalendar();
+    return valid;
+}
+
+let requestStarted = false;
+function startBookingRequest() {
+    if (requestStarted) return;
+    requestStarted = true;
+    window.dispatchEvent(new Event("lakehouse-booking-start"));
 }
 
 function nightsBetween(checkIn, checkOut) {
@@ -244,7 +269,7 @@ function validateSelection() {
     checkOutInput.setCustomValidity(endInvalid ? tr("These dates are unavailable. Choose other dates.") : "");
     const ready = availabilityLoaded && !availabilityLoadFailed && coverageStart && coverageEnd;
     const valid = Boolean(ready && checkIn && checkOut && getSelectedGuests() && !startBlocked && !endInvalid);
-    form.querySelector("button[type='submit']").disabled = !valid;
+    form.querySelector("button[type='submit']").disabled = !valid || requestSending || requestComplete;
     sendRequestLink.setAttribute("aria-disabled", String(!valid));
     return valid;
 }
@@ -460,6 +485,7 @@ function selectDate(key) {
         checkOutInput.value = key;
     }
 
+    startBookingRequest();
     updateSummary();
     renderCalendar();
 }
@@ -470,7 +496,7 @@ function moveMonth(direction) {
 }
 
 function focusNextRequestField() {
-    const nextField = form.querySelector("input[name='guest_name'], input[name='guest_email'], textarea[name='message']");
+    const nextField = form.querySelector("input[name='first_name'], input[name='guest_email'], textarea[name='message']");
 
     form.scrollIntoView({ behavior: "smooth", block: "start" });
 
@@ -501,9 +527,13 @@ function updateCalendarStatus() {
     calendarStatus.textContent = tr("Loading availability...");
 }
 
+function usesDirectSubmission() {
+    return Boolean(window.lakeBookingForm?.accessKey);
+}
+
 function updateHelpTextDefault() {
     if (!helpText.classList.contains("error")) {
-        helpText.textContent = tr("Your email app will open with the request filled in.");
+        helpText.textContent = usesDirectSubmission() ? tr("Send your request directly to us. We will review your plans and reply personally.") : tr("Your email app will open with your request ready to send. Please send the email to complete your enquiry.");
     }
 }
 
@@ -538,8 +568,9 @@ async function loadAvailability() {
     updateSummary();
 }
 
-form.addEventListener("submit", (event) => {
+form.addEventListener("submit", async (event) => {
     event.preventDefault();
+    if (requestSending || requestComplete || form.querySelector("[name=botcheck]")?.checked) return;
 
     if (!validateSelection()) {
         helpText.textContent = tr("These dates are unavailable. Choose other dates.");
@@ -548,11 +579,15 @@ form.addEventListener("submit", (event) => {
         return;
     }
 
+    if (!syncPartyComposition() || !form.reportValidity()) return;
     const formData = new FormData(form);
     const checkIn = formatValue(formData, "check_in");
     const checkOut = formatValue(formData, "check_out");
     const guests = formatValue(formData, "guests");
-    const name = formatValue(formData, "guest_name");
+    const name = `${formatValue(formData, "first_name")} ${formatValue(formData, "last_name")}`;
+    const adults = formatValue(formData, "adults");
+    const children = String(formData.get("children") || "0");
+    const country = formatValue(formData, "country");
     const email = formatValue(formData, "guest_email");
     const phone = formatValue(formData, "guest_phone");
     const message = formatValue(formData, "message");
@@ -580,7 +615,7 @@ form.addEventListener("submit", (event) => {
         `Check-in: ${checkIn}`,
         `Check-out: ${checkOut}`,
         `Nights: ${nights}`,
-        `Guests: ${guests}`,
+        `Guests: ${guests} (${adults} adults, ${children} children)`,
         `Estimated price: ${estimate ? `${formatSek(estimate.total)} total (${formatSek(estimate.average)} accommodation per night average)` : "Not calculated"}`,
         `Accommodation: ${estimate ? formatSek(estimate.accommodation) : "Price on request"}`,
         `Direct booking discount (eligible nights): ${estimate ? formatSek(estimate.directDiscount) : "To be confirmed"}`,
@@ -589,21 +624,69 @@ form.addEventListener("submit", (event) => {
         "",
         `Name: ${name}`,
         `Email: ${email}`,
-        `Phone: ${phone}`,
+        `Phone / WhatsApp: ${phone}`,
+        `Country: ${country}`,
         "",
         "About us / our stay:",
         message,
         "",
         "Please let me know if these dates are available and what the total price would be.",
-        "If you can host us, please send the payment details or a secure payment link before the booking is confirmed.",
+        "I understand that my stay is confirmed only after your personal booking confirmation.",
     ].join("\n");
 
-    helpText.textContent = tr("Opening your email app with the request filled in.");
+    const emailUrl = `mailto:${bookingEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const emailFallback = document.querySelector("[data-email-fallback]");
+    emailFallback.href = emailUrl;
+    if (usesDirectSubmission()) {
+        requestSending = true;
+        validateSelection();
+        emailFallback.hidden = true;
+        helpText.classList.remove("error");
+        helpText.textContent = tr("Sending your request…");
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 20000);
+        try {
+            const response = await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                headers: {"Content-Type":"application/json", "Accept":"application/json"},
+                signal: controller.signal,
+                body: JSON.stringify({
+                    access_key: window.lakeBookingForm.accessKey,
+                    subject, from_name: "Lake House Dalarna booking request",
+                    name, email, phone, country, adults, children,
+                    arrival: checkIn, departure: checkOut, guests,
+                    message: body, botcheck: false
+                })
+            });
+            const result = await response.json();
+            if (!response.ok || result.success !== true) throw new Error("Request not accepted");
+            requestComplete = true;
+            helpText.textContent = tr("Thank you — we have received your request. We will reply personally. Your stay is not confirmed yet.");
+            window.dispatchEvent(new Event("lakehouse-booking-received"));
+        } catch {
+            helpText.textContent = tr("We could not confirm receipt of your request. Your details are still here. Please try again or send it by email.");
+            helpText.classList.add("error");
+            emailFallback.hidden = false;
+        } finally {
+            clearTimeout(timeout);
+            requestSending = false;
+            validateSelection();
+        }
+        return;
+    }
+
+    helpText.textContent = tr("Your request is ready in your email app. Please send it there; your stay is not yet confirmed.");
     helpText.classList.remove("error");
 
+    window.dispatchEvent(new Event("lakehouse-booking-submit"));
     window.dispatchEvent(new Event("lakehouse-contact-intent"));
-    window.location.href = `mailto:${bookingEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = emailUrl;
 });
+
+form.addEventListener("input", () => { requestComplete = false; startBookingRequest(); validateSelection(); });
+form.addEventListener("change", () => { requestComplete = false; startBookingRequest(); validateSelection(); });
+adultsInput.addEventListener("change", syncPartyComposition);
+childrenInput.addEventListener("change", syncPartyComposition);
 
 prevButton.addEventListener("click", () => moveMonth(-1));
 nextButton.addEventListener("click", () => moveMonth(1));
@@ -623,6 +706,7 @@ sendRequestLink.addEventListener("click", (event) => {
         helpText.textContent = tr("Your selected dates, guests and estimated price are included in the request.");
     }
 
+    startBookingRequest();
     focusNextRequestField();
 });
 checkInInput.addEventListener("change", () => {

@@ -4826,3 +4826,7 @@ a.lake-map-button:focus-visible,.whatsapp-contact a:focus-visible,.whatsapp-floa
 .calendar-week-number{display:flex;align-items:center;justify-content:center;color:#586873;font-size:11px;font-weight:600}
 .calendar-week-heading{font-size:10px}
 @media(max-width:420px){.calendar-grid{grid-template-columns:18px repeat(7,minmax(0,1fr));gap:3px}}
+
+.booking-review-link{font-size:14px;margin:16px 0}.booking-review-link a,.booking-airbnb-alternative a{color:#143042;text-underline-offset:4px}
+.booking-airbnb-alternative{grid-column:1/-1;border-top:1px solid #d9dfdc;padding:28px 0 0;max-width:760px}
+.booking-airbnb-alternative h3{font-size:19px;margin:0 0 10px}.booking-airbnb-alternative p{font-size:15px;line-height:1.7;margin:0 0 12px}.booking-airbnb-alternative a{font-size:14px}
