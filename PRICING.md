@@ -3,7 +3,7 @@
 Owner-approved update: 24 September 2026. Supported dates: 11 September 2026 through 31 August 2028.
 
 - Ordinary base price: 3,200 SEK per night. One direct discount of 10% makes it 2,880 SEK.
-- No additional weekly or monthly discount.
+- For stays of at least 28 nights, a single 30% discount replaces the 10% discount on eligible nightly base prices (2,240 SEK). No stacking or extra weekly discount. Christmas and event nights remain excluded, even within a monthly stay.
 - First guest included; each additional guest costs 239 SEK per night, without discount.
 - Cleaning: 850 SEK per stay; linen: 150 SEK per guest. Neither is discounted.
 - Christmas exclusion: 22–27 December 2026 inclusive. Base prices: 3,200 SEK on 22 and 27 December; 4,000 SEK on 23–26 December.

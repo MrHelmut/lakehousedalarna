@@ -11,7 +11,7 @@ window.lakeHousePricing = {
     linenPerGuest: 150,
     directDiscount: 0.10,
     weeklyDiscount: 0,
-    monthlyDiscount: 0,
+    monthlyDiscount: 0.30,
     directDiscountExclusions: [{start: "2026-12-22", end: "2026-12-28"}, {start: "2027-02-20", end: "2027-03-10"}],
     nightlyPrices: {
         "2026-09": [3200, 3200, 3200, 3200, 3200, 3200, 3200, 3200, 3200, 3200, 3200, 3200, 3200, 3200, 3200, 3200, 3200, 3200, 3200, 3200, 3200, 3200, 3200, 3200, 3200, 3200, 3200, 3200, 3200, 3200],

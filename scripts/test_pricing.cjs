@@ -49,8 +49,8 @@ assert.equal(weekly.lengthDiscount,0);
 assert.equal(stay('2027-02-27','2027-03-03',6).total,64530);
 assert.equal(stay('2027-04-01','2027-04-28',1).lengthDiscount,0);
 const monthly=stay('2027-04-01','2027-04-29',1);
-assert.equal(monthly.lengthDiscount,0);
-assert.equal(monthly.total,81640); // 28 * 2880 + 850 + 150
+assert.equal(monthly.lengthDiscount,.3);
+assert.equal(monthly.total,63720); // 28 * 2240 + 850 + 150
 assert.equal(stay('2026-10-04','2026-10-06',2).total,7388);
 assert.equal(stay('2028-08-31','2028-09-02',2),null);
 assert.equal(stay('2027-03-27','2027-03-29',2).nights,2);
@@ -134,7 +134,7 @@ console.log('PASS: Christmas peak nights, guest surcharge and mixed prices.');
 assert.equal(stay('2027-02-19','2027-02-21',1).accommodation,11880);
 assert.equal(stay('2027-03-09','2027-03-11',1).accommodation,15780);
 assert.equal(weekly.directDiscount,7*320);
-assert.equal(monthly.directDiscount,28*320);
+assert.equal(monthly.directDiscount,28*960);
 
 for (const [date,week] of [['2026-12-28',53],['2027-01-01',53],['2027-01-04',1],['2024-12-30',1],['2026-09-24',39]]) {
  assert.equal(run(`isoWeekNumber(parseDateKey('${date}'))`),week,date);
@@ -143,3 +143,11 @@ nodes.get('[data-calendar-grid]').children=[];
 run('visibleMonth=new Date(2027,0,1);renderCalendar();');
 assert.deepEqual(nodes.get('[data-calendar-grid]').children.filter(e=>e.className==='calendar-week-number').map(e=>e.textContent),['53','1','2','3','4','5']);
 console.log('PASS: ISO weeks and six calendar rows across year boundaries.');
+
+assert.equal(stay('2027-04-01','2027-04-28',1).accommodation,27*2880);
+assert.equal(stay('2027-04-01','2027-04-29',3).accommodation,28*(2240+2*239));
+assert.equal(stay('2026-12-01','2026-12-29',1).directDiscount,22*960);
+assert.equal(stay('2027-02-15','2027-03-15',1).directDiscount,10*960);
+assert.equal(run("getNightPrice(parseDateKey('2027-04-01'),1,28).amount"),2240);
+assert.equal(run("getNightPrice(parseDateKey('2027-02-27'),1,28).amount"),14500);
+console.log('PASS: 27/28-night threshold, monthly guest fees, no stacking, Christmas/VM exclusions and calendar nightly rate.');

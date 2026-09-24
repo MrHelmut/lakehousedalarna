@@ -198,14 +198,14 @@ function formatShortSek(amount) {
     return new Intl.NumberFormat(currentLanguage(), { maximumFractionDigits: 0 }).format(amount);
 }
 
-function getNightPrice(date, guests = "") {
+function getNightPrice(date, guests = "", stayNights = 0) {
     const key = toDateKey(date);
     if (key < pricing.firstDate || key > pricing.lastDate) return null;
     const base = pricing.nightlyPrices[key.slice(0, 7)]?.[date.getDate() - 1];
     if (!Number.isFinite(base)) return null;
     const extraGuests = Math.max(0, (Number(guests) || 1) - pricing.includedGuests);
     const airbnbAmount = base + extraGuests * pricing.extraGuestNightly;
-    const discountRate = (pricing.directDiscountExclusions || []).some(range => key >= range.start && key < range.end) ? 0 : pricing.directDiscount;
+    const discountRate = (pricing.directDiscountExclusions || []).some(range => key >= range.start && key < range.end) ? 0 : stayNights >= 28 ? pricing.monthlyDiscount : pricing.directDiscount;
     return { airbnbAmount, discountRate, discount: base * discountRate, amount: Math.round((airbnbAmount - base * discountRate) * 100) / 100 };
 }
 
@@ -215,12 +215,12 @@ function getStayEstimate(checkIn, checkOut, guests) {
     let airbnbSubtotal = 0;
     let discountSubtotal = 0;
     for (let day = parseDateKey(checkIn); day < parseDateKey(checkOut); day = addDays(day, 1)) {
-        const price = getNightPrice(day, guests);
+        const price = getNightPrice(day, guests, nights);
         if (!price) return null;
         airbnbSubtotal += price.airbnbAmount;
         discountSubtotal += price.discount;
     }
-    const lengthDiscount = 0;
+    const lengthDiscount = nights >= 28 ? pricing.monthlyDiscount : 0;
     // Apply one direct discount to the base price; guest fees are unchanged.
     const comparisonCents = Math.round(airbnbSubtotal * 100);
     const discountCents = Math.round(discountSubtotal * 100);
@@ -317,7 +317,7 @@ function updateSummary() {
     });
     const lengthNote = document.querySelector("[data-length-discount]");
     lengthNote.textContent = estimate && guests && !unavailable && estimate.lengthDiscount
-        ? tr("Includes {percent}% length-of-stay discount before the direct discount.", { percent: estimate.lengthDiscount * 100 }) : "";
+        ? tr("For stays of 28 nights or more, 30% off the nightly base price replaces the 10% direct discount. Christmas and the World Championships in Falun are excluded.", { percent: estimate.lengthDiscount * 100 }) : "";
     summaryGuests.textContent = guests ? guestLabel(guests) : tr("Not selected");
     summaryNights.textContent = nights ? nightLabel(nights) : tr("Not selected");
     summarySeason.textContent = estimate ? getSeasonSummary(estimate.labels) : tr("Not selected");
@@ -343,7 +343,7 @@ function updateSummary() {
         summaryStatus.textContent = tr("Choose dates");
         priceEstimate.textContent = tr("Choose dates");
         priceDetails.textContent = tr("Choose dates and guests to see the total, including cleaning and bed linen.");
-        seasonNote.textContent = tr("10% off when you book directly with us. The discount applies to the nightly base price, excluding Christmas and the World Championships in Falun. Cleaning is 850 SEK per stay and bed linen is 150 SEK per guest.");
+        seasonNote.textContent = tr("Book directly for 10% off the nightly base price, or 30% for stays of 28 nights or more. Discounts cannot be combined and exclude Christmas and the World Championships in Falun. Cleaning is 850 SEK per stay and bed linen is 150 SEK per guest.");
         return;
     }
 
@@ -446,7 +446,7 @@ function renderCalendar() {
 
         button.type = "button";
         button.className = "calendar-day";
-        const nightPrice = getNightPrice(day, getSelectedGuests());
+        const nightPrice = getNightPrice(day, getSelectedGuests(), nightsBetween(checkInInput.value, checkOutInput.value) || 0);
         const guide = unavailable && !past ? "×" : nightPrice && !past ? formatShortSek(nightPrice.amount) : "—";
         button.innerHTML = `<span class="calendar-date">${day.getDate()}</span><span class="calendar-rate">${guide}</span>`;
         button.setAttribute("aria-label", `${key}: ${unavailable ? tr("Unavailable") : nightPrice ? formatSek(nightPrice.amount) : tr("Price on request")}`);
