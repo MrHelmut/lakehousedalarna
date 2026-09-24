@@ -4833,3 +4833,31 @@ a.lake-map-button:focus-visible,.whatsapp-contact a:focus-visible,.whatsapp-floa
 
 /* Keep discovery links readable on the light seasonal-page background. */
 .seo-section .footer-links a,.seo-section p a:not(.primary-btn){color:var(--primary);text-decoration:underline;text-underline-offset:4px}
+
+/* Mobile CTA containment and compact, readable introductory copy. */
+@media(max-width:768px){
+ .primary-btn,.secondary-btn,.booking-button{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  min-height:56px;
+  height:auto;
+  padding:16px 22px;
+  box-sizing:border-box;
+  font-size:16px;
+  line-height:1.5;
+  text-align:center;
+  white-space:normal;
+  overflow-wrap:anywhere;
+ }
+ .aurora-feature .booking-button{display:flex}
+ .intro .container{grid-template-columns:minmax(0,1fr)}
+ .intro-left{min-width:0;overflow-wrap:anywhere}
+ .intro p{font-size:16px;line-height:1.65;margin-bottom:20px}
+ .seo-hero-content>p:not(.welcome),.seo-intro p{font-size:16px;line-height:1.65}
+ .seo-section>.primary-btn{margin-block:28px}
+ .price-panel .booking-review-link{margin-bottom:28px}
+}
