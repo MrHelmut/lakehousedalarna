@@ -581,6 +581,7 @@ form.addEventListener("submit", (event) => {
     helpText.textContent = tr("Opening your email app with the request filled in.");
     helpText.classList.remove("error");
 
+    window.dispatchEvent(new Event("lakehouse-contact-intent"));
     window.location.href = `mailto:${bookingEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 });
 
