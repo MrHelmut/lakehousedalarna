@@ -364,6 +364,13 @@ function updateSummary() {
     seasonNote.textContent = getSeasonNote(estimate.labels);
 }
 
+function isoWeekNumber(date) {
+    const thursday = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    thursday.setUTCDate(thursday.getUTCDate() + 4 - (thursday.getUTCDay() || 7));
+    const yearStart = new Date(Date.UTC(thursday.getUTCFullYear(), 0, 1));
+    return Math.ceil(((thursday - yearStart) / 86400000 + 1) / 7);
+}
+
 function renderCalendar() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -381,6 +388,13 @@ function renderCalendar() {
     monthLabel.textContent = `${localizedMonths[month]} ${year}`;
     calendarGrid.innerHTML = "";
 
+    const weekLabel = {sv: "Vecka", en: "Week", de: "Kalenderwoche"}[language] || "Week";
+    const weekHeader = document.createElement("div");
+    weekHeader.className = "calendar-weekday calendar-week-heading";
+    weekHeader.textContent = {sv: "V.", en: "Wk", de: "KW"}[language] || "Wk";
+    weekHeader.setAttribute("aria-label", weekLabel);
+    calendarGrid.appendChild(weekHeader);
+
     localizedWeekdays.forEach((name) => {
         const weekday = document.createElement("div");
         weekday.className = "calendar-weekday";
@@ -390,6 +404,13 @@ function renderCalendar() {
 
     for (let i = 0; i < 42; i += 1) {
         const day = addDays(start, i);
+        if (i % 7 === 0) {
+            const week = document.createElement("div");
+            week.className = "calendar-week-number";
+            week.textContent = String(isoWeekNumber(day));
+            week.setAttribute("aria-label", `${weekLabel} ${week.textContent}`);
+            calendarGrid.appendChild(week);
+        }
         const key = toDateKey(day);
         const button = document.createElement("button");
         const unavailable = isUnavailable(day);

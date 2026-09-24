@@ -4820,3 +4820,9 @@ a.lake-map-button:focus-visible,.whatsapp-contact a:focus-visible,.whatsapp-floa
 .aurora-tracker-link{margin:10px 0 0;text-align:center;}.aurora-tracker-link a{display:inline-block;padding:8px 4px;color:#143042;text-decoration:underline;text-underline-offset:4px;font-size:15px;}.aurora-tracker-link a:focus-visible{outline:3px solid #c5a46d;outline-offset:3px;}
 .aurora-feature .aurora-tracker-link a{color:#f0d8aa;}.aurora-feature .aurora-tracker-link a:hover{color:#fff;}
 .booking-page .whatsapp-float{display:none;}
+
+/* ISO weeks run Monday to Sunday; keep the label column narrow on phones. */
+.calendar-grid{grid-template-columns:24px repeat(7,minmax(0,1fr))}
+.calendar-week-number{display:flex;align-items:center;justify-content:center;color:#586873;font-size:11px;font-weight:600}
+.calendar-week-heading{font-size:10px}
+@media(max-width:420px){.calendar-grid{grid-template-columns:18px repeat(7,minmax(0,1fr));gap:3px}}

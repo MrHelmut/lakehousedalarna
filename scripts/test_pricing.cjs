@@ -135,3 +135,11 @@ assert.equal(stay('2027-02-19','2027-02-21',1).accommodation,11880);
 assert.equal(stay('2027-03-09','2027-03-11',1).accommodation,15780);
 assert.equal(weekly.directDiscount,7*320);
 assert.equal(monthly.directDiscount,28*320);
+
+for (const [date,week] of [['2026-12-28',53],['2027-01-01',53],['2027-01-04',1],['2024-12-30',1],['2026-09-24',39]]) {
+ assert.equal(run(`isoWeekNumber(parseDateKey('${date}'))`),week,date);
+}
+nodes.get('[data-calendar-grid]').children=[];
+run('visibleMonth=new Date(2027,0,1);renderCalendar();');
+assert.deepEqual(nodes.get('[data-calendar-grid]').children.filter(e=>e.className==='calendar-week-number').map(e=>e.textContent),['53','1','2','3','4','5']);
+console.log('PASS: ISO weeks and six calendar rows across year boundaries.');
