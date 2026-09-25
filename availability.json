@@ -1,10 +1,9 @@
 {
-  "updated_at": "2026-09-24T05:15:43+00:00",
+  "updated_at": "2026-09-25T05:24:16+00:00",
   "source": "airbnb_ical",
-  "coverage_start": "2026-09-24",
-  "coverage_end": "2027-09-24",
+  "coverage_start": "2026-09-25",
+  "coverage_end": "2027-09-25",
   "booked_dates": [
-    "2026-09-24",
     "2026-09-25",
     "2026-09-26",
     "2026-09-27",
@@ -111,7 +110,7 @@
   ],
   "blocked_ranges": [
     {
-      "start": "2026-09-24",
+      "start": "2026-09-25",
       "end": "2026-09-28",
       "summary": "Unavailable"
     },
