@@ -1,15 +1,15 @@
 {
-  "updated_at": "2026-09-28T12:49:38+00:00",
+  "updated_at": "2026-09-28T12:57:54+00:00",
   "source": "airbnb_ical",
   "coverage_start": "2026-09-28",
   "coverage_end": "2027-12-01",
   "synced_coverage_end": "2027-09-28",
   "manual_request_ranges": [
     {
-      "start": "2027-10-01",
+      "start": "2027-09-28",
       "end": "2027-12-01",
       "reviewed_at": "2026-09-28",
-      "reason": "Owner requested both channels open; verified available in Airbnb UI. Beyond standard iCal coverage: manually check new reservations before confirming a request."
+      "reason": "Owner authorized requests for 28 September through November 2027. Beyond standard iCal coverage: manually check new reservations before confirming a request."
     }
   ],
   "booked_dates": [
@@ -128,10 +128,7 @@
     "2027-08-26",
     "2027-08-27",
     "2027-08-28",
-    "2027-08-29",
-    "2027-09-28",
-    "2027-09-29",
-    "2027-09-30"
+    "2027-08-29"
   ],
   "blocked_ranges": [
     {
@@ -182,11 +179,6 @@
     {
       "start": "2027-08-21",
       "end": "2027-08-30",
-      "summary": "Unavailable"
-    },
-    {
-      "start": "2027-09-28",
-      "end": "2027-10-01",
       "summary": "Unavailable"
     }
   ]
