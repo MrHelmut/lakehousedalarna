@@ -83,12 +83,21 @@ def main():
     ics = fetch_ics(ical_url)
     today = date.today()
     # Do not advertise dates beyond the supported Airbnb export window.
-    latest = today + timedelta(days=365)
+    sync_end = today + timedelta(days=365)
+    latest = sync_end
     ranges = []
     booked_dates = set()
 
     events = list(event_ranges(unfold_ics(ics)))
     overrides = json.loads((ROOT / "availability-overrides.json").read_text(encoding="utf-8"))
+    # Explicit owner-reviewed dates can accept requests beyond the sync window.
+    manual_ranges = overrides.get("manual_request_ranges", [])
+    manual_days = {day.isoformat() for item in manual_ranges
+                   for day in daterange(date.fromisoformat(item["start"]), date.fromisoformat(item["end"]))}
+    latest = max([sync_end] + [date.fromisoformat(item["end"]) for item in manual_ranges])
+    # Fail closed in gaps; never make unrelated dates available by extending coverage.
+    booked_dates.update(day.isoformat() for day in daterange(sync_end, latest)
+                        if day.isoformat() not in manual_days)
     for item in overrides.get("blocked_ranges", []):
         events.append({"start": date.fromisoformat(item["start"]), "end": date.fromisoformat(item["end"])})
 
@@ -128,6 +137,8 @@ def main():
         "source": "airbnb_ical",
         "coverage_start": today.isoformat(),
         "coverage_end": latest.isoformat(),
+        "synced_coverage_end": sync_end.isoformat(),
+        "manual_request_ranges": manual_ranges,
         "booked_dates": sorted(booked_dates),
         "blocked_ranges": sorted(ranges, key=lambda item: item["start"]),
     }
