@@ -1,5 +1,5 @@
 {
-  "reviewed_at": "2026-09-25",
+  "reviewed_at": "2026-09-28",
   "note": "Additional unavailable dates confirmed by the owner. End dates are exclusive. Remove a range here if these dates are reopened.",
   "blocked_ranges": [
     {
@@ -17,9 +17,34 @@
   ],
   "direct_only_open_ranges": [
     {
-      "start": "2026-12-22",
+      "start": "2026-10-20",
+      "end": "2026-10-23",
+      "reason": "Owner authorized direct-only availability for remaining free 2026 nights on 2026-09-28. Reservations and local blocks remain unavailable."
+    },
+    {
+      "start": "2026-10-25",
+      "end": "2026-10-27",
+      "reason": "Owner authorized direct-only availability for remaining free 2026 nights on 2026-09-28. Reservations and local blocks remain unavailable."
+    },
+    {
+      "start": "2026-10-30",
+      "end": "2026-11-09",
+      "reason": "Owner authorized direct-only availability for remaining free 2026 nights on 2026-09-28. Reservations and local blocks remain unavailable."
+    },
+    {
+      "start": "2026-11-16",
+      "end": "2026-11-23",
+      "reason": "Owner authorized direct-only availability for remaining free 2026 nights on 2026-09-28. Reservations and local blocks remain unavailable."
+    },
+    {
+      "start": "2026-11-30",
+      "end": "2026-12-11",
+      "reason": "Owner authorized direct-only availability for remaining free 2026 nights on 2026-09-28. Reservations and local blocks remain unavailable."
+    },
+    {
+      "start": "2026-12-14",
       "end": "2026-12-28",
-      "reason": "Owner authorized website-only Christmas availability on 2026-09-18. Never override reservations."
+      "reason": "Owner authorized direct-only availability for remaining free 2026 nights on 2026-09-28. Reservations and local blocks remain unavailable."
     }
   ]
 }

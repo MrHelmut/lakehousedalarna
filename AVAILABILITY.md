@@ -11,3 +11,5 @@ GitHub Actions is scheduled every six hours and requires the private AIRBNB_ICAL
 Validation: node scripts/test_pricing.cjs
 
 Owner authorized website-only availability for 22–27 December 2026 on 18 September. direct_only_open_ranges only excludes explicit Airbnb (Not available) events; reservations and unknown event types always stay blocked. Airbnb itself remains unchanged.
+
+On 28 September 2026 the owner closed remaining free 2026 nights on Airbnb only. direct_only_open_ranges preserves only dates that were free on the website before that change; existing unavailable periods remain blocked. New direct reservations must be added to blocked_ranges because Airbnb owner-block events are ignored only within these explicit ranges. Reservations and unknown event types always override direct-only availability. No 2027 channel availability was changed.
