@@ -4,6 +4,28 @@
   if (window.lakeConsent) return;
   if (/^\/(?:index\.html|house\.html|booking\.html)?$/.test(location.pathname)) return;
   const ID = 'G-MN82629B7R', KEY = 'lakehouse-consent-v1', AGE = 180 * 86400000;
+  const INTERNAL='lakehouse-analytics-excluded';
+  const query=new URLSearchParams(location.search);
+  let excluded=false, exclusionSaved=true;
+  try {
+    if(['off','on'].includes(query.get('analytics')))localStorage.setItem(INTERNAL,query.get('analytics')==='off'?'1':'0');
+    excluded=localStorage.getItem(INTERNAL)==='1';
+  } catch {exclusionSaved=false;excluded=query.get('analytics')==='off';}
+  let referrer='';
+  try {
+    const direct=new URL(document.referrer);
+    referrer=direct.origin+'/';
+    if(direct.origin===location.origin && query.has('_lh_ref')) {
+      const original=new URL(query.get('_lh_ref'));
+      if(/^https?:$/.test(original.protocol)&&original.origin!==location.origin)referrer=original.origin+'/';
+    }
+  }catch{}
+  // Remove the redirect marker from the address before any Google tag can run.
+  if(query.has('_lh_ref')) {
+    const clean=new URL(location.href);clean.searchParams.delete('_lh_ref');
+    window.history.replaceState(null,'',clean.pathname+clean.search+clean.hash);
+  }
+  const isExcluded=()=>{try{return localStorage.getItem(INTERNAL)==='1'||excluded;}catch{return excluded;}};
   const denied = {analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'};
   const words = {
     en: {title:'Your privacy',text:'We use Google Analytics cookies, with your permission, to understand how visitors use our website and help us improve it.',accept:'Accept',decline:'Decline',settings:'Cookie settings',policy:'Privacy & cookies',close:'Close',mapTitle:'Discover Lake Rogsjön',map:'Show map',mapText:'Google receives your IP address and may use cookies when you open the map.',mapOff:'Hide Google map'},
@@ -27,14 +49,12 @@
     });
   }
   function start() {
-    if (choice!=='accepted') return;
+    if (choice!=='accepted'||isExcluded()) {window['ga-disable-'+ID]=true;window.gtag('consent','update',denied);eraseCookies();return;}
     window['ga-disable-'+ID]=false;
     window.gtag('consent','update',{...denied,analytics_storage:'granted'});
     if (loaded) return;
     loaded=true;
     // Drop arbitrary queries and fragments, including contact/form content.
-    let referrer='';
-    try {referrer=new URL(document.referrer).origin+'/';} catch {}
     window.gtag('js',new Date());
     const query=new URLSearchParams(location.search), campaign={};
     const source=query.get('utm_source'), medium=query.get('utm_medium');
@@ -70,7 +90,7 @@
   }
   function track(event,params) {
     if(read()!==choice)apply(read(),false);
-    if(choice!=='accepted')return;
+    if(choice!=='accepted'||isExcluded())return;
     window.gtag('event',event,{send_to:ID,site_language:lang(),...params});
   }
   function init() {
@@ -84,6 +104,13 @@
     if(footer){
       const settings=document.createElement('button');settings.type='button';settings.dataset.cookieSettings='';footer.append(settings);
       const policy=document.createElement('a');policy.dataset.privacyLink='';footer.append(policy);
+    }
+    if(['off','on'].includes(query.get('analytics'))) {
+      const status=document.createElement('p');status.setAttribute('role','status');
+      status.textContent=exclusionSaved
+        ? (excluded?'Dina besök i den här webbläsaren är undantagna från Google Analytics. / Analytics excluded in this browser.':'Undantaget är avstängt. Statistik kräver fortfarande ditt samtycke. / Analytics still requires your consent.')
+        : 'Inställningen kunde inte sparas. / This browser could not save the setting.';
+      document.body.prepend(status);
     }
     choice=read();render();
     if(choice==='accepted')start();else {eraseCookies();if(!choice)show();}
@@ -102,7 +129,7 @@
       if(event==='airbnb_click')track('click_airbnb',{destination:'airbnb'});
       if(event)track(event,{destination:kind,placement:target.closest('footer')?'footer':target.closest('nav')?'navigation':target.classList.contains('whatsapp-float')?'floating':'content'});
     });
-    window.addEventListener('storage',e=>{if(e.key===KEY){apply(read(),false);if(!choice)show();}});
+    window.addEventListener('storage',e=>{if(e.key===INTERNAL){excluded=e.newValue==='1';apply(read(),false);}if(e.key===KEY){apply(read(),false);if(!choice)show();}});
     window.addEventListener('site-language-change',render);
     window.addEventListener('lakehouse-booking-start',()=>track('start_booking_request',{placement:'booking_form'}));
     window.addEventListener('lakehouse-booking-received',()=>track('submit_booking_request',{placement:'booking_form',delivery_method:'web3forms',delivery_status:'received'}));

@@ -1,13 +1,14 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert/strict');
 const root=process.argv[2]||require('path').resolve(__dirname,'..');
 const code=fs.readFileSync(require('path').join(root,'analytics-consent.js'),'utf8'),KEY='lakehouse-consent-v1',ID='G-MN82629B7R';
-function page({saved,lang='sv',path='/sv/',storageFails=false}={}){
+function page({saved,lang='sv',path='/sv/',storageFails=false,excluded=false,search='?email=secret%40example.com&utm_source=instagram&utm_medium=social',referrer='https://www.google.com/search?q=private'}={}){
  const writes=[],scripts=[],listeners={},winListeners={},elements=[],store=new Map(saved?[[KEY,saved]]:[]);
+ if(excluded)store.set('lakehouse-analytics-excluded','1');
  class Element{constructor(tag){this.tagName=tag.toUpperCase();this.dataset={};this.hidden=false;this.classList={contains:()=>false};elements.push(this);}setAttribute(){}append(...x){}prepend(){}focus(){}scrollIntoView(){}getBoundingClientRect(){return {bottom:this.hidden?0:100}}querySelector(){return new Element('button')}closest(sel){return sel==='button,a'?this:null}hasAttribute(a){return a==='data-cookie-settings'&&this.settings}addEventListener(){} }
- const doc={readyState:'complete',documentElement:{lang,style:{setProperty(){}}},body:new Element('body'),head:{appendChild:x=>scripts.push(x.src)},activeElement:null,referrer:'https://www.google.com/search?q=private',createElement:t=>new Element(t),querySelector:()=>new Element('footer'),querySelectorAll:()=>[],addEventListener:(n,f)=>listeners[n]=f};
+ const doc={readyState:'complete',documentElement:{lang,style:{setProperty(){}}},body:new Element('body'),head:{appendChild:x=>scripts.push(x.src)},activeElement:null,referrer,createElement:t=>new Element(t),querySelector:()=>new Element('footer'),querySelectorAll:()=>[],addEventListener:(n,f)=>listeners[n]=f};
  Object.defineProperty(doc,'cookie',{get:()=> '_ga=existing; _ga_MN82629B7R=test; other=keep',set:v=>writes.push(v)});
- const window={addEventListener:(n,f)=>winListeners[n]=f};
- const ctx={window,document:doc,location:{pathname:path,origin:'https://lakehousedalarna.com',hostname:'lakehousedalarna.com',href:'https://lakehousedalarna.com'+path,search:'?email=secret%40example.com&utm_source=instagram&utm_medium=social'},localStorage:{getItem:k=>{if(storageFails)throw Error();return store.get(k)},setItem:(k,v)=>{if(storageFails)throw Error();store.set(k,v)}},URL,URLSearchParams,Date,ResizeObserver:class{observe(){}}};
+ const window={history:{replaceState(){}},addEventListener:(n,f)=>winListeners[n]=f};
+ const ctx={window,document:doc,location:{pathname:path,origin:'https://lakehousedalarna.com',hostname:'lakehousedalarna.com',href:'https://lakehousedalarna.com'+path+search,search},localStorage:{getItem:k=>{if(storageFails)throw Error();return store.get(k)},setItem:(k,v)=>{if(storageFails)throw Error();store.set(k,v)}},URL,URLSearchParams,Date,ResizeObserver:class{observe(){}}};
  vm.runInNewContext(code,ctx);
  const click=(choice,url)=>{const e=new Element(url?'a':'button');if(url)e.href=url;else e.dataset.choice=choice;listeners.click({target:e});};
  return {window,doc,writes,scripts,store,click,winListeners,elements};
@@ -47,3 +48,19 @@ p.click(null,'https://wa.me/46703021094');
 assert.equal(p.window.dataLayer.filter(x=>x[0]==='event'&&x[1]==='click_whatsapp').length,whatsappBefore+1);
 assert(!p.window.dataLayer.some(x=>x[0]==='event'&&x[1]==='whatsapp_click'));
 console.log('PASS: one canonical click_whatsapp event per click, no duplicate WhatsApp alias.');
+
+const accepted=JSON.stringify({version:1,choice:'accepted',time:Date.now()});
+p=page({saved:accepted,excluded:true});assert.equal(p.scripts.length,0);
+p.winListeners['lakehouse-booking-received']();assert(!p.window.dataLayer.some(x=>x[0]==='event'));
+p=page({saved:accepted,search:'?analytics=off'});assert.equal(p.scripts.length,0);assert.equal(p.store.get('lakehouse-analytics-excluded'),'1');
+p=page({saved:accepted,excluded:true,search:'?analytics=on'});assert.equal(p.scripts.length,1);
+p=page({saved:accepted,referrer:'https://lakehousedalarna.com/',search:'?_lh_ref=https%3A%2F%2Fwww.google.com%2F'});
+assert.equal(p.window.dataLayer.find(x=>x[0]==='config')[2].page_referrer,'https://www.google.com/');
+p=page({saved:accepted,referrer:'https://other.example/',search:'?_lh_ref=https%3A%2F%2Fwww.google.com%2F'});
+assert.equal(p.window.dataLayer.find(x=>x[0]==='config')[2].page_referrer,'https://other.example/');
+p=page({saved:accepted});p.store.set('lakehouse-analytics-excluded','1');p.winListeners.storage({key:'lakehouse-analytics-excluded',newValue:'1'});assert.equal(p.window['ga-disable-'+ID],true);
+console.log('PASS: internal browser exclusion, reversal, cross-tab exclusion and redirect attribution.');
+const redirect=fs.readFileSync(require('path').join(root,'seo.js'),'utf8');let dest;
+vm.runInNewContext(redirect,{document:{documentElement:{dataset:{}},referrer:'https://www.google.com/search?q=private'},location:{pathname:'/',origin:'https://lakehousedalarna.com',search:'?utm_source=instagram&utm_medium=social',hash:'',replace:v=>dest=v},URL,URLSearchParams});
+assert(dest.startsWith('/en/?'));assert(dest.includes('utm_source=instagram'));assert(dest.includes('_lh_ref='));assert(!dest.includes('private'));
+console.log('PASS: redirect preserves campaign and sanitized external origin.');

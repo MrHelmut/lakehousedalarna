@@ -6,6 +6,9 @@
  if(source<0)return;
  const params=new URLSearchParams(location.search), requested=params.get('lang');
  const lang=routes[requested]?requested:'en';
+ // Preserve only the external origin through the language redirect; never search terms.
+ params.delete('_lh_ref');
+ try {const ref=new URL(document.referrer);if(/^https?:$/.test(ref.protocol)&&ref.origin!==location.origin)params.set('_lh_ref',ref.origin+'/');}catch{}
  params.delete('lang');const query=params.toString();
  location.replace(routes[lang][source<2?0:source-1]+(query?'?'+query:'')+location.hash);
 })();
