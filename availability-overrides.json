@@ -63,6 +63,11 @@
       "start": "2026-12-11",
       "end": "2026-12-14",
       "reason": "Owner reopened cancelled personal stay on 2026-10-04; website requests only."
+    },
+    {
+      "start": "2027-01-04",
+      "end": "2027-01-11",
+      "reason": "Owner opened week 1 of 2027 for website requests on 2026-10-04."
     }
   ],
   "manual_request_ranges": [
