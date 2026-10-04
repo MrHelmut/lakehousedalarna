@@ -54,6 +54,11 @@
       "start": "2027-07-05",
       "end": "2027-07-12",
       "reason": "Owner authorized website-only availability; reservations and local blocks take precedence."
+    },
+    {
+      "start": "2026-12-11",
+      "end": "2026-12-14",
+      "reason": "Owner reopened cancelled personal stay on 2026-10-04; website requests only."
     }
   ],
   "manual_request_ranges": [

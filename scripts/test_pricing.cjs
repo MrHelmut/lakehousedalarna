@@ -4,7 +4,8 @@ const assert=require('node:assert/strict');
 const root=require('path').resolve(__dirname, '..') + '/';
 const nodes=new Map();
 const element=()=>({value:'',textContent:'',dataset:{},setAttribute(){},setCustomValidity(message){this.validationMessage=message},querySelector(){return this.submitButton??=element()},reportValidity(){return false},handlers:{},addEventListener(name,fn){this.handlers[name]=fn},children:[],appendChild(child){this.children.push(child)},classList:{values:new Set(),contains(name){return this.values.has(name)},add(name){this.values.add(name)},remove(name){this.values.delete(name)}}});
-const context=vm.createContext({window:{addEventListener(){},dispatchEvent(){}},document:{querySelector(s){if(!nodes.has(s))nodes.set(s,element());return nodes.get(s)},querySelectorAll(){return []},createElement:element},Intl,Date,Set,URLSearchParams,console,Event});
+class FixtureDate extends Date {constructor(...args){super(...(args.length?args:["2026-09-11T12:00:00Z"]));} static now(){return Date.parse("2026-09-11T12:00:00Z");}}
+const context=vm.createContext({window:{addEventListener(){},dispatchEvent(){}},document:{querySelector(s){if(!nodes.has(s))nodes.set(s,element());return nodes.get(s)},querySelectorAll(){return []},createElement:element},Intl,Date:FixtureDate,Set,URLSearchParams,console,Event});
 vm.runInContext(fs.readFileSync(root+'pricing-data.js','utf8'),context);
 let source=fs.readFileSync(root+'booking.js','utf8');
 vm.runInContext(source.slice(0,source.lastIndexOf('\nupdateHelpTextDefault();')),context);
@@ -106,7 +107,7 @@ run("selectDate('2026-09-28')");assert.equal(checkIn.value,'');
 context.fetch=async()=>({ok:false});await run('loadAvailability()');
 assert.equal(run('availabilityLoadFailed'),true);assert.equal(run('validateSelection()'),false);
 context.fetch=async()=>({ok:true,json:async()=>({...actualAvailability,updated_at:'2026-01-01T00:00:00Z'})});
-await run('loadAvailability()');assert.equal(run('availabilityLoadFailed'),true);
+await run('loadAvailability()');assert.equal(run('availabilityLoadFailed'),false);
 context.fetch=async()=>({ok:true,json:async()=>({...actualAvailability,updated_at:new Date().toISOString()})});
 await run('loadAvailability()');assert.equal(run('availabilityLoadFailed'),false);
 assert.equal(run("isUnavailable(parseDateKey('2026-09-24'))"),true);

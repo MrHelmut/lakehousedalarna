@@ -513,7 +513,7 @@ function updateCalendarStatus() {
 
     if (availabilityLoaded && availabilityUpdatedAt) {
         const updated = new Date(availabilityUpdatedAt);
-        calendarStatus.textContent = tr("Synced with Airbnb {date}.", {
+        calendarStatus.textContent = tr("Calendar updated {date}. Send a request; we confirm availability personally.", {
             date: updated.toLocaleDateString(currentLanguage() === "en" ? "en-GB" : currentLanguage() === "sv" ? "sv-SE" : "de-DE"),
         });
         return;
@@ -546,8 +546,7 @@ async function loadAvailability() {
 
         const availability = await response.json();
         if (!availability.coverage_start || !availability.coverage_end || !availability.updated_at
-            || Date.now() - new Date(availability.updated_at).getTime() > 48 * 60 * 60 * 1000
-            || !Number.isFinite(Date.parse(availability.updated_at))) throw new Error("Calendar data is missing or stale");
+            || !Number.isFinite(Date.parse(availability.updated_at))) throw new Error("Calendar data is invalid");
         bookedDates = collectUnavailableDates(availability);
         coverageStart = availability.coverage_start;
         coverageEnd = availability.coverage_end;
