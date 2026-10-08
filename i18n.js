@@ -1,5 +1,15 @@
 const siteTranslations = {
     sv: {
+"JANUARY & EARLY FEBRUARY":"JANUARI & BÖRJAN AV FEBRUARI",
+"Ski holidays in Bjursås":"Skidsemester i Bjursås",
+"Make time for a few days together. Enjoy skiing by day and cosy evenings in your own house by the lake. A winter escape to look forward to.":"Gör plats för några dagar tillsammans. Skidåkning på dagen och sköna kvällar i ert eget hus vid sjön. En vinterpaus att längta till.",
+"Check ski holiday dates and rates":"Se lediga skiddagar och pris",
+"Explore Bjursås and the piste map ↗":"Utforska Bjursås och pistkartan ↗",
+"24 FEBRUARY–7 MARCH 2027":"24 FEBRUARI–7 MARS 2027",
+"Accommodation for the Falun 2027 World Ski Championships":"Boende under skid-VM i Falun 2027",
+"Experience the competitions and atmosphere in Falun. Combine the World Ski Championships with a relaxing stay at Solsidan Dalarna with family or friends.":"Upplev tävlingarna och stämningen i Falun. Kombinera dagarna på skid-VM med en avkopplande vistelse på Solsidan Dalarna med familj eller vänner.",
+"Check World Championships dates and rates":"Se datum och pris under VM",
+"Explore the World Ski Championships in Falun ↗":"Läs mer om skid-VM i Falun ↗",
 "Check the northern lights forecast":"Se norrskensprognosen",
 "Questions? Chat with us on WhatsApp":"Frågor? Chatta med oss på WhatsApp",
 "★★★★★ 5.0 on Airbnb · Top 1%":"★★★★★ 5,0 på Airbnb · Topp 1 %",
@@ -486,6 +496,16 @@ const siteTranslations = {
         "Not provided": "Ej angivet"
     },
     de: {
+"JANUARY & EARLY FEBRUARY":"JANUAR & ANFANG FEBRUAR",
+"Ski holidays in Bjursås":"Skiurlaub in Bjursås",
+"Make time for a few days together. Enjoy skiing by day and cosy evenings in your own house by the lake. A winter escape to look forward to.":"Genießen Sie ein paar Tage zusammen: tagsüber Skifahren und abends gemütliche Stunden in Ihrem eigenen Haus am See. Eine Winterauszeit zum Vorfreuen.",
+"Check ski holiday dates and rates":"Termine und Preise für Ihren Skiurlaub",
+"Explore Bjursås and the piste map ↗":"Bjursås und den Pistenplan entdecken ↗",
+"24 FEBRUARY–7 MARCH 2027":"24. FEBRUAR–7. MÄRZ 2027",
+"Accommodation for the Falun 2027 World Ski Championships":"Unterkunft zur Nordischen Ski-WM 2027 in Falun",
+"Experience the competitions and atmosphere in Falun. Combine the World Ski Championships with a relaxing stay at Solsidan Dalarna with family or friends.":"Erleben Sie die Wettkämpfe und die besondere Stimmung in Falun. Verbinden Sie die Ski-WM mit einem erholsamen Aufenthalt im Solsidan Dalarna mit Familie oder Freunden.",
+"Check World Championships dates and rates":"Termine und Preise zur Ski-WM",
+"Explore the World Ski Championships in Falun ↗":"Mehr über die Ski-WM in Falun ↗",
 "Check the northern lights forecast":"Nordlichtvorhersage ansehen",
 "Questions? Chat with us on WhatsApp":"Fragen? Schreiben Sie uns auf WhatsApp",
 "★★★★★ 5.0 on Airbnb · Top 1%":"★★★★★ 5,0 auf Airbnb · Top 1 %",

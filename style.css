@@ -4861,3 +4861,6 @@ a.lake-map-button:focus-visible,.whatsapp-contact a:focus-visible,.whatsapp-floa
  .seo-section>.primary-btn{margin-block:28px}
  .price-panel .booking-review-link{margin-bottom:28px}
 }
+
+/* Approved winter booking cards */
+ .ski-preview{max-width:1100px;margin:0 auto;padding:56px 24px}.ski-preview .cards{display:grid;grid-template-columns:1fr 1fr;gap:24px}.ski-preview .card{background:white;border:1px solid #e9e7e1;border-radius:22px;padding:32px;box-shadow:0 15px 35px #14304207;display:flex;flex-direction:column}.ski-preview .eyebrow{letter-spacing:.17em;font-size:11px;font-weight:600;color:#8a6b38;margin-bottom:12px}.ski-preview h2{font-size:25px;line-height:1.35;margin:0 0 18px;color:#143042}.ski-preview p{font-size:15px;line-height:1.8;margin-bottom:24px;color:#555}.ski-preview .button{background:#c5a46d;color:white;border-radius:28px;padding:14px 22px;text-decoration:none;font-weight:600;font-size:14px;text-align:center;display:block;margin-top:auto}.ski-preview .secondary{color:#143042;font-size:12px;text-align:center;margin-top:18px;text-underline-offset:4px}@media(max-width:700px){.ski-preview{padding:32px 20px}.ski-preview .cards{grid-template-columns:1fr}.ski-preview .card{padding:25px}.ski-preview .button{white-space:normal;line-height:1.5}}
