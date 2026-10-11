@@ -28,6 +28,12 @@
 <link rel="stylesheet" href="/fonts-local.css">
 <link rel="stylesheet" href="/consent.css?v=20260924-auto-map">
 <script defer src="/analytics-consent.js?v=20260930-attribution"></script>
+<style>
+.euro-estimate[hidden]{display:none}
+.price-panel .euro-amount{font-size:22px;line-height:1.35;font-weight:500;color:#52646f;margin:0 0 6px}
+.price-panel .euro-note{font-size:12px;line-height:1.6;color:#626262;margin:0 0 20px}
+.price-panel:has(.euro-estimate:not([hidden])) h2{margin-bottom:8px}
+</style>
 <meta property="og:locale" content="sv_SE"><script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "WebSite", "@id": "https://lakehousedalarna.com/#website", "url": "https://lakehousedalarna.com/", "name": "Lake House Dalarna", "alternateName": "Solsidan Dalarna", "inLanguage": ["sv", "en", "de"]}, {"@type": "LodgingBusiness", "@id": "https://lakehousedalarna.com/#lodging", "name": "Lake House Dalarna", "alternateName": "Solsidan Dalarna", "url": "https://lakehousedalarna.com/", "image": "https://lakehousedalarna.com/images/hero.png", "address": {"@type": "PostalAddress", "addressLocality": "Falun", "addressRegion": "Dalarna", "addressCountry": "SE"}, "petsAllowed": false, "sameAs": ["https://airbnb.com/h/solsidan-dalarna", "https://www.instagram.com/solsidan_dalarna/"], "containsPlace": {"@type": "Accommodation", "numberOfBedrooms": 3, "occupancy": {"@type": "QuantitativeValue", "value": 6}, "floorSize": {"@type": "QuantitativeValue", "value": 200, "unitCode": "MTK"}}, "amenityFeature": [{"@type": "LocationFeatureSpecification", "name": "Private sandy beach", "value": true}, {"@type": "LocationFeatureSpecification", "name": "Private sauna", "value": true}, {"@type": "LocationFeatureSpecification", "name": "Boat", "value": true}, {"@type": "LocationFeatureSpecification", "name": "SUP", "value": true}]}, {"@type": "WebPage", "@id": "https://lakehousedalarna.com/sv/boka/#webpage", "url": "https://lakehousedalarna.com/sv/boka/", "name": "Lediga datum och bokning | Lake House Dalarna", "description": "Planera din vistelse på Lake House Dalarna. Se lediga datum och uppskattat pris och skicka en bokningsförfrågan direkt till oss.", "inLanguage": "sv", "isPartOf": {"@id": "https://lakehousedalarna.com/#website"}, "about": {"@id": "https://lakehousedalarna.com/#lodging"}}]}</script></head>
 
 <body class="booking-page">
@@ -110,6 +116,7 @@ Kalenderpriserna visas i SEK efter direktrabatten. Rabatten gäller inte 22–27
 <aside class="price-panel">
 <p class="section-tag">PRISINDIKATION</p>
 <h2 data-price-estimate>Välj datum</h2>
+<div class="euro-estimate" data-euro-estimate data-no-translate hidden aria-live="polite"><p class="euro-amount" data-euro-amount></p><p class="euro-note" data-euro-note></p></div>
 <p data-price-details>
 Välj datum och antal gäster för att se uppskattat totalpris. Slutpris bekräftas innan bokning.
 </p>
@@ -249,7 +256,8 @@ Skicka din förfrågan direkt till oss. Vi går igenom era planer och svarar per
 <script src="/i18n.js?v=20261004-calendar"></script>
 <script src="/pricing-data.js?v=20260924-monthly"></script>
 <script src="/booking-config.js?v=20260924-enabled"></script>
-<script src="/booking.js?v=20261004-calendar"></script>
+<script src="/euro-estimate.js?v=20261011"></script>
+<script src="/booking.js?v=20261011-euro"></script>
 
 <script src="/navigation.js?v=20260917-nav-spacing"></script><script src="/seo.js?v=20260930-attribution"></script>
 <a class="whatsapp-float" href="https://wa.me/46703021094?text=Hi%21%20I%27m%20interested%20in%20staying%20at%20Solsidan%20Dalarna%20and%20have%20a%20question%20about..." target="_blank" rel="noopener noreferrer" aria-label="Frågor? Chatta med oss på WhatsApp"><svg viewbox="0 0 32 32" width="26" height="26" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="2" d="M27 15.5a11.5 11.5 0 0 1-17 10L4 27l1.5-6A11.5 11.5 0 1 1 27 15.5Z"></path><path fill="currentColor" d="M11 9c-1 0-2 2-1 5 1 4 5 7 9 8 3 0 4-2 3-3l-3-2-2 2c-2-1-4-3-5-5l2-1-1-4Z"></path></svg></a>

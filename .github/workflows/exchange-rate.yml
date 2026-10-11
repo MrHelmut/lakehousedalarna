@@ -1,0 +1,21 @@
+name: Update EUR reference rate
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '35 16 * * 1-5'
+permissions:
+  contents: write
+concurrency:
+  group: euro-reference
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Refresh ECB reference
+        run: python scripts/update_exchange_rate.py
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Update ECB euro reference rate
+          file_pattern: exchange-rate.json

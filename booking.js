@@ -301,6 +301,7 @@ function isSelectedRangeDate(key) {
 }
 
 function updateSummary() {
+    window.lakeHouseEuro?.render(null, currentLanguage());
     validateSelection();
     const priceLabels = { comparison: "Accommodation before direct discount", directDiscount: "Direct booking discount (eligible nights)", accommodation: "Accommodation", cleaning: "Cleaning", linen: "Bed linen" };
     document.querySelectorAll("[data-price-label]").forEach(element => { element.textContent = tr(priceLabels[element.dataset.priceLabel]); });
@@ -379,6 +380,7 @@ function updateSummary() {
         return;
     }
 
+    window.lakeHouseEuro?.render(estimate.total, currentLanguage());
     summaryStatus.textContent = tr("Looks available");
     priceEstimate.textContent = tr("{total} estimated", { total: formatSek(estimate.total) });
     priceDetails.textContent = tr("Accommodation averages {average} per night for {nights}, including {guests}. Cleaning and bed linen are included in the total below.", {
@@ -738,3 +740,5 @@ window.addEventListener("site-language-change", () => {
 updateHelpTextDefault();
 updateCalendarStatus();
 loadAvailability();
+
+window.addEventListener("lakehouse-euro-ready", updateSummary);
