@@ -741,4 +741,3 @@ updateHelpTextDefault();
 updateCalendarStatus();
 loadAvailability();
 
-window.addEventListener("lakehouse-euro-ready", updateSummary);
