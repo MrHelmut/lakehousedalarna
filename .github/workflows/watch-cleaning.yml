@@ -1,0 +1,43 @@
+name: Watch cleaning notifications
+on:
+  workflow_dispatch:
+    inputs:
+      send_test:
+        description: Send an explicitly labelled test to the owner
+        type: boolean
+        default: false
+  schedule:
+    - cron: '43 * * * *'
+permissions:
+  contents: read
+concurrency:
+  group: cleaning-health-watch
+  cancel-in-progress: false
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cleaning-watch
+          key: cleaning-watch-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: cleaning-watch-
+      - name: Check service and notify owner if necessary
+        env:
+          SEND_TEST: ${{ inputs.send_test }}
+        run: |
+          if [ "$SEND_TEST" = "true" ]; then
+            node scripts/watch-cleaning.mjs --test
+          else
+            node scripts/watch-cleaning.mjs
+          fi
+      - uses: actions/cache/save@v4
+        if: success() && inputs.send_test != true
+        with:
+          path: .cleaning-watch
+          key: cleaning-watch-${{ github.run_id }}-${{ github.run_attempt }}
