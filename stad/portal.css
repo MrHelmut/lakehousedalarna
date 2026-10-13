@@ -4,3 +4,5 @@
 .welcome-copy{white-space:pre-line}#jobs article>.secondary{margin:8px 0 0 8px}
 
 .guest-rating{border:0;padding:0;margin:22px 0;display:flex;flex-wrap:wrap;gap:10px}.guest-rating legend{font-weight:600;margin-bottom:12px}.guest-rating button{flex:1;min-width:80px}.guest-rating button[aria-pressed=true]{background:#183442;color:white;outline:3px solid #b7cabc;outline-offset:2px}
+
+#job{scroll-margin-top:16px}@media(max-width:480px){#jobs article>.secondary{margin-left:0}}
