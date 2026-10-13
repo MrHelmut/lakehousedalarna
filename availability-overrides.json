@@ -1,5 +1,5 @@
 {
-  "reviewed_at": "2026-10-08",
+  "reviewed_at": "2026-10-13",
   "note": "Additional unavailable dates confirmed by the owner. End dates are exclusive. Remove a range here if these dates are reopened.",
   "blocked_ranges": [
     {
@@ -29,6 +29,10 @@
     {
       "start": "2026-12-19",
       "end": "2026-12-26"
+    },
+    {
+      "start": "2026-11-18",
+      "end": "2026-11-19"
     }
   ],
   "direct_only_open_ranges": [
