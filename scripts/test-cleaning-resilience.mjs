@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';import fs from 'node:fs/promises';import os from 'node:os';import path from 'node:path';import {check,isHealthy} from './watch-cleaning.mjs';
+const dir=await fs.mkdtemp(path.join(os.tmpdir(),'cleaning-health-')),stateFile=path.join(dir,'state.json'),H=3600000,now=Date.now();let mails=0,failMail=false;
+const doc=(n,s=n)=>({fields:{lastSuccess:{timestampValue:new Date(n).toISOString()},syncLastSuccess:{timestampValue:new Date(s).toISOString()},monitorVersion:{integerValue:'2'}}});
+const request=value=>async(url)=>url.includes('web3forms')?(mails++,{ok:!failMail,json:async()=>({success:!failMail})}):value instanceof Error?Promise.reject(value):({ok:true,json:async()=>value});
+assert.equal(isHealthy(doc(now,now-17*H),now),true);assert.equal(isHealthy(doc(now,now-18*H),now),false);
+await check({request:request(doc(now)),stateFile,now});
+await check({request:request(new Error()),stateFile,now:now+H});assert.equal(mails,0);
+await check({request:request(doc(now+2*H)),stateFile,now:now+2*H});assert.equal(mails,0);
+await check({request:request(doc(now)),stateFile,now:now+7*H});assert.equal(mails,1);
+await check({request:request(doc(now)),stateFile,now:now+40*H});assert.equal(mails,1);
+await check({request:request(doc(now+41*H)),stateFile,now:now+41*H});assert.equal(mails,2);
+failMail=true;await assert.rejects(check({request:request(doc(now)),stateFile,now:now+42*H}));failMail=false;
+await check({request:request(doc(now)),stateFile,now:now+43*H});assert.equal(mails,4);
+console.log('PASS: transient silence, separate sync freshness, one incident alert, recovery, failed mail retries');
