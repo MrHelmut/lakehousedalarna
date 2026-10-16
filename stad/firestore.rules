@@ -1,0 +1,102 @@
+rules_version = '2';
+service cloud.firestore {
+ match /databases/{database}/documents {
+  function member() {
+   return request.auth != null && request.auth.token.email_verified == true
+    && exists(/databases/$(database)/documents/members/$(request.auth.uid)) && get(/databases/$(database)/documents/members/$(request.auth.uid)).data.active == true
+    && get(/databases/$(database)/documents/members/$(request.auth.uid)).data.role in ['owner','cleaner'];
+  }
+
+  function owner() { return member() && get(/databases/$(database)/documents/members/$(request.auth.uid)).data.role == 'owner'; }
+  match /cleaningProposals/{id} {
+   allow read: if member();
+   allow create, update: if member()
+    && get(/databases/$(database)/documents/members/$(request.auth.uid)).data.role == 'cleaner'
+    && get(/databases/$(database)/documents/bookings/$(id)).data.status == 'confirmed'
+    && request.resource.data.keys().hasAll(['day','start','end','message','status','scheduleKey','updatedBy','updatedAt'])
+    && request.resource.data.keys().hasOnly(['day','start','end','message','status','scheduleKey','updatedBy','updatedAt'])
+    && request.resource.data.status == 'pending'
+    && request.resource.data.day is string && request.resource.data.day.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
+    && request.resource.data.start is string && request.resource.data.start.matches('^([01][0-9]|2[0-3]):[0-5][0-9]$')
+    && request.resource.data.end is string && request.resource.data.end.matches('^([01][0-9]|2[0-3]):[0-5][0-9]$')
+    && request.resource.data.end > request.resource.data.start
+    && request.resource.data.message is string && request.resource.data.message.size() <= 1000
+    && request.resource.data.scheduleKey is string && request.resource.data.scheduleKey.size() <= 500
+    && request.resource.data.updatedBy == request.auth.uid && request.resource.data.updatedAt == request.time;
+   allow update: if owner() && resource.data.status == 'pending'
+    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status','updatedBy','updatedAt'])
+    && request.resource.data.status in ['approved','rejected']
+    && request.resource.data.updatedBy == request.auth.uid && request.resource.data.updatedAt == request.time
+    && (request.resource.data.status == 'rejected' ||
+      (getAfter(/databases/$(database)/documents/bookings/$(id)).data.cleaningDate == resource.data.day
+       && getAfter(/databases/$(database)/documents/bookings/$(id)).data.cleaningTime == resource.data.start+'–'+resource.data.end
+       && getAfter(/databases/$(database)/documents/bookings/$(id)).data.cleaningDeadline == resource.data.end));
+  }
+  match /bookings/{id} {
+   allow update: if owner() && resource.data.status == 'confirmed'
+    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['cleaningDate','cleaningTime','cleaningDeadline'])
+    && get(/databases/$(database)/documents/cleaningProposals/$(id)).data.status == 'pending'
+    && getAfter(/databases/$(database)/documents/cleaningProposals/$(id)).data.status == 'approved'
+    && request.resource.data.cleaningDate == getAfter(/databases/$(database)/documents/cleaningProposals/$(id)).data.day
+    && request.resource.data.cleaningTime == getAfter(/databases/$(database)/documents/cleaningProposals/$(id)).data.start+'–'+getAfter(/databases/$(database)/documents/cleaningProposals/$(id)).data.end
+    && request.resource.data.cleaningDeadline == getAfter(/databases/$(database)/documents/cleaningProposals/$(id)).data.end;
+  }
+  match /members/{uid} { allow get: if request.auth != null && request.auth.uid == uid; }
+  match /bookings/{id} {
+   allow read: if member();
+   allow update: if member()
+    && get(/databases/$(database)/documents/members/$(request.auth.uid)).data.role == 'owner'
+    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['guestName','guests','noteLanguage'])
+    && request.resource.data.guestName is string && request.resource.data.guestName.size() <= 60
+    && request.resource.data.guests is string && request.resource.data.guests.matches('^([1-9]|[1-9][0-9])?$')
+    && request.resource.data.noteLanguage in ['sv','en','de'];
+  }
+  // Only a non-personal service timestamp is public. No listing or client writes.
+  match /health/notifications { allow get: if true; }
+  match /routines/{id} { allow read: if member(); }
+  match /cleaningInstructions/{id} {
+   allow read: if member();
+   allow create, update: if member()
+    && get(/databases/$(database)/documents/members/$(request.auth.uid)).data.role == 'owner'
+    && exists(/databases/$(database)/documents/bookings/$(id))
+    && request.resource.data.keys().hasAll(['text','updatedBy','updatedAt'])
+    && request.resource.data.keys().hasOnly(['text','updatedBy','updatedAt'])
+    && request.resource.data.text is string && request.resource.data.text.size() <= 2000
+    && request.resource.data.updatedBy == request.auth.uid
+    && request.resource.data.updatedAt == request.time;
+  }
+  match /cleaningConfirmations/{id} {
+   allow read: if member();
+   allow create, update: if member()
+    && get(/databases/$(database)/documents/members/$(request.auth.uid)).data.role == 'cleaner'
+    && exists(/databases/$(database)/documents/bookings/$(id))
+    && get(/databases/$(database)/documents/bookings/$(id)).data.status == 'confirmed'
+    && request.resource.data.keys().hasAll(['accepted','scheduleKey','updatedBy','updatedAt'])
+    && request.resource.data.keys().hasOnly(['accepted','scheduleKey','updatedBy','updatedAt'])
+    && request.resource.data.accepted is bool
+    && request.resource.data.scheduleKey is string && request.resource.data.scheduleKey.size() <= 500
+    && request.resource.data.updatedBy == request.auth.uid
+    && request.resource.data.updatedAt == request.time;
+  }
+  match /cleanings/{id} {
+   allow read: if member();
+   allow create, update: if member()
+    && exists(/databases/$(database)/documents/bookings/$(id)) && get(/databases/$(database)/documents/bookings/$(id)).data.status == 'confirmed'
+    && request.resource.data.keys().hasAll(['c0','c1','c2','c3','c4','c5','c6','c7','note','doneAt','updatedAt','updatedBy'])
+    && request.resource.data.keys().hasOnly(['c0','c1','c2','c3','c4','c5','c6','c7','note','doneAt','updatedAt','updatedBy'])
+    && request.resource.data.c0 is bool && request.resource.data.c1 is bool
+    && request.resource.data.c2 is bool && request.resource.data.c3 is bool
+    && request.resource.data.c4 is bool && request.resource.data.c5 is bool
+    && request.resource.data.c6 is bool && request.resource.data.c7 is bool
+    && request.resource.data.note is string && request.resource.data.note.size() <= 2000
+    && request.resource.data.updatedAt == request.time
+    && request.resource.data.updatedBy == request.auth.uid
+    && (request.resource.data.doneAt == null ||
+      (request.resource.data.doneAt is timestamp
+       && (request.resource.data.doneAt == request.time || (resource != null && request.resource.data.doneAt == resource.data.doneAt))
+       && request.resource.data.c0 && request.resource.data.c1 && request.resource.data.c2 && request.resource.data.c3
+       && request.resource.data.c4 && request.resource.data.c5 && request.resource.data.c6 && request.resource.data.c7));
+  }
+ }
+}
+
