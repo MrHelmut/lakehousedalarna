@@ -7,7 +7,7 @@ assert.equal(proposalError({source:'standalone-cleaning'},null,p,'2026-10-16'),'
 console.log('PASS: date validity, checkout, arrival, end time, past day, standalone and message limits');
 
 import {jobSection} from '../stad/proposal-model.mjs';
-assert.equal(jobSection({departure:'2026-10-18'},null,'2026-10-19'),'history');
+assert.equal(jobSection({departure:'2026-10-18'},null,'2026-10-19'),'upcoming');
 assert.equal(jobSection({departure:'2026-10-18'},{status:'pending',day:'2026-10-20'},'2026-10-19'),'pending');
 assert.equal(jobSection({departure:'2026-10-25'},{status:'pending'},'2026-10-19'),'pending');
 assert.equal(jobSection({departure:'2026-10-18',cleaningDate:'2026-10-19'},null,'2026-10-19'),'upcoming');
@@ -22,3 +22,6 @@ assert.equal(cleaningStatus(b,{accepted:false,scheduleKey:'key'},null,null,'key'
 assert.equal(cleaningStatus(b,null,{status:'pending'},null,'key').kind,'pending');
 assert.equal(cleaningStatus(b,null,null,{doneAt:true},'key').kind,'done');
 console.log('PASS: consistent status for waiting, confirmed, changed, declined, proposed and completed jobs');
+
+assert.equal(jobSection({departure:'2026-10-18'},null,'2026-10-19',{doneAt:true}),'history');
+assert.equal(jobSection({departure:'2026-10-18'},null,'2026-10-19',{doneAt:null}),'upcoming');

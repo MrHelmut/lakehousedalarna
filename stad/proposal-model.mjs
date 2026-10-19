@@ -10,7 +10,7 @@ export function proposalError(b,next,p,today){
 }
 export function proposalMatches(b,p){return p?.status==='approved'&&b.cleaningDate===p.day&&b.cleaningTime===p.start+'–'+p.end;}
 
-export function jobSection(b,p,today){return p?.status==='pending'?'pending':(b.cleaningDate||b.departure)<today?'history':'upcoming';}
+export function jobSection(b,p,today,cleaning){return cleaning?.doneAt?'history':p?.status==='pending'?'pending':'upcoming';}
 
 export function cleaningStatus(b,c,p,cleaning,key){
  if(cleaning?.doneAt)return {kind:'done',label:'Städning klar'};
