@@ -1,5 +1,5 @@
-import {proposalCard} from './proposals.mjs?v=20261019-complete-button';
-import {proposalMatches,jobSection,cleaningStatus} from './proposal-model.mjs?v=20261019-complete-button';
+import {proposalCard} from './proposals.mjs?v=20261019-card-completion';
+import {proposalMatches,jobSection,cleaningStatus} from './proposal-model.mjs?v=20261019-card-completion';
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js';
 import {getAuth,reload,onAuthStateChanged,signInWithEmailAndPassword,createUserWithEmailAndPassword,sendEmailVerification,signOut,setPersistence,browserSessionPersistence} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js';
 import {getFirestore,doc,getDoc,getDocs,collection,runTransaction,serverTimestamp,setDoc,onSnapshot} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js';
@@ -38,15 +38,38 @@ function nextStay(b){if(b.source==='standalone-cleaning')return null;return book
 function scheduleKey(b){const next=nextStay(b);return [b.departure,b.cleaningDate||'',b.cleaningDeadline||'',b.cleaningTime||'',next?.arrival||'',next?.guests||''].join('|')+(b.cleaningStart?'|start:'+b.cleaningStart:'');}
 function welcomeNote(b){const next=nextStay(b);if(!next)return 'Nästa gäst är inte registrerad ännu – välkomsttext kommer när bokningen är inlagd.';if(next.source==='owner')return 'Egen vistelse – ingen välkomstlapp behövs.';if(!next.guestName)return 'Gästens namn saknas – kontakta Alexander före välkomstlappen.';if(next.noteLanguage==='sv')return 'Varmt välkomna, '+next.guestName+' med sällskap!\n\nVi hoppas att ni får en härlig vistelse här i vårt hus. Den här flaskan är en liten välkomstgåva från vår familj till er.\n\nVarma hälsningar,\nAlexander & Malin';if(next.noteLanguage==='de')return 'Herzlich willkommen, '+next.guestName+'!\n\nWir wünschen euch eine wunderbare Zeit in unserem Haus. Diese Flasche ist ein kleines Willkommensgeschenk von unserer Familie an euch.\n\nHerzliche Grüße\nAlexander & Malin';return 'A warm welcome, '+next.guestName+'!\n\nWe hope you have a wonderful stay here at our house.\nThis bottle is a little welcome gift from our family to you.\n\nWarm regards,\nAlexander & Malin';}
 function confirmationCard(card,b){
- const status=document.createElement('p'),detail=document.createElement('p'),accept=document.createElement('button');status.className='status-badge';status.setAttribute('role','status');accept.textContent='Bekräfta att jag kan städa';let proposalValue=null,cleaningValue=null,answerLoaded=false,cleaningLoaded=false,saving=false;const feedback=document.createElement('p');feedback.setAttribute('role','status');
- function show(){if(!answerLoaded||!cleaningLoaded){status.textContent='Kontrollerar status…';accept.disabled=true;return;}const state=cleaningStatus(b,confirmations[b.id],proposalValue,cleaningValue,scheduleKey(b));status.textContent=state.label;status.className='status-badge '+state.kind;const completed=cleaningValue?.doneAt;const planned=b.cleaningDate||b.departure;const overdue=!completed&&planned<new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Stockholm'});detail.textContent=completed?'Klarmarkerad '+completed.toDate().toLocaleString('sv-SE',{timeZone:'Europe/Stockholm'})+'. Planerad städdag: '+date(planned)+'.':overdue?'Inte klarmarkerad. Planerad städdag '+date(planned)+' har passerat. Tillfället ligger kvar här tills städningen är klar.':state.detail||'';detail.hidden=!detail.textContent;accept.hidden=['confirmed','done'].includes(state.kind);accept.disabled=saving||state.kind==='pending';const proposalBox=card.querySelector('.cleaning-proposal');if(proposalBox)proposalBox.hidden=!!completed;const item=cards.get(b.id);if(item){item.kind=state.kind;item.cleaning=cleaningValue;}placeJob(card,b,proposalValue);applyFilters();}
- card.append(status,detail,feedback);
+ const status=document.createElement('p'),detail=document.createElement('p'),accept=document.createElement('button');status.className='status-badge';status.setAttribute('role','status');accept.textContent='Bekräfta att jag kan städa';const completeCard=document.createElement('button');completeCard.type='button';completeCard.className='completion-button';completeCard.textContent='Städningen är klar';let completing=false;let proposalValue=null,cleaningValue=null,answerLoaded=false,cleaningLoaded=false,saving=false;const feedback=document.createElement('p');feedback.setAttribute('role','status');
+ function show(){if(!answerLoaded||!cleaningLoaded){status.textContent='Kontrollerar status…';accept.disabled=true;completeCard.disabled=true;return;}const state=cleaningStatus(b,confirmations[b.id],proposalValue,cleaningValue,scheduleKey(b));status.textContent=state.label;status.className='status-badge '+state.kind;const completed=cleaningValue?.doneAt;completeCard.hidden=!!completed;completeCard.disabled=preview||completing;completeCard.textContent=completing?'Sparar…':'Städningen är klar';const planned=b.cleaningDate||b.departure;const overdue=!completed&&planned<new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Stockholm'});detail.textContent=completed?'Klarmarkerad '+completed.toDate().toLocaleString('sv-SE',{timeZone:'Europe/Stockholm'})+'. Planerad städdag: '+date(planned)+'.':overdue?'Inte klarmarkerad. Planerad städdag '+date(planned)+' har passerat. Tillfället ligger kvar här tills städningen är klar.':state.detail||'';detail.hidden=!detail.textContent;accept.hidden=['confirmed','done'].includes(state.kind);accept.disabled=saving||state.kind==='pending';const proposalBox=card.querySelector('.cleaning-proposal');if(proposalBox)proposalBox.hidden=!!completed;const item=cards.get(b.id);if(item){item.kind=state.kind;item.cleaning=cleaningValue;}placeJob(card,b,proposalValue);applyFilters();}
+ card.append(status,detail,completeCard,feedback);
  const proposal=proposalCard(card,b,{onSnapshot,db,doc,getDoc,getDocs,collection,runTransaction,serverTimestamp,uid:auth.currentUser.uid,role:viewRole,readOnly:preview,nextStay,scheduleKey,today:()=>new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Stockholm'}),onDecline:()=>answer(false),onError:()=>{proposalErrors.add(b.id);updateProposalSummary();},onState:p=>{proposalValue=p;proposalErrors.delete(b.id);proposalLoaded.add(b.id);placeJob(card,b,p);show();}});proposalStops.push(proposal.stop);
- const failure=()=>{status.textContent='Status kunde inte uppdateras – ladda om sidan';status.className='status-badge declined';accept.disabled=true;const item=cards.get(b.id);if(item)item.kind='error';applyFilters();};
+ const failure=()=>{status.textContent='Status kunde inte uppdateras – ladda om sidan';status.className='status-badge declined';accept.disabled=true;completeCard.disabled=true;const item=cards.get(b.id);if(item)item.kind='error';applyFilters();};
  proposalStops.push(onSnapshot(doc(db,'cleaningConfirmations',b.id),snap=>{confirmations[b.id]=snap.exists()?snap.data():null;answerLoaded=true;show();},failure));
  proposalStops.push(onSnapshot(doc(db,'cleanings',b.id),snap=>{const wasDone=!!cleaningValue?.doneAt;cleaningValue=snap.exists()?snap.data():null;cleaningLoaded=true;if(!wasDone&&cleaningValue?.doneAt&&selected===b.id)history.open=true;if(selected===b.id&&!dirtyInputs.has($('note'))&&!busy){current=cleaningValue||{};$('note').value=guestNote(current.note).text;render();}show();},failure));
  if(viewRole==='cleaner')card.append(accept);
  async function answer(accepted){if(preview){detail.hidden=false;detail.textContent='Förhandsvisning – inget svar skickas.';return;}saving=true;show();try{await runTransaction(db,async tx=>{const ref=doc(db,'bookings',b.id),snap=await tx.get(ref);if(!snap.exists()||snap.data().status!=='confirmed'||scheduleKey(snap.data())!==scheduleKey(b))throw Error();const value={accepted,scheduleKey:scheduleKey(b),updatedBy:auth.currentUser.uid,updatedAt:serverTimestamp()};tx.set(doc(db,'cleaningConfirmations',b.id),value);});feedback.textContent='Ditt svar är sparat.';}catch{feedback.textContent='Svaret kunde inte sparas. Ladda om sidan och försök igen.';}finally{saving=false;show();}}
+ completeCard.onclick=async()=>{
+  if(preview||busy||completing||!cleaningLoaded)return;
+  completing=true;busy=true;show();feedback.textContent='Sparar klarmarkeringen…';
+  const editing=selected===b.id&&dirtyInputs.has($('note')),note=editing?noteWithRating():null;
+  try{
+   await runTransaction(db,async tx=>{
+    const booking=await tx.get(doc(db,'bookings',b.id)),ref=doc(db,'cleanings',b.id),snap=await tx.get(ref);
+    if(!booking.exists()||booking.data().status!=='confirmed')throw Error('inactive');
+    const existing=snap.exists()?snap.data():{};
+    if(existing.doneAt&&!editing)return;
+    const value={...Object.fromEntries(labels.map((_,i)=>['c'+i,true])),note:'',...existing,doneAt:existing.doneAt||serverTimestamp(),updatedAt:serverTimestamp(),updatedBy:auth.currentUser.uid};
+    for(let i=0;i<8;i++)value['c'+i]=true;
+    if(editing)value.note=note;
+    tx.set(ref,value);
+   });
+   const saved=await getDoc(doc(db,'cleanings',b.id));cleaningValue=saved.data();
+   if(!cleaningValue?.doneAt)throw Error('not-saved');
+   if(selected===b.id){current=cleaningValue;if(editing)markSaved($('note'));render();}
+   history.open=true;show();feedback.textContent='Städningen är klarmarkerad och sparad. Tillfället finns i historiken.';feedback.className='save-feedback';
+   message('Städningen är klarmarkerad och sparad.');feedback.scrollIntoView({block:'nearest'});
+  }catch{feedback.textContent='Klarmarkeringen kunde inte sparas. Försök igen. Ingen städning har markerats klar.';feedback.className='save-feedback error';}
+  finally{busy=false;completing=false;show();if(selected===b.id)render();}
+ };
  accept.onclick=()=>answer(true);
 }
 function preparation(b){
@@ -72,7 +95,7 @@ function render(){
  for(const button of ratingButtons){button.disabled=busy||preview;button.setAttribute('aria-pressed',String(button.textContent===guestNote(current.note).rating));}
  $('progress').textContent='Markera när hela städningen är klar.';$('checks').replaceChildren();
  $('checks').hidden=true;
- $('complete').hidden=false;
+ $('complete').hidden=!current.doneAt;
  $('complete').disabled=busy||preview;
  $('complete').textContent=busy?'Sparar…':current.doneAt?'Öppna städningen igen':'Städningen är klar';
  $('complete').className=current.doneAt?'secondary':'completion-button';
