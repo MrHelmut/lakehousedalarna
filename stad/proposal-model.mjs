@@ -9,3 +9,5 @@ export function proposalError(b,next,p,today){
  return '';
 }
 export function proposalMatches(b,p){return p?.status==='approved'&&b.cleaningDate===p.day&&b.cleaningTime===p.start+'–'+p.end;}
+
+export function jobSection(b,p,today){return p?.status==='pending'?'pending':(b.cleaningDate||b.departure)<today?'history':'upcoming';}
