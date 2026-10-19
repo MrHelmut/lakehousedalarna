@@ -13,3 +13,12 @@ assert.equal(jobSection({departure:'2026-10-25'},{status:'pending'},'2026-10-19'
 assert.equal(jobSection({departure:'2026-10-18',cleaningDate:'2026-10-19'},null,'2026-10-19'),'upcoming');
 assert.equal(jobSection({departure:'2026-10-18',cleaningDate:'2026-10-20'},{status:'approved'},'2026-10-19'),'upcoming');
 console.log('PASS: past jobs retained, pending proposals visible regardless of original date, rescheduled jobs use approved date');
+
+import {cleaningStatus} from '../stad/proposal-model.mjs';
+assert.equal(cleaningStatus(b,null,null,null,'key').kind,'waiting');
+assert.equal(cleaningStatus(b,{accepted:true,scheduleKey:'key'},null,null,'key').kind,'confirmed');
+assert.equal(cleaningStatus(b,{accepted:true,scheduleKey:'old'},null,null,'key').kind,'changed');
+assert.equal(cleaningStatus(b,{accepted:false,scheduleKey:'key'},null,null,'key').kind,'declined');
+assert.equal(cleaningStatus(b,null,{status:'pending'},null,'key').kind,'pending');
+assert.equal(cleaningStatus(b,null,null,{doneAt:true},'key').kind,'done');
+console.log('PASS: consistent status for waiting, confirmed, changed, declined, proposed and completed jobs');

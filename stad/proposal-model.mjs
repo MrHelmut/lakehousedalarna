@@ -11,3 +11,13 @@ export function proposalError(b,next,p,today){
 export function proposalMatches(b,p){return p?.status==='approved'&&b.cleaningDate===p.day&&b.cleaningTime===p.start+'–'+p.end;}
 
 export function jobSection(b,p,today){return p?.status==='pending'?'pending':(b.cleaningDate||b.departure)<today?'history':'upcoming';}
+
+export function cleaningStatus(b,c,p,cleaning,key){
+ if(cleaning?.doneAt)return {kind:'done',label:'Städning klar'};
+ if(p?.status==='pending')return {kind:'pending',label:'Ny tid föreslagen – väntar på Alexander'};
+ if(proposalMatches(b,p))return {kind:'confirmed',label:'Ny städtid godkänd av Alexander'};
+ if(c&&c.scheduleKey!==key)return {kind:'changed',label:'Planeringen har ändrats – nytt svar behövs',detail:c.accepted?'Städaren hade bekräftat den tidigare planeringen.':'Städaren hade avböjt den tidigare planeringen.'};
+ if(c?.accepted)return {kind:'confirmed',label:'Bekräftat av städaren'};
+ if(c?.accepted===false)return {kind:'declined',label:'Städaren kan inte – ny tid behövs'};
+ return {kind:'waiting',label:'Inväntar städarens svar'};
+}
