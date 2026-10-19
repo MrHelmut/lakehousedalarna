@@ -22,3 +22,9 @@ const approve=card.querySelectorAll('button').find(b=>b.textContent==='Godkänn 
 await approve.onclick();assert.equal(reloaded,true);assert.equal(store.bookings['original-id'].cleaningDate,'2026-10-20');assert.equal(store.cleaningProposals['original-id'].status,'approved');assert.strictEqual(store.cleaningInstructions['original-id'],notes);assert.deepEqual(writes,['bookings','cleaningProposals']);
 errorListener();assert.equal(states.at(-1),'error');handle.stop();assert.equal(stopped,true);
 console.log('PASS: live proposal displayed, owner approval changes existing job only, notes untouched, subscription errors and cleanup');
+
+store.cleaningProposals['original-id']=p;reloaded=false;const writeCount=writes.length;
+const previewCard=new Element('article');proposalCard(previewCard,b,{...ctx,readOnly:true});listener();
+await previewCard.querySelectorAll('button').find(b=>b.textContent==='Godkänn ny tid').onclick();
+assert.equal(writes.length,writeCount);assert.equal(reloaded,false);
+console.log('PASS: preview cannot approve or write changes');

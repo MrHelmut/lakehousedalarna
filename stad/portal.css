@@ -8,3 +8,5 @@
 #job{scroll-margin-top:16px}@media(max-width:480px){#jobs article>.secondary{margin-left:0}}
 
 .cleaning-proposal button{margin:6px 8px 6px 0}.cleaning-proposal:has(>p:only-child:empty){display:none}
+
+.view-switch{display:inline-flex;gap:5px;padding:5px;border:1px solid #9ba8ab;border-radius:40px;background:#183442}.view-switch button{border-radius:30px;background:transparent;color:#fff;min-width:115px}.view-switch button[aria-pressed=true]{background:#f1e4c5;color:#183442}@media(max-width:480px){.view-switch{width:100%}.view-switch button{flex:1}}
