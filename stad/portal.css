@@ -18,3 +18,5 @@
 .save-feedback:not(:empty){padding:12px;border:1px solid #527463;border-radius:8px;background:#eef5ef;color:#18392a;overflow-wrap:anywhere}.save-feedback.error{border-color:#a33;background:#fff1ef;color:#842720}
 
 .completion-button{display:block;width:100%;min-height:52px;margin:16px 0;background:#386849;font-weight:700;font-size:18px}
+
+#app-install{margin:18px 0}#app-install details{font-size:15px}#connection{padding:14px;border:1px solid #c9a86a;border-radius:9px;background:#fff4d9}

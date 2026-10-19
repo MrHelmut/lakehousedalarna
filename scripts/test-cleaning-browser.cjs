@@ -2,7 +2,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
 const fs=require('fs'),http=require('http'),path=require('path'),assert=require('assert/strict');
 const root=path.resolve(__dirname,'../stad');
 const sdk=`const f=window.fixture;
-export const initializeApp=()=>({}),getAuth=()=>({currentUser:f.user}),getFirestore=()=>({}),browserSessionPersistence={};
+export const initializeApp=()=>({}),getAuth=()=>({currentUser:f.user}),getFirestore=()=>({}),browserLocalPersistence={};
 export const reload=async()=>{},setPersistence=async()=>{},onAuthStateChanged=(a,cb)=>setTimeout(()=>cb(f.user),0),signOut=async()=>location.reload(),signInWithEmailAndPassword=async()=>{},createUserWithEmailAndPassword=async()=>{},sendEmailVerification=async()=>{};
 export const doc=(db,c,id)=>({c,id}),collection=(db,c)=>({c}),serverTimestamp=()=>f.time();
 export const getDoc=async r=>f.snap(r),getDocs=async r=>f.snap(r),onSnapshot=(r,cb,err)=>f.listen(r,cb,err),setDoc=async(r,v)=>f.write(r,v),runTransaction=async(db,fn)=>{const writes=[];await fn({get:async r=>f.snap(r),set:(r,v)=>writes.push([r,v]),update:(r,v)=>writes.push([r,{...f.data[r.c][r.id],...v}])});for(const [r,v] of writes)f.write(r,v);};`;
