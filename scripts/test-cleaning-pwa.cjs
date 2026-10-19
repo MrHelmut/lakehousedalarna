@@ -1,5 +1,5 @@
 const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict');
-const root='C:/Hemsida/stad/';
+const root=require('path').join(__dirname,'../stad/');
 const manifest=JSON.parse(fs.readFileSync(root+'manifest.webmanifest'));
 assert.equal(manifest.scope,'/stad/');assert.equal(manifest.start_url,'/stad/');assert.equal(manifest.display,'standalone');
 for(const icon of manifest.icons){const b=fs.readFileSync(root+icon.src);assert.equal(`${b.readUInt32BE(16)}x${b.readUInt32BE(20)}`,icon.sizes);}
@@ -16,3 +16,4 @@ assert.equal((await request('https://example.test/stad/','navigate')).online,tru
 offline=true;assert.equal((await request('https://example.test/stad/','navigate')).offline,true);
 assert(fs.readFileSync(root+'portal.js','utf8').includes('setPersistence(auth,browserLocalPersistence)'));
 console.log('PASS: manifest, icon dimensions, persistent auth selection, public-only cache, offline fallback, Firebase and write requests untouched');})();
+
