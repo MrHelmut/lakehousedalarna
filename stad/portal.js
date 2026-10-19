@@ -1,5 +1,5 @@
-import {proposalCard} from './proposals.mjs?v=20261019-completion';
-import {proposalMatches,jobSection,cleaningStatus} from './proposal-model.mjs?v=20261019-completion';
+import {proposalCard} from './proposals.mjs?v=20261019-complete-button';
+import {proposalMatches,jobSection,cleaningStatus} from './proposal-model.mjs?v=20261019-complete-button';
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js';
 import {getAuth,reload,onAuthStateChanged,signInWithEmailAndPassword,createUserWithEmailAndPassword,sendEmailVerification,signOut,setPersistence,browserSessionPersistence} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js';
 import {getFirestore,doc,getDoc,getDocs,collection,runTransaction,serverTimestamp,setDoc,onSnapshot} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js';
@@ -58,6 +58,7 @@ function preparation(b){
  return [time,deadline,guests];
 }
 const jobFeedback=document.createElement('p');jobFeedback.setAttribute('role','status');jobFeedback.className='save-feedback';$('progress').after(jobFeedback);function saveFeedback(text,error=false){jobFeedback.textContent=text;jobFeedback.className=error?'save-feedback error':'save-feedback';message(text,error);}
+$('progress').after($('complete'));
 const mailStatus=document.createElement('p');mailStatus.setAttribute('role','status');$('complete').after(mailStatus);
 function notifyOwner(){mailStatus.textContent='Sparat på städsidan. Mejlaviseringar samlas högst två gånger per dag.';}
 // Keep the guest assessment in the existing private note so it also reaches the owner email.
@@ -70,9 +71,12 @@ function render(){
  ratingBox.hidden=bookings.find(b=>b.id===selected)?.source==='standalone-cleaning';
  for(const button of ratingButtons){button.disabled=busy||preview;button.setAttribute('aria-pressed',String(button.textContent===guestNote(current.note).rating));}
  $('progress').textContent='Markera när hela städningen är klar.';$('checks').replaceChildren();
- const label=document.createElement('label');label.className='task';const input=document.createElement('input');input.type='checkbox';input.checked=!!current.doneAt;input.disabled=busy||preview;
- input.onchange=()=>{save({note:noteWithRating(),doneAt:input.checked?serverTimestamp():null});};label.append(input,document.createTextNode('Städningen är klar'));$('checks').append(label);
- $('done').textContent=current.doneAt?'Städning klar · '+current.doneAt.toDate().toLocaleString('sv-SE'):'Inte klarmarkerad';$('complete').hidden=true;$('save-note').disabled=busy||preview;$('note').readOnly=preview;
+ $('checks').hidden=true;
+ $('complete').hidden=false;
+ $('complete').disabled=busy||preview;
+ $('complete').textContent=busy?'Sparar…':current.doneAt?'Öppna städningen igen':'Städningen är klar';
+ $('complete').className=current.doneAt?'secondary':'completion-button';
+ $('done').textContent=current.doneAt?'Städning klar · '+current.doneAt.toDate().toLocaleString('sv-SE'):'Inte klarmarkerad';$('save-note').disabled=busy||preview;$('note').readOnly=preview;
 }
 
 async function save(patch){if(preview){message("Förhandsvisning – inga ändringar sparas.");return;}if(busy||!selected)return;const completing=!!patch.doneAt;const id=selected,token=generation;let newlyCompleted=false;busy=true;render();saveFeedback('Sparar – vänta på bekräftelsen…');try{await runTransaction(db,async tx=>{const ref=doc(db,'cleanings',id),snap=await tx.get(ref);const initial=Object.fromEntries(labels.map((_,i)=>['c'+i,false]));const value={...initial,note:'',doneAt:null,...(snap.exists()?snap.data():{}),...patch,updatedAt:serverTimestamp(),updatedBy:auth.currentUser.uid};// Legacy area flags mirror the single whole-cleaning confirmation for compatibility with existing rules.

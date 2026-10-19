@@ -16,3 +16,5 @@
 #portal>section:has(.cleaning-proposal){padding:12px;background:#fbfaf5}#portal>section:has(.cleaning-proposal)>h2{padding:0 6px}#portal>section:has(.cleaning-proposal) article{margin-bottom:0}.status-badge{margin-top:12px}
 
 .save-feedback:not(:empty){padding:12px;border:1px solid #527463;border-radius:8px;background:#eef5ef;color:#18392a;overflow-wrap:anywhere}.save-feedback.error{border-color:#a33;background:#fff1ef;color:#842720}
+
+.completion-button{display:block;width:100%;min-height:52px;margin:16px 0;background:#386849;font-weight:700;font-size:18px}
