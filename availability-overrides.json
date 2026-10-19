@@ -1,5 +1,5 @@
 {
-  "reviewed_at": "2026-10-16",
+  "reviewed_at": "2026-10-19",
   "note": "Additional unavailable dates confirmed by the owner. End dates are exclusive. Remove a range here if these dates are reopened.",
   "blocked_ranges": [
     {
@@ -38,6 +38,14 @@
       "start": "2027-09-12",
       "end": "2027-09-13",
       "reason": "Verified unavailable in Airbnb host calendar on 2026-10-14; omitted from iCal export."
+    },
+    {
+      "start": "2026-11-19",
+      "end": "2026-11-20"
+    },
+    {
+      "start": "2026-12-26",
+      "end": "2026-12-28"
     }
   ],
   "direct_only_open_ranges": [
