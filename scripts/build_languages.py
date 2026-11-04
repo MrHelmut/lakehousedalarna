@@ -63,6 +63,12 @@ for lang in ROUTES:
     for i,source in enumerate(SOURCE):
         p=Page(lang,i);p.feed((ROOT/source).read_text(encoding='utf-8'))
         result=''.join(p.out)
+        # Contextual German ski guide link; keep the booking CTA primary.
+        if lang == 'de' and i == 0:
+            anchor = '<a class="secondary" href="https://www.bjursas.com/vinter/skidakning/pistkarta/"'
+            guide = '<a class="secondary" href="/de/skiurlaub-schweden.html">Mehr über unseren Skiurlaub</a>'
+            assert result.count(anchor) == 1, 'Expected one Bjursas piste-map link'
+            result = result.replace(anchor, guide + anchor, 1)
         if 'property="og:url"' not in result:
             result=result.replace('</head>',f'<meta property="og:url" content="{BASE+ROUTES[lang][i]}"></head>')
         locale={'en':'en_GB','sv':'sv_SE','de':'de_DE'}[lang]
