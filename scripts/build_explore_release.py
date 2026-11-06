@@ -30,4 +30,6 @@ def build():
     for route in ROUTES.values():
         if f'<loc>{BASE+route}</loc>' not in xml:xml=xml.replace('</urlset>',f'<url><loc>{BASE+route}</loc></url></urlset>')
     path.write_text(xml,encoding='utf-8')
+    from site_navigation import build as build_navigation
+    build_navigation()
 if __name__=='__main__':build()
