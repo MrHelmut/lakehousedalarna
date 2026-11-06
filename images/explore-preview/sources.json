@@ -1,0 +1,107 @@
+{
+  "njupeskar": {
+    "name": "Njupeskär",
+    "url": "/images/explore-preview/njupeskar.webp",
+    "source": "https://commons.wikimedia.org/wiki/File:Njupeskar-2015-A.jpg",
+    "license": "Karl Brodowsky · CC BY-SA 3.0",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/9/99/Njupeskar-2015-A.jpg"
+  },
+  "rattvik": {
+    "name": "Långbryggan",
+    "url": "/images/explore-preview/rattvik.webp",
+    "source": "https://commons.wikimedia.org/wiki/File:L%C3%A5ngbryggan_R%C3%A4ttvik_2015.jpg",
+    "license": "Holger Ellgaard · CC BY-SA 4.0 · storleksanpassad",
+    "original_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/67/L%C3%A5ngbryggan_R%C3%A4ttvik_2015.jpg/960px-L%C3%A5ngbryggan_R%C3%A4ttvik_2015.jpg"
+  },
+  "falugruva": {
+    "name": "Falu Gruva",
+    "url": "/images/explore-preview/falugruva.webp",
+    "source": "https://commons.wikimedia.org/wiki/File:Falu_gruva_(by_Pudelek).JPG",
+    "license": "Pudelek · CC BY-SA 4.0",
+    "original_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cc/Falu_gruva_%28by_Pudelek%29.JPG/960px-Falu_gruva_%28by_Pudelek%29.JPG"
+  },
+  "carl": {
+    "name": "Carl Larsson-gården",
+    "url": "/images/explore-preview/carl.webp",
+    "source": "https://commons.wikimedia.org/wiki/File:Carl_Larsson-g%C3%A5rden_in_Sundborn,_Sweden,_Photo_vom_07.09.2021.jpg",
+    "license": "AUTOR.4200 · CC BY-SA 4.0",
+    "original_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/58/Carl_Larsson-g%C3%A5rden_in_Sundborn%2C_Sweden%2C_Photo_vom_07.09.2021.jpg/960px-Carl_Larsson-g%C3%A5rden_in_Sundborn%2C_Sweden%2C_Photo_vom_07.09.2021.jpg"
+  },
+  "nusnas": {
+    "name": "Nusnäs",
+    "url": "/images/explore-preview/nusnas.webp",
+    "source": "https://commons.wikimedia.org/wiki/File:Nusn%C3%A4sDalah%C3%A4stGammel.JPG",
+    "license": "Edaen · CC BY-SA 3.0",
+    "original_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/27/Nusn%C3%A4sDalah%C3%A4stGammel.JPG/960px-Nusn%C3%A4sDalah%C3%A4stGammel.JPG"
+  },
+  "dossberget": {
+    "name": "Dössberget",
+    "url": "/images/explore-preview/dossberget.webp",
+    "source": "https://commons.wikimedia.org/wiki/File:D%C3%B6ssbergets_f%C3%A4bodar.jpg",
+    "license": "Calle Eklund/V-wolf · CC BY-SA 3.0",
+    "original_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2a/D%C3%B6ssbergets_f%C3%A4bodar.jpg/960px-D%C3%B6ssbergets_f%C3%A4bodar.jpg"
+  },
+  "luran": {
+    "name": "Lurån",
+    "url": "/images/explore-preview/luran.webp",
+    "source": "https://commons.wikimedia.org/wiki/File:Lur%C3%A5n_vid_mynningen_in_i_Rogsj%C3%B6n-_2013-05-01_23-51.jpg",
+    "license": "The rog wikings · CC BY-SA 3.0",
+    "original_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/40/Lur%C3%A5n_vid_mynningen_in_i_Rogsj%C3%B6n-_2013-05-01_23-51.jpg/960px-Lur%C3%A5n_vid_mynningen_in_i_Rogsj%C3%B6n-_2013-05-01_23-51.jpg"
+  },
+  "mine": {
+    "name": "Tuna-Hästberg gruva",
+    "url": "/images/explore-preview/mine.webp",
+    "source": "https://www.adventuremine.se/aventyr/familjegruvtur/",
+    "license": "Adventuremine · endast förhandsvisning, publiceringsrätt ej klarerad",
+    "original_url": "https://www.adventuremine.se/wp-content/uploads/2025/12/familjetur1.jpg"
+  },
+  "leksand": {
+    "name": "Leksand Sommarland",
+    "url": "/images/explore-preview/leksand.webp",
+    "source": "https://leksandsommarland.se/",
+    "license": "Leksand Sommarland · endast förhandsvisning, publiceringsrätt ej klarerad",
+    "original_url": "https://leksandsommarland.se/app/uploads/2025/11/i_vatten.jpg"
+  },
+  "tornbergs": {
+    "name": "Törnbergs stig",
+    "url": "/images/explore-preview/tornbergs.webp",
+    "source": "https://www.naturkartan.se/sv/dalarnas-lan/tornbergs-stig",
+    "license": "Naturkartan · endast förhandsvisning, publiceringsrätt ej klarerad",
+    "original_url": "https://uploads.naturkartan-cdn.se/a864741df5c73da82d38e647e49eb5e5.jpg?fit=crop&h=630&optimizer=image&w=1200"
+  },
+  "artknubben": {
+    "name": "Ärtknubben",
+    "url": "/images/explore-preview/artknubben.webp",
+    "source": "https://www.lansstyrelsen.se/dalarna/besoksmal/naturreservat/artknubben.html",
+    "license": "Länsstyrelsen · endast förhandsvisning, publiceringsrätt ej klarerad",
+    "original_url": "https://www.lansstyrelsen.se/images/18.7fd0f0d219afcb93b963520a/1765542857541/Slogbod-%C3%84rtknubben.jpg"
+  },
+  "spruthuset": {
+    "name": "Spruthuset",
+    "url": "/images/explore-preview/spruthuset.webp",
+    "source": "https://www.spruthuset.se/",
+    "license": "Spruthuset · endast förhandsvisning, publiceringsrätt ej klarerad",
+    "original_url": "https://static.wixstatic.com/media/3e4ab6_b7b33f4fbad14144b770665bdefaf0a7~mv2.jpg/v1/fit/w_2500,h_1330,al_c/3e4ab6_b7b33f4fbad14144b770665bdefaf0a7~mv2.jpg"
+  },
+  "tvarum": {
+    "name": "Banken Två rum & kök",
+    "url": "/images/explore-preview/tvarum.webp",
+    "source": "https://bankenfalun.se/trk-startsida/",
+    "license": "Banken · endast förhandsvisning, publiceringsrätt ej klarerad",
+    "original_url": "https://bankenfalun.se/wp-content/uploads/2024/07/2rok_fasadskylt.jpg"
+  },
+  "banken": {
+    "name": "Banken Bar & Brasserie",
+    "url": "/images/explore-preview/banken.webp",
+    "source": "https://bankenfalun.se/",
+    "license": "Banken · endast förhandsvisning, publiceringsrätt ej klarerad",
+    "original_url": "https://bankenfalun.se/wp-content/uploads/2026/10/bankenhus.png"
+  },
+  "bjursas": {
+    "name": "Bjursås",
+    "url": "/images/explore-preview/bjursas.webp",
+    "source": "https://www.bjursas.com/",
+    "license": "Bjursås · endast förhandsvisning, publiceringsrätt ej klarerad",
+    "original_url": "https://www.bjursas.com/userfiles/images/Toppbilder/bjursas_skicenter_stillbilder_fotografering_2_2%20-%20webb.jpg"
+  }
+}

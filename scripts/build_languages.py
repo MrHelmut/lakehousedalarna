@@ -90,3 +90,6 @@ for pair in PAIRS:
 (ROOT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'+''.join(urls)+'</urlset>',encoding='utf-8')
 print('Generated 9 core pages, 4 seasonal pages and sitemap.')
 
+
+from build_explore_release import build as build_explore
+build_explore()
