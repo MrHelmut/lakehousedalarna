@@ -64,3 +64,20 @@ const redirect=fs.readFileSync(require('path').join(root,'seo.js'),'utf8');let d
 vm.runInNewContext(redirect,{document:{documentElement:{dataset:{}},referrer:'https://www.google.com/search?q=private'},location:{pathname:'/',origin:'https://lakehousedalarna.com',search:'?utm_source=instagram&utm_medium=social',hash:'',replace:v=>dest=v},URL,URLSearchParams});
 assert(dest.startsWith('/en/?'));assert(dest.includes('utm_source=instagram'));assert(dest.includes('_lh_ref='));assert(!dest.includes('private'));
 console.log('PASS: redirect preserves campaign and sanitized external origin.');
+
+for(const [search,expected] of [
+ ['?utm_source=dalarna.nu&utm_medium=paid_referral&utm_campaign=foretagspresentation_2026&utm_content=artikel',{campaign_source:'dalarna.nu',campaign_medium:'paid_referral',campaign_name:'foretagspresentation_2026',campaign_content:'artikel'}],
+ ['?utm_source=facebook&utm_medium=social&utm_campaign=dalarna_nu',{campaign_source:'facebook',campaign_medium:'social',campaign_name:'dalarna_nu'}]
+]) {
+ p=page({search});assert.equal(p.scripts.length,0);p.click('accepted');
+ const c=p.window.dataLayer.find(x=>x[0]==='config')[2];
+ for(const [key,value] of Object.entries(expected))assert.equal(c[key],value);
+ assert.equal(c.page_location,'https://lakehousedalarna.com/sv/');
+ p=page({search,saved:accepted});assert.equal(p.window.dataLayer.find(x=>x[0]==='config')[2].campaign_name,expected.campaign_name);
+ vm.runInNewContext(redirect,{document:{documentElement:{dataset:{}},referrer:''},location:{pathname:'/',origin:'https://lakehousedalarna.com',search,hash:'',replace:v=>dest=v},URL,URLSearchParams});
+ assert(dest.includes(search.slice(1)));
+}
+p=page({saved:accepted,search:'?utm_source=private%40example.com&utm_medium=secret&utm_campaign=private%40example.com&utm_content=secret&email=private%40example.com'});
+config=p.window.dataLayer.find(x=>x[0]==='config')[2];
+assert(!JSON.stringify(config).includes('private'));assert(!JSON.stringify(config).includes('secret'));
+console.log('PASS: Dalarna article and Facebook campaign attribution, consent, redirect and query privacy.');
