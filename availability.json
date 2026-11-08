@@ -1,9 +1,9 @@
 {
-  "updated_at": "2026-11-07T15:08:42+00:00",
+  "updated_at": "2026-11-08T11:12:25+00:00",
   "source": "airbnb_ical",
-  "coverage_start": "2026-11-07",
+  "coverage_start": "2026-11-08",
   "coverage_end": "2027-12-20",
-  "synced_coverage_end": "2027-11-07",
+  "synced_coverage_end": "2027-11-08",
   "manual_request_ranges": [
     {
       "start": "2027-09-13",
@@ -13,7 +13,6 @@
     }
   ],
   "booked_dates": [
-    "2026-11-07",
     "2026-11-08",
     "2026-11-09",
     "2026-11-10",
@@ -137,7 +136,7 @@
   ],
   "blocked_ranges": [
     {
-      "start": "2026-11-07",
+      "start": "2026-11-08",
       "end": "2026-11-20",
       "summary": "Unavailable"
     },
