@@ -4,3 +4,5 @@
 /* Keep completion visible in the read-only preview and on phones. */
 .completion-button{width:100%;min-height:58px;padding:16px 20px;font-size:18px;font-weight:750;text-align:center;border:2px solid #386849;box-shadow:0 3px 8px #18344218}
 .completion-button:disabled{background:#edf0ea;color:#52625f;border:2px solid #ccd3cc;min-height:58px;padding:16px 20px;margin:16px 0;font-size:16px;font-weight:600;text-align:center;box-shadow:none}
+
+.save-feedback.completion-confirmation:not(:empty){background:#edf5ed;border:1px solid #b8d0bc;border-radius:8px;color:#265339;font-size:16px;font-weight:700;padding:12px 14px;margin:12px 0 4px}
