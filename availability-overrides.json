@@ -2,6 +2,7 @@
   "reviewed_at": "2026-10-19",
   "note": "Additional unavailable dates confirmed by the owner. End dates are exclusive. Remove a range here if these dates are reopened.",
   "blocked_ranges": [
+    {"start": "2027-05-17", "end": "2027-05-31", "reason": "Owner blocked weeks 20-21 for dock construction; availability block only, not a guest booking."},
     {"start": "2027-06-06", "end": "2027-06-07", "reason": "Owner requested a turnover buffer for cleaning on Monday morning."},
     {"start": "2027-07-05", "end": "2027-07-12", "reason": "Owner confirmed direct booking and requested full week blocked on 2026-11-08."},
     {"start": "2027-06-04", "end": "2027-06-06", "reason": "Provisional owner hold pending deposit; review after 2026-11-13. Do not reopen automatically."},
