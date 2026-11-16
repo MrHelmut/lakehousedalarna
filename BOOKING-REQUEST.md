@@ -10,7 +10,8 @@ Direct mode POSTs over HTTPS, checks the success response, preserves values on e
 ## Measurement
 Existing GA4 ID, configuration, consent and legacy booking_click / airbnb_click / contact_click events remain.
 - click_check_availability: click to the booking page.
-- start_booking_request: first date selection or form interaction per page view.
+- select_booking_dates: first complete available date range per page view.
+- start_booking_request: first non-empty contact/message field edit per page view. Since 16 November 2026, date selection and opening the form no longer count as starts. Historical starts are not directly comparable.
 - submit_booking_request: Web3Forms accepted the request. This is an enquiry receipt, NOT a booking or proof of inbox delivery.
 - click_airbnb: outbound Airbnb link, including reviews.
 - booking_request_email_handoff: valid request handed to email app; NOT proof of sending. Never count it as received.

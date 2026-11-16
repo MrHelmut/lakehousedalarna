@@ -166,6 +166,12 @@ function syncPartyComposition() {
     return valid;
 }
 
+let datesSelected = false;
+function trackDateSelection() {
+    if (datesSelected || !checkInInput.value || !checkOutInput.value || hasUnavailableBetween(checkInInput.value, checkOutInput.value)) return;
+    datesSelected = true;
+    window.dispatchEvent(new Event("lakehouse-booking-dates-selected"));
+}
 let requestStarted = false;
 function startBookingRequest() {
     if (requestStarted) return;
@@ -487,7 +493,7 @@ function selectDate(key) {
         checkOutInput.value = key;
     }
 
-    startBookingRequest();
+    trackDateSelection();
     updateSummary();
     renderCalendar();
 }
@@ -684,8 +690,15 @@ form.addEventListener("submit", async (event) => {
     window.location.href = emailUrl;
 });
 
-form.addEventListener("input", () => { requestComplete = false; startBookingRequest(); validateSelection(); });
-form.addEventListener("change", () => { requestComplete = false; startBookingRequest(); validateSelection(); });
+function handleRequestInteraction(event) {
+    requestComplete = false;
+    const field = event.target;
+    if (["first_name", "last_name", "guest_email", "guest_phone", "country", "message"].includes(field?.name) && field.value.trim()) startBookingRequest();
+    trackDateSelection();
+    validateSelection();
+}
+form.addEventListener("input", handleRequestInteraction);
+form.addEventListener("change", handleRequestInteraction);
 adultsInput.addEventListener("change", syncPartyComposition);
 childrenInput.addEventListener("change", syncPartyComposition);
 
@@ -707,7 +720,6 @@ sendRequestLink.addEventListener("click", (event) => {
         helpText.textContent = tr("Your selected dates, guests and estimated price are included in the request.");
     }
 
-    startBookingRequest();
     focusNextRequestField();
 });
 checkInInput.addEventListener("change", () => {

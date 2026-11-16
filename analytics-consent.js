@@ -134,6 +134,7 @@
     });
     window.addEventListener('storage',e=>{if(e.key===INTERNAL){excluded=e.newValue==='1';apply(read(),false);}if(e.key===KEY){apply(read(),false);if(!choice)show();}});
     window.addEventListener('site-language-change',render);
+    window.addEventListener('lakehouse-booking-dates-selected',()=>track('select_booking_dates',{placement:'booking_calendar'}));
     window.addEventListener('lakehouse-booking-start',()=>track('start_booking_request',{placement:'booking_form'}));
     window.addEventListener('lakehouse-booking-received',()=>track('submit_booking_request',{placement:'booking_form',delivery_method:'web3forms',delivery_status:'received'}));
     window.addEventListener('lakehouse-booking-submit',()=>track('booking_request_email_handoff',{placement:'booking_form',delivery_method:'email_app',delivery_status:'handoff'}));

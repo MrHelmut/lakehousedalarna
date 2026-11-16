@@ -15,7 +15,17 @@ function setup(){
  return {node,context,run,events,posts,submit};
 }
 (async()=>{
- let p=setup();assert.equal(p.node('[data-guests]').value,'3');
+ let p=setup();
+ p.run('selectDate("2027-04-10"); selectDate("2027-04-12")');
+ assert(!p.events.includes('lakehouse-booking-start'));
+ assert.equal(p.events.filter(e=>e==='lakehouse-booking-dates-selected').length,1);
+ p.run('handleRequestInteraction({target:{name:"adults",value:"2"}})');
+ assert(!p.events.includes('lakehouse-booking-start'));
+ p.run('handleRequestInteraction({target:{name:"first_name",value:" "}})');
+ assert(!p.events.includes('lakehouse-booking-start'));
+ p.run('handleRequestInteraction({target:{name:"first_name",value:"Test"}}); handleRequestInteraction({target:{name:"guest_email",value:"test@example.com"}})');
+ assert.equal(p.events.filter(e=>e==='lakehouse-booking-start').length,1);
+ p=setup();assert.equal(p.node('[data-guests]').value,'3');
  p.node('[data-children]').value='5';assert.equal(p.run('syncPartyComposition()'),false);assert.equal(p.node('[data-guests]').value,'');
  p.run('syncGuestControls("4")');assert.equal(p.node('[data-children]').validationMessage,'');
  p=setup();await p.submit();assert.equal(p.posts.length,1);assert.equal(p.posts[0].payload.children,'1');assert.equal(p.posts[0].payload.name,'Test Guest');assert.equal(p.posts[0].payload.country,'Sweden');assert(p.events.includes('lakehouse-booking-received'));assert(p.node('[data-request-help]').textContent.includes('not confirmed'));await p.submit();assert.equal(p.posts.length,1);
