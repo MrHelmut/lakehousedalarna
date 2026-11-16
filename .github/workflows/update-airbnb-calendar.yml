@@ -7,13 +7,26 @@ on:
 
 permissions:
   contents: write
+  pages: write
+
+concurrency:
+  group: airbnb-calendar-update
+  cancel-in-progress: false
 
 jobs:
   update-availability:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Test calendar rules
+        run: |
+          python -m unittest discover -s scripts -p 'test_availability.py'
+          node scripts/test_pricing.cjs
 
       - name: Check calendar secret
         id: calendar-secret
@@ -21,8 +34,8 @@ jobs:
           AIRBNB_ICAL_URL: ${{ secrets.AIRBNB_ICAL_URL }}
         run: |
           if [ -z "$AIRBNB_ICAL_URL" ]; then
-            echo "configured=false" >> "$GITHUB_OUTPUT"
-            echo "AIRBNB_ICAL_URL is not configured. Skipping availability update."
+            echo "Calendar secret is missing. Update failed."
+            exit 1
           else
             echo "configured=true" >> "$GITHUB_OUTPUT"
           fi
@@ -39,3 +52,11 @@ jobs:
         with:
           commit_message: Update Airbnb availability
           file_pattern: availability.json
+
+      - name: Request website publication
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST repos/${{ github.repository }}/pages/builds --silent
+
+      - name: Verify public calendar
+        run: python scripts/verify_availability_live.py

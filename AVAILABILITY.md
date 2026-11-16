@@ -8,6 +8,8 @@ The export window is limited to 365 days. Outside this coverage, during loading,
 
 GitHub Actions is scheduled every six hours and requires the private AIRBNB_ICAL_URL repository secret. Never commit the private URL or guest names. Public data contains only unavailable dates and generic ranges.
 
+On 16 November 2026 the owner explicitly authorized storing AIRBNB_ICAL_URL as a GitHub Actions repository secret. The cloud job tests calendar rules, imports the feed, commits only availability.json, explicitly requests a Pages build, and verifies the live JSON. Missing, malformed, incomplete or empty feeds fail without refreshing old data. Error output must never contain the private URL. Overlapping runs are serialized; failed runs remain visible in GitHub Actions. Existing owner overrides are read unchanged. This replaces the local nightly update only after a successful end-to-end cloud run. Airbnb host-only blocks omitted from iCal still require manual review; cloud import cannot inspect a logged-in host calendar.
+
 Validation: node scripts/test_pricing.cjs
 
 Owner authorized website-only availability for 22â€“27 December 2026 on 18 September. direct_only_open_ranges only excludes explicit Airbnb (Not available) events; reservations and unknown event types always stay blocked. Airbnb itself remains unchanged.

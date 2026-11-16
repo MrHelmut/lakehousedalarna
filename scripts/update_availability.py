@@ -75,12 +75,25 @@ def daterange(start, end):
         day += timedelta(days=1)
 
 
+def validate_ics(text):
+    lines = unfold_ics(text)
+    if not lines or lines[0] != "BEGIN:VCALENDAR" or "END:VCALENDAR" not in lines:
+        raise ValueError("Invalid calendar")
+    # Empty/incomplete feeds require review, never automatic reopening.
+    if not lines.count("BEGIN:VEVENT") or lines.count("BEGIN:VEVENT") != lines.count("END:VEVENT"):
+        raise ValueError("Missing or incomplete events")
+    events = list(event_ranges(lines))
+    if len(events) != lines.count("BEGIN:VEVENT") or any(e["end"] <= e["start"] for e in events):
+        raise ValueError("Invalid event dates")
+
+
 def main():
     ical_url = os.environ.get("AIRBNB_ICAL_URL")
     if not ical_url:
         sys.exit("AIRBNB_ICAL_URL is missing")
 
     ics = fetch_ics(ical_url)
+    validate_ics(ics)
     today = date.today()
     # Do not advertise dates beyond the supported Airbnb export window.
     sync_end = today + timedelta(days=365)
@@ -148,4 +161,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception:
+        sys.exit("Calendar update failed; existing data retained. Check feed and configuration.")
