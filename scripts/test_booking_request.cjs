@@ -33,6 +33,15 @@ function setup(){
  p=setup();p.context.fetch=async()=>{throw Error('network')};await p.submit();assert.equal(p.node('[data-email-fallback]').hidden,false);
  p=setup();p.context.window.lakeBookingForm.accessKey='';await p.submit();assert.equal(p.posts.length,0);assert(p.context.window.location.href.startsWith('mailto:'));assert(p.events.includes('lakehouse-booking-submit'));assert(!p.events.includes('lakehouse-booking-received'));
  p=setup();p.node('[name=botcheck]').checked=true;await p.submit();assert.equal(p.posts.length,0);
+ // Dutch path: same price and payload, translated success/failure and fallback email.
+ const nl=JSON.parse(fs.readFileSync(path.join(root,'content/nl.json'),'utf8'));
+ const dutch=p=>{p.context.window.siteI18n={getCurrentLanguage:()=> 'nl',t:(s,args={})=>Object.entries(args).reduce((v,[k,x])=>v.replaceAll('{'+k+'}',x),nl[s]||s)};return p};
+ p=dutch(setup());assert.equal(p.run('getStayEstimate("2027-04-01","2027-04-04",3).total'),11374);
+ assert.equal(p.run('guestLabel(3)'), '3 gasten');assert.equal(p.run('nightLabel(1)'), '1 nacht');
+ await p.submit();assert.equal(p.posts.length,1);assert.match(p.posts[0].payload.message,/Hallo Alexander/);assert.match(p.node('[data-request-help]').textContent,/nog niet bevestigd/);
+ p=dutch(setup());p.context.fetch=async()=>({ok:false,json:async()=>({success:false})});await p.submit();assert.match(p.node('[data-request-help]').textContent,/niet bevestigen/);assert.equal(p.node('[data-email-fallback]').hidden,false);
+ p=dutch(setup());p.context.window.lakeBookingForm.accessKey='';await p.submit();assert.match(decodeURIComponent(p.context.window.location.href),/Boekingsaanvraag.*Aankomst:/s);
+ console.log('PASS: Dutch totals, guest/night labels, request payload, success, failure and email fallback.');
  p=setup();p.context.fetch=()=>new Promise(()=>{});p.submit();await p.submit();assert.equal(p.run('requestSending'),true);
  // Abort timers are unneeded after the in-flight duplicate guard assertion.
  console.log('PASS: party limit, unchanged guest pricing, all request fields, accepted response, duplicate guard, failures, preserved fields, email fallback and honeypot. Mock transport only; no email sent.');

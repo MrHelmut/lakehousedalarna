@@ -1,6 +1,6 @@
 // Legacy entry points forward to stable static language URLs; static pages never change canonical.
 (() => {
- const routes={en:['/en/','/en/house/','/en/booking/'],sv:['/sv/','/sv/huset/','/sv/boka/'],de:['/de/','/de/ferienhaus/','/de/buchen/']};
+ const routes={nl:['/nl/','/nl/het-huis/','/nl/boeken/'],en:['/en/','/en/house/','/en/booking/'],sv:['/sv/','/sv/huset/','/sv/boka/'],de:['/de/','/de/ferienhaus/','/de/buchen/']};
  if(document.documentElement.dataset.staticLanguage)return;
  const source=['/','/index.html','/house.html','/booking.html'].indexOf(location.pathname);
  if(source<0)return;

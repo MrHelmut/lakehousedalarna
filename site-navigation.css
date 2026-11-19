@@ -9,3 +9,5 @@
 @media(max-width:1000px){.site-navbar.navbar{grid-template-columns:1fr auto;gap:14px 8px;padding:14px 20px}.site-navbar .site-brand{font-size:19px}.site-navbar .site-languages{grid-column:2;grid-row:1}.site-navbar .site-menu{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:7px}.site-navbar .site-menu a{border:1px solid #aeb9bf;border-radius:24px;min-height:42px;display:flex;align-items:center;justify-content:center;padding:8px;font-size:13px;white-space:normal;text-align:center;box-sizing:border-box}.site-navbar .site-menu a[aria-current=page]{background:#eee4d2;border-color:#c5a46d}.guide-header{min-height:181px}.destination-teaser{grid-template-columns:1fr;margin:24px auto;gap:24px}.destination-teaser h2{font-size:28px}}
 @media(max-width:370px){.site-navbar.navbar{padding:12px}.site-navbar .site-brand{font-size:17px}.site-navbar .site-languages a{width:30px}.guide-header{min-height:177px}}
 .site-navbar.navbar{pointer-events:auto}
+
+@media(max-width:420px){.site-navbar.navbar{gap:12px 5px}.site-navbar .site-brand{font-size:15px}.site-navbar .site-languages{gap:3px}.site-navbar .site-languages a{width:29px;height:32px}}

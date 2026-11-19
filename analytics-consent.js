@@ -28,12 +28,13 @@
   const isExcluded=()=>{try{return localStorage.getItem(INTERNAL)==='1'||excluded;}catch{return excluded;}};
   const denied = {analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'};
   const words = {
+    nl: {"title": "Uw privacy", "text": "Met uw toestemming gebruiken we Google Analytics-cookies om te begrijpen hoe bezoekers onze website gebruiken en deze te verbeteren.", "accept": "Accepteren", "decline": "Weigeren", "settings": "Cookie-instellingen", "policy": "Privacy en cookies", "close": "Sluiten", "mapTitle": "Ontdek het Rogsjönmeer", "map": "Kaart tonen", "mapText": "Google ontvangt uw IP-adres en kan cookies gebruiken wanneer u de kaart opent.", "mapOff": "Google-kaart verbergen"},
     en: {title:'Your privacy',text:'We use Google Analytics cookies, with your permission, to understand how visitors use our website and help us improve it.',accept:'Accept',decline:'Decline',settings:'Cookie settings',policy:'Privacy & cookies',close:'Close',mapTitle:'Discover Lake Rogsjön',map:'Show map',mapText:'Google receives your IP address and may use cookies when you open the map.',mapOff:'Hide Google map'},
     sv: {title:'Din integritet',text:'Med ditt samtycke använder vi Google Analytics-cookies för att förstå hur besökare använder webbplatsen och förbättra den.',accept:'Acceptera',decline:'Neka',settings:'Cookieinställningar',policy:'Integritet & cookies',close:'Stäng',mapTitle:'Upptäck Rogsjön',map:'Visa karta',mapText:'Google tar emot din IP-adress och kan använda cookies när du öppnar kartan.',mapOff:'Dölj Google-kartan'},
     de: {title:'Ihre Privatsphäre',text:'Mit Ihrer Einwilligung verwenden wir Google-Analytics-Cookies, um zu verstehen, wie Besucher unsere Website nutzen, und sie zu verbessern.',accept:'Akzeptieren',decline:'Ablehnen',settings:'Cookie-Einstellungen',policy:'Datenschutz & Cookies',close:'Schließen',mapTitle:'Entdecken Sie den Rogsjön',map:'Karte anzeigen',mapText:'Beim Öffnen der Karte erhält Google Ihre IP-Adresse und kann Cookies verwenden.',mapOff:'Google-Karte ausblenden'}
   };
   let choice = null, loaded = false, banner, returnFocus;
-  const lang = () => words[document.documentElement.lang] ? document.documentElement.lang : 'en';
+  const lang = () => words[document.documentElement.lang.split('-')[0]] ? document.documentElement.lang.split('-')[0] : 'en';
   const read = () => {try {const v=JSON.parse(localStorage.getItem(KEY)); return v && v.version===1 && ['accepted','declined'].includes(v.choice) && v.time<=Date.now() && Date.now()-v.time<AGE ? v.choice:null;} catch {return null;}};
   window.dataLayer = window.dataLayer || [];
   window.gtag = window.gtag || function(){window.dataLayer.push(arguments);};
@@ -127,7 +128,7 @@
       if(/(^|\.)airbnb\.(com|se|de|nl|at|ch|co\.uk)$/.test(u.hostname)){event='airbnb_click';kind='airbnb';}
       else if(u.hostname==='wa.me'||u.hostname==='api.whatsapp.com'){event='click_whatsapp';kind='whatsapp';}
       else if(['mailto:','tel:'].includes(u.protocol)){event='contact_click';kind=u.protocol==='mailto:'?'email':'phone';}
-      else if(u.origin===location.origin && /^\/(en\/booking\/|sv\/boka\/|de\/buchen\/|booking\.html)$/.test(u.pathname)){event='booking_click';kind='booking';}
+      else if(u.origin===location.origin && /^\/(en\/booking\/|sv\/boka\/|de\/buchen\/|nl\/boeken\/|booking\.html)$/.test(u.pathname)){event='booking_click';kind='booking';}
       if(event==='booking_click')track('click_check_availability',{destination:'booking'});
       if(event==='airbnb_click')track('click_airbnb',{destination:'airbnb'});
       if(event)track(event,{destination:kind,placement:target.closest('footer')?'footer':target.closest('nav')?'navigation':target.classList.contains('whatsapp-float')?'floating':'content'});

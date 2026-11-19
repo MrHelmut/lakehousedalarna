@@ -1,5 +1,7 @@
 # Static language pages
 
+Dutch (`nl-NL`) is available at `/nl/`, `/nl/het-huis/`, `/nl/boeken/`, `/nl/ontdek-dalarna/`, `/nl/vakantiehuis-zweden/`, `/nl/skivakantie-zweden/` and `/privacy/nl.html`. Maintain Dutch copy in `content/nl.json`. The language builder embeds this dictionary into i18n.js and generates all seven pages from the shared sources. Run `python scripts/test_dutch.py` as well as the existing booking, pricing, consent and euro tests. `finalize_languages.py` owns the complete reciprocal language clusters and sitemap. English/Swedish/German routes are retained. No real booking or email is sent by these tests.
+
 Edit the shared root index.html, house.html and booking.html plus i18n.js translations. Then run:
 
     python scripts/build_languages.py

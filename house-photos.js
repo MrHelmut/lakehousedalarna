@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded',()=>{
  const dialog=document.createElement('dialog');dialog.className='house-photo-dialog';
  const close=document.createElement('button');close.type='button';close.textContent='×';
- const labels={sv:'Stäng bild',en:'Close image',de:'Bild schließen'};
+ const labels={sv:'Stäng bild',en:'Close image',de:'Bild schließen','nl-NL':'Afbeelding sluiten'};
  const img=document.createElement('img');dialog.append(close,img);document.body.append(dialog);
  let opener;
  const dismiss=()=>{dialog.close();opener?.focus();};

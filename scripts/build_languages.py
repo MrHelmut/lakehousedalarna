@@ -7,10 +7,14 @@ from html.parser import HTMLParser
 from seo_markup import add_markup
 from build_landing_pages import build as build_landings, PAIRS
 ROOT = Path(__file__).resolve().parents[1]
-ROUTES = {'en': ['en/', 'en/house/', 'en/booking/'], 'sv': ['sv/', 'sv/huset/', 'sv/boka/'], 'de': ['de/', 'de/ferienhaus/', 'de/buchen/']}
+ROUTES = {'nl': ['nl/', 'nl/het-huis/', 'nl/boeken/'], 'en': ['en/', 'en/house/', 'en/booking/'], 'sv': ['sv/', 'sv/huset/', 'sv/boka/'], 'de': ['de/', 'de/ferienhaus/', 'de/buchen/']}
 SOURCE = ['index.html', 'house.html', 'booking.html']
 BASE = 'https://lakehousedalarna.com/'
 code = "const fs=require('fs'),vm=require('vm');const c={document:{addEventListener(){}},window:{}};vm.createContext(c);vm.runInContext(fs.readFileSync(process.argv[1],'utf8')+';globalThis.data={translations:siteTranslations,meta:localizedPageMeta}',c);console.log(JSON.stringify(c.data));"
+dictionary=json.loads((ROOT/'content/nl.json').read_text(encoding='utf-8'))
+i18n=(ROOT/'i18n.js').read_text(encoding='utf-8')
+i18n=re.sub(r'siteTranslations\.nl = .*?;\n',lambda m:'siteTranslations.nl = '+json.dumps(dictionary,ensure_ascii=False)+';\n',i18n)
+(ROOT/'i18n.js').write_text(i18n,encoding='utf-8')
 DATA = json.loads(subprocess.check_output(['node','-e',code,str(ROOT/'i18n.js')],text=True,encoding='utf-8'))
 
 class Page(HTMLParser):
@@ -27,7 +31,7 @@ class Page(HTMLParser):
     def handle_charref(self,d): self.handle_data(html.unescape('&#'+d+';'))
     def handle_starttag(self,tag,attrs):
         a=dict(attrs)
-        if tag=='html': a.update(lang=self.lang, **{'data-static-language':self.lang,'data-page-source':SOURCE[self.page]})
+        if tag=='html': a.update(lang=('nl-NL' if self.lang=='nl' else self.lang), **{'data-static-language':self.lang,'data-page-source':SOURCE[self.page]})
         if tag=='meta':
             meta=DATA['meta']['/'+SOURCE[self.page]][self.lang]
             if a.get('name')=='description' or a.get('property')=='og:description': a['content']=meta['description']
@@ -35,7 +39,7 @@ class Page(HTMLParser):
             if a.get('property')=='og:url': a['content']=BASE+ROUTES[self.lang][self.page]
         if tag=='link' and a.get('rel')=='canonical': a['href']=BASE+ROUTES[self.lang][self.page]
         if tag=='link' and a.get('hreflang'):
-            a['href']=BASE+ROUTES.get(a['hreflang'],ROUTES['en'])[self.page]
+            a['href']=BASE+ROUTES.get(a['hreflang'].split('-')[0],ROUTES['en'])[self.page]
         for key in ['href','src','poster','data-full']:
             v=a.get(key,'')
             if v and not v.startswith(('#','/','http:','https:','mailto:','tel:','data:')):
@@ -63,6 +67,7 @@ for lang in ROUTES:
     for i,source in enumerate(SOURCE):
         p=Page(lang,i);p.feed((ROOT/source).read_text(encoding='utf-8'))
         result=''.join(p.out)
+        result=result.replace('</head>',f'<link rel="alternate" hreflang="nl-NL" href="{BASE+ROUTES["nl"][i]}"></head>')
         # Contextual German ski guide link; keep the booking CTA primary.
         if lang == 'de' and i == 0:
             anchor = '<a class="secondary" href="https://www.bjursas.com/vinter/skidakning/pistkarta/"'
@@ -71,25 +76,30 @@ for lang in ROUTES:
             result = result.replace(anchor, guide + anchor, 1)
         if 'property="og:url"' not in result:
             result=result.replace('</head>',f'<meta property="og:url" content="{BASE+ROUTES[lang][i]}"></head>')
-        locale={'en':'en_GB','sv':'sv_SE','de':'de_DE'}[lang]
+        locale={'en':'en_GB','sv':'sv_SE','de':'de_DE','nl':'nl_NL'}[lang]
         result=result.replace('</head>',f'<meta property="og:locale" content="{locale}"></head>')
         # Real crawlable language links also work without JavaScript.
-        switch='<div class="language-switcher" data-language-switcher aria-label="Language">'+''.join(f'<a href="/{ROUTES[l][i]}" data-language="{l}" class="'+('active' if l==lang else '')+f'" aria-label="{label}"'+(' aria-current="true"' if l==lang else '')+f'><span class="flag flag-{l}" aria-hidden="true"></span><small>{l.upper()}</small></a>' for l,label in [('en','English'),('sv','Svenska'),('de','Deutsch')])+'</div>'
+        switch='<div class="language-switcher" data-language-switcher aria-label="Language">'+''.join(f'<a href="/{ROUTES[l][i]}" data-language="{l}" class="'+('active' if l==lang else '')+f'" aria-label="{label}"'+(' aria-current="true"' if l==lang else '')+f'><span class="flag flag-{l}" aria-hidden="true"></span><small>{l.upper()}</small></a>' for l,label in [('en','English'),('sv','Svenska'),('de','Deutsch'),('nl','Nederlands')])+'</div>'
         result=result.replace('</nav>',switch+'</nav>',1)
         meta=DATA['meta']['/'+SOURCE[i]][lang]
         result=add_markup(result,lang,BASE+ROUTES[lang][i],meta['title'],meta['description'])
         dest=ROOT/ROUTES[lang][i]/'index.html';dest.parent.mkdir(parents=True,exist_ok=True);dest.write_text(result,encoding='utf-8')
 build_landings()
+from build_dutch import build as build_dutch
+build_dutch()
 urls=[]
 for i in range(3):
-    alternate=''.join(f'<xhtml:link rel="alternate" hreflang="{l}" href="{BASE+ROUTES[l][i]}"/>' for l in ROUTES)+f'<xhtml:link rel="alternate" hreflang="x-default" href="{BASE+ROUTES["en"][i]}"/>'
+    alternate=''.join(f'<xhtml:link rel="alternate" hreflang="{'nl-NL' if l=='nl' else l}" href="{BASE+ROUTES[l][i]}"/>' for l in ROUTES)+f'<xhtml:link rel="alternate" hreflang="x-default" href="{BASE+ROUTES["en"][i]}"/>'
     urls += [f'<url><loc>{BASE+ROUTES[l][i]}</loc>{alternate}</url>' for l in ROUTES]
 for pair in PAIRS:
-    alternate=''.join(f'<xhtml:link rel="alternate" hreflang="{l}" href="{BASE+r}"/>' for l,r in pair.items())+f'<xhtml:link rel="alternate" hreflang="x-default" href="{BASE+pair["en"]}"/>'
+    alternate=''.join(f'<xhtml:link rel="alternate" hreflang="{'nl-NL' if l=='nl' else l}" href="{BASE+r}"/>' for l,r in pair.items())+f'<xhtml:link rel="alternate" hreflang="x-default" href="{BASE+pair["en"]}"/>'
     urls += [f'<url><loc>{BASE+r}</loc>{alternate}</url>' for r in pair.values()]
 (ROOT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'+''.join(urls)+'</urlset>',encoding='utf-8')
-print('Generated 9 core pages, 4 seasonal pages and sitemap.')
 
 
 from build_explore_release import build as build_explore
 build_explore()
+
+from finalize_languages import build as finalize
+finalize()
+print('Generated 26 public pages: 12 core, 4 destination guides, 6 seasonal guides, 4 privacy pages and reciprocal sitemap.')

@@ -38,11 +38,13 @@ const bookingEmail = "alexander_hjelm@hotmail.com";
 ].forEach((element) => element?.setAttribute("data-no-translate", ""));
 
 const monthNames = {
+    nl: ["januari","februari","maart","april","mei","juni","juli","augustus","september","oktober","november","december"],
     en: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
     sv: ["Januari", "Februari", "Mars", "April", "Maj", "Juni", "Juli", "Augusti", "September", "Oktober", "November", "December"],
     de: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
 };
 const weekdayNames = {
+    nl: ["ma","di","wo","do","vr","za","zo"],
     en: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
     sv: ["Mån", "Tis", "Ons", "Tor", "Fre", "Lör", "Sön"],
     de: ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"],
@@ -95,6 +97,7 @@ function guestLabel(value) {
     if (language === "de") {
         return guests === 1 ? "1 Gast" : `${guests} Gäste`;
     }
+    if (language === "nl") return guests === 1 ? "1 gast" : `${guests} gasten`;
     return guests === 1 ? "1 guest" : `${guests} guests`;
 }
 
@@ -111,6 +114,7 @@ function nightLabel(value) {
     if (language === "de") {
         return nights === 1 ? "1 Nacht" : `${nights} Nächte`;
     }
+    if (language === "nl") return nights === 1 ? "1 nacht" : `${nights} nachten`;
     return nights === 1 ? "1 night" : `${nights} nights`;
 }
 
@@ -191,7 +195,7 @@ function nightsBetween(checkIn, checkOut) {
 }
 
 function formatSek(amount) {
-    return new Intl.NumberFormat(currentLanguage() === "sv" ? "sv-SE" : currentLanguage() === "de" ? "de-DE" : "en-GB", {
+    return new Intl.NumberFormat(currentLanguage() === "nl" ? "nl-NL" : currentLanguage() === "sv" ? "sv-SE" : currentLanguage() === "de" ? "de-DE" : "en-GB", {
         style: "currency",
         currency: pricing.currency,
         minimumFractionDigits: 0,
@@ -522,7 +526,7 @@ function updateCalendarStatus() {
     if (availabilityLoaded && availabilityUpdatedAt) {
         const updated = new Date(availabilityUpdatedAt);
         calendarStatus.textContent = tr("Calendar updated {date}. Send a request; we confirm availability personally.", {
-            date: updated.toLocaleDateString(currentLanguage() === "en" ? "en-GB" : currentLanguage() === "sv" ? "sv-SE" : "de-DE"),
+            date: updated.toLocaleDateString(currentLanguage() === "nl" ? "nl-NL" : currentLanguage() === "en" ? "en-GB" : currentLanguage() === "nl" ? "nl-NL" : currentLanguage() === "sv" ? "sv-SE" : "de-DE"),
         });
         return;
     }
@@ -613,8 +617,19 @@ form.addEventListener("submit", async (event) => {
         return;
     }
 
-    const subject = `Booking request Lake House Dalarna ${checkIn} to ${checkOut}`;
-    const body = [
+    const subject = currentLanguage() === "nl" ? `Boekingsaanvraag Lake House Dalarna ${checkIn} tot ${checkOut}` : `Booking request Lake House Dalarna ${checkIn} to ${checkOut}`;
+    const body = currentLanguage() === "nl" ? [
+ "Hallo Alexander,", "", "Ik wil graag een boekingsaanvraag sturen voor Lake House Dalarna.", "",
+ `Aankomst: ${checkIn}`, `Vertrek: ${checkOut}`, `Nachten: ${nights}`,
+ `Gasten: ${guests} (${adults} volwassenen, ${children} kinderen)`,
+ `Geschatte totaalprijs: ${estimate ? formatSek(estimate.total) : "Op aanvraag"}`,
+ `Verblijf: ${estimate ? formatSek(estimate.accommodation) : "Op aanvraag"}`,
+ `Rechtstreekse korting: ${estimate ? formatSek(estimate.directDiscount) : "Nog te bevestigen"}`,
+ `Schoonmaak: ${formatSek(pricing.cleaning)} per verblijf`, `Beddengoed: ${formatSek(Number(guests) * pricing.linenPerGuest)}`, "",
+ `Naam: ${name}`, `E-mail: ${email}`, `Telefoon / WhatsApp: ${phone}`, `Land: ${country}`, "", "Over ons en ons verblijf:", message, "",
+ "Laat ons weten of deze data beschikbaar zijn en wat de definitieve prijs is.",
+ "Ik begrijp dat het verblijf pas bevestigd is na uw persoonlijke boekingsbevestiging."
+ ].join("\n") : [
         "Hello Alexander,",
         "",
         "I would like to send a direct booking request for Lake House Dalarna.",
