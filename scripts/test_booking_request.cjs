@@ -56,6 +56,21 @@ function setup(){
  await p.submit();
  assert.match(p.posts[0].payload.message,/Rabattkod: SKIDVM/);
  assert.match(p.posts[0].payload.message,/Beräknat totalpris efter rabatt/);
+ const fallbackBody = decodeURIComponent(p.node('[data-email-fallback]').href.split('&body=')[1]);
+ assert.equal(fallbackBody,p.posts[0].payload.message);
+ assert.match(fallbackBody,/VM-rabatt:/);
+ p.node('[data-promo-code]').value='FELKOD';p.run('applyPromoCode()');
+ assert.match(p.node('[data-promo-status]').textContent,/känns inte igen/);
+ assert.equal(p.run('getStayEstimate("2027-02-21","2027-02-28",6).promoDiscount'),0);
+ p.node('[data-promo-code]').value='SKIDVM';p.run('applyPromoCode()');
+ const four=p.run('getStayEstimate("2027-02-21","2027-02-28",4)');
+ assert.notEqual(four.total,vmStay.total);
+ assert.equal(four.promoDiscount,Math.round(four.totalBeforePromo*10)/100);
+ p.run('pricing.cleaning += 88000-getStayEstimate("2027-02-21","2027-02-28",6).totalBeforePromo');
+ assert.equal(p.run('getStayEstimate("2027-02-21","2027-02-28",6).promoDiscount'),8800);
+ assert.equal(p.run('getStayEstimate("2027-02-21","2027-02-28",6).total'),79200);
+ p.run('pricing.directDiscountExclusions=[]');
+ assert.equal(p.run('getStayEstimate("2027-02-21","2027-02-28",6).promoDiscount'),0);
  console.log('PASS: SKIDVM date limits, 10% total discount and booking request payload.');
  // Dutch path: same price and payload, translated success/failure and fallback email.
  const nl=JSON.parse(fs.readFileSync(path.join(root,'content/nl.json'),'utf8'));
