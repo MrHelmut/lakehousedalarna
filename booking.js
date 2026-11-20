@@ -21,6 +21,11 @@ const summarySeason = document.querySelector("[data-summary-season]");
 const summaryStatus = document.querySelector("[data-summary-status]");
 const seasonNote = document.querySelector("[data-season-note]");
 
+const promoInput = document.querySelector("[data-promo-code]");
+const promoStatus = document.querySelector("[data-promo-status]");
+const vmPromotion = { code: "SKIDVM", start: "2027-02-21", end: "2027-03-09", nights: 7, rate: 0.10 };
+let enteredPromoCode = "";
+
 const bookingEmail = "alexander_hjelm@hotmail.com";
 [
     helpText,
@@ -219,7 +224,7 @@ function getNightPrice(date, guests = "", stayNights = 0) {
     return { airbnbAmount, discountRate, discount: base * discountRate, amount: Math.round((airbnbAmount - base * discountRate) * 100) / 100 };
 }
 
-function getStayEstimate(checkIn, checkOut, guests) {
+function getStayEstimate(checkIn, checkOut, guests, promoCode = enteredPromoCode) {
     const nights = nightsBetween(checkIn, checkOut);
     if (!nights) return null;
     let airbnbSubtotal = 0;
@@ -237,8 +242,12 @@ function getStayEstimate(checkIn, checkOut, guests) {
     const accommodation = (comparisonCents - discountCents) / 100;
     const cleaning = pricing.cleaning;
     const linen = (Number(guests) || 0) * pricing.linenPerGuest;
-    const total = Math.round((accommodation + cleaning + linen) * 100) / 100;
-    return { total, accommodation, cleaning, linen, comparison: comparisonCents / 100,
+    const totalBeforePromo = Math.round((accommodation + cleaning + linen) * 100) / 100;
+    const applies = promoCode === vmPromotion.code && nights === vmPromotion.nights
+        && checkIn >= vmPromotion.start && checkOut <= vmPromotion.end && discountCents === 0;
+    const promoDiscount = applies ? Math.round(totalBeforePromo * 100 * vmPromotion.rate) / 100 : 0;
+    const total = Math.round((totalBeforePromo - promoDiscount) * 100) / 100;
+    return { total, totalBeforePromo, promoDiscount, promoCode: applies ? vmPromotion.code : "", accommodation, cleaning, linen, comparison: comparisonCents / 100,
         directDiscount: discountCents / 100, lengthDiscount, nights,
         average: accommodation / nights, labels: [] };
 }
@@ -310,6 +319,36 @@ function isSelectedRangeDate(key) {
     return key >= checkInInput.value && key <= checkOutInput.value;
 }
 
+function updatePromoStatus(estimate) {
+    if (!promoStatus) return;
+    if (!enteredPromoCode) {
+        promoStatus.textContent = "";
+    } else if (enteredPromoCode !== vmPromotion.code) {
+        promoStatus.textContent = "Rabattkoden känns inte igen.";
+    } else if (estimate?.promoCode) {
+        promoStatus.textContent = `SKIDVM · Du sparar ${formatSek(estimate.promoDiscount)}. Pris före rabatt ${formatSek(estimate.totalBeforePromo)}.`;
+    } else {
+        promoStatus.textContent = "Välj sju lediga nätter med incheckning tidigast 21 februari och utcheckning senast 9 mars 2027 samt antal gäster.";
+    }
+}
+
+function applyPromoCode() {
+    enteredPromoCode = promoInput.value.trim().toUpperCase();
+    updateSummary();
+}
+
+document.querySelector("[data-apply-promo]")?.addEventListener("click", applyPromoCode);
+promoInput?.addEventListener("keydown", event => {
+    if (event.key !== "Enter") return;
+    event.preventDefault();
+    applyPromoCode();
+});
+promoInput?.addEventListener("input", () => {
+    if (!enteredPromoCode) return;
+    enteredPromoCode = "";
+    updateSummary();
+});
+
 function updateSummary() {
     window.lakeHouseEuro?.render(null, currentLanguage());
     validateSelection();
@@ -321,6 +360,7 @@ function updateSummary() {
     const nights = nightsBetween(checkIn, checkOut);
     const unavailable = hasUnavailableBetween(checkIn, checkOut);
     const estimate = getStayEstimate(checkIn, checkOut, guests);
+    updatePromoStatus(availabilityLoaded && !availabilityLoadFailed && guests && !unavailable ? estimate : null);
 
     document.querySelectorAll("[data-price-breakdown] strong").forEach(element => {
         const key = element.dataset.priceValue;
@@ -656,7 +696,10 @@ form.addEventListener("submit", async (event) => {
         "I understand that my stay is confirmed only after your personal booking confirmation.",
     ].join("\n");
 
-    const emailUrl = `mailto:${bookingEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const requestBody = estimate?.promoCode
+        ? `${body}\n\nRabattkod: ${estimate.promoCode}\nVM-rabatt: ${formatSek(estimate.promoDiscount)}\nBeräknat totalpris efter rabatt: ${formatSek(estimate.total)}`
+        : body;
+    const emailUrl = `mailto:${bookingEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(requestBody)}`;
     const emailFallback = document.querySelector("[data-email-fallback]");
     emailFallback.href = emailUrl;
     if (usesDirectSubmission()) {
@@ -677,7 +720,7 @@ form.addEventListener("submit", async (event) => {
                     subject, from_name: "Lake House Dalarna booking request",
                     name, email, phone, country, adults, children,
                     arrival: checkIn, departure: checkOut, guests,
-                    message: body, botcheck: false
+                    message: requestBody, botcheck: false
                 })
             });
             const result = await response.json();

@@ -33,6 +33,30 @@ function setup(){
  p=setup();p.context.fetch=async()=>{throw Error('network')};await p.submit();assert.equal(p.node('[data-email-fallback]').hidden,false);
  p=setup();p.context.window.lakeBookingForm.accessKey='';await p.submit();assert.equal(p.posts.length,0);assert(p.context.window.location.href.startsWith('mailto:'));assert(p.events.includes('lakehouse-booking-submit'));assert(!p.events.includes('lakehouse-booking-received'));
  p=setup();p.node('[name=botcheck]').checked=true;await p.submit();assert.equal(p.posts.length,0);
+ p=setup();
+ p.node('[data-check-in]').value='2027-02-21';
+ p.node('[data-check-out]').value='2027-02-28';
+ p.node('[data-promo-code]').value=' skidvm ';
+ p.run('applyPromoCode()');
+ const vmStay = p.run('getStayEstimate("2027-02-21","2027-02-28",6)');
+ assert.equal(vmStay.promoCode,'SKIDVM');
+ assert.equal(vmStay.total, Math.round(vmStay.totalBeforePromo * 90) / 100);
+ assert.equal(p.run('getStayEstimate("2027-03-02","2027-03-09",6).promoCode'),'SKIDVM');
+ for (const [start,end] of [['2027-02-20','2027-02-27'],['2027-03-03','2027-03-10'],['2027-02-21','2027-02-27']]) {
+   assert.equal(p.run('getStayEstimate(' + JSON.stringify(start) + ',' + JSON.stringify(end) + ',6).promoCode'),'');
+ }
+ assert.match(p.node('[data-promo-status]').textContent,/SKIDVM/);
+ p.context.FormData=class extends p.context.FormData {
+   get(key) {
+     if (key === 'check_in') return '2027-02-21';
+     if (key === 'check_out') return '2027-02-28';
+     return super.get(key);
+   }
+ };
+ await p.submit();
+ assert.match(p.posts[0].payload.message,/Rabattkod: SKIDVM/);
+ assert.match(p.posts[0].payload.message,/Beräknat totalpris efter rabatt/);
+ console.log('PASS: SKIDVM date limits, 10% total discount and booking request payload.');
  // Dutch path: same price and payload, translated success/failure and fallback email.
  const nl=JSON.parse(fs.readFileSync(path.join(root,'content/nl.json'),'utf8'));
  const dutch=p=>{p.context.window.siteI18n={getCurrentLanguage:()=> 'nl',t:(s,args={})=>Object.entries(args).reduce((v,[k,x])=>v.replaceAll('{'+k+'}',x),nl[s]||s)};return p};
