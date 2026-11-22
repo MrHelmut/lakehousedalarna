@@ -27,7 +27,7 @@ def build():
   main=f'<main><section class="seo-hero" style="background-image:url(\'/images/site/winter-sunset-2026.webp\')"><div class="seo-hero-overlay"></div><div class="seo-hero-content"><p class="welcome">{e(d["dates"])}</p><h1>{e(d["heading"])}</h1><p>{e(d["intro"])}</p><div class="hero-buttons"><a class="primary-btn vm-cta" href="{booking}">{e(d["cta"])}</a><a class="secondary-btn vm-cta" href="#house">{e(d["discover"])}</a></div></div></section>'
   main+=f'<section class="seo-section" id="house"><div class="seo-intro"><h2>{e(d["houseHeading"])}</h2><p>{e(d["houseText"])}</p><div class="vm-facts">'+''.join('<span>'+e(s)+'</span>' for s in d['facts'])+'</div></div></section>'
   main+='<section class="seo-section"><div class="seo-feature-grid">'
-  for file,c in zip(['winter-window.png','sauna-relax.jpg','living-dining.jpg'],d['cards']):
+  for file,c in zip(['winter-window.png','relax-lake-view-2026.webp','living-dining.jpg'],d['cards']):
    main+=f'<article><img src="/images/site/{file}" alt="{e(c[0])}" loading="lazy" decoding="async"><h2>{e(c[1])}</h2><p>{e(c[2])}</p></article>'
   main+='</div></section>'
   main+='<section class="seo-section"><div class="seo-intro"><h2>'+e(d['travelHeading'])+'</h2>'+''.join('<p>'+e(p)+'</p>' for p in d['travel'])+f'<p><a href="https://falun2027.com/{"sv" if lang=="sv" else "en"}/" target="_blank" rel="noopener noreferrer">{e(d["official"])}</a></p></div></section>'
