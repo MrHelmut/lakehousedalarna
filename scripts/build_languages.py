@@ -104,6 +104,9 @@ for pair in PAIRS:
 from build_explore_release import build as build_explore
 build_explore()
 
+from build_vm import build as build_vm
+build_vm()
+
 from finalize_languages import build as finalize
 finalize()
-print('Generated 26 public pages: 12 core, 4 destination guides, 6 seasonal guides, 4 privacy pages and reciprocal sitemap.')
+print('Generated 30 public pages: 12 core, 4 destination guides, 6 seasonal guides, 4 VM pages, 4 privacy pages and reciprocal sitemap.')

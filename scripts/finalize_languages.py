@@ -4,6 +4,7 @@ import re,json,html
 from urllib.parse import quote
 ROOT=Path(__file__).resolve().parents[1];BASE='https://lakehousedalarna.com/'
 CLUSTERS=[
+ {'en':'en/falun-2027-accommodation/','sv':'sv/boende-skid-vm-falun-2027/','de':'de/unterkunft-ski-wm-falun-2027/','nl-NL':'nl/accommodatie-wk-ski-falun-2027/'},
  {'en':'en/','sv':'sv/','de':'de/','nl-NL':'nl/'},
  {'en':'en/house/','sv':'sv/huset/','de':'de/ferienhaus/','nl-NL':'nl/het-huis/'},
  {'en':'en/booking/','sv':'sv/boka/','de':'de/buchen/','nl-NL':'nl/boeken/'},
