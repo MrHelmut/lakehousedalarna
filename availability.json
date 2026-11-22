@@ -1,9 +1,9 @@
 {
-  "updated_at": "2026-11-21T07:17:14+00:00",
+  "updated_at": "2026-11-22T06:58:24+00:00",
   "source": "airbnb_ical",
-  "coverage_start": "2026-11-21",
+  "coverage_start": "2026-11-22",
   "coverage_end": "2027-12-20",
-  "synced_coverage_end": "2027-11-21",
+  "synced_coverage_end": "2027-11-22",
   "manual_request_ranges": [
     {
       "start": "2027-09-13",
