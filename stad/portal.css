@@ -10,3 +10,4 @@
 .service-status{border:1px solid #b9cbc4;background:#f0f6f2;padding:1rem;margin:1rem 0;border-radius:12px}.service-status summary{font-weight:600;cursor:pointer}.service-warning{background:#fff7e6;border-color:#d4ac62}.service-status p{overflow-wrap:anywhere}
 
 .owner-bookings{border:1px solid #ddd;padding:1rem;margin:1rem 0;border-radius:12px}.owner-bookings label{display:block;margin:0.8rem 0}.owner-bookings input,.owner-bookings select{width:100%;box-sizing:border-box}.owner-booking-list article{padding:1rem 0;border-top:1px solid #ddd}.owner-booking-list button{margin:.3rem}
+#portal>.owner-bookings{padding:20px;background:#fff}#portal>.owner-bookings>h2{font:500 26px/1.25 Georgia,serif;color:#183442;margin:0 0 14px}#portal>.owner-bookings>p{font-size:16px}.owner-booking-list article{padding:16px}.owner-bookings summary{font-size:16px}
