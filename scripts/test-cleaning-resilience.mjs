@@ -12,3 +12,7 @@ await check({request:request(doc(now+41*H)),stateFile,now:now+41*H});assert.equa
 failMail=true;await assert.rejects(check({request:request(doc(now)),stateFile,now:now+42*H}));failMail=false;
 await check({request:request(doc(now)),stateFile,now:now+43*H});assert.equal(mails,4);
 console.log('PASS: transient silence, separate sync freshness, one incident alert, recovery, failed mail retries');
+let fallbackCalls=0;
+await check({stateFile:path.join(dir,'html.json'),now:now+50*H,request:async url=>url.includes('web3forms')?{ok:false,json:async()=>{throw Error('HTML challenge');}}:{ok:true,json:async()=>doc(now)},fallback:async()=>{fallbackCalls++;}});
+assert.equal(fallbackCalls,1);
+console.log('PASS: blocked mail API uses independent incident fallback');

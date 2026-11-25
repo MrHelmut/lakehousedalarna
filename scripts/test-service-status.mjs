@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {serviceRows} from '../stad/service-status.mjs';
+import {incident} from './cleaning-incident.mjs';
+const now=Date.parse('2026-11-25T10:00:00Z'),stamp=new Date(now).toISOString();
+const health={fields:{lastSuccess:{timestampValue:stamp},syncLastSuccess:{timestampValue:stamp}}};
+assert(serviceRows(health,{updated_at:stamp},now).every(x=>x.ok));
+assert(serviceRows(null,null,now).every(x=>!x.ok));
+assert(serviceRows(health,{updated_at:stamp},now+25*3600000).every(x=>!x.ok));
+let items=[],writes=[];
+const request=async(url,options)=>{if(options.method==='POST'){const body=JSON.parse(options.body);items=[{...body,number:1}];writes.push(body);}if(options.method==='PATCH'){writes.push(JSON.parse(options.body));items=[];}return {ok:true,json:async()=>items};};
+await incident({request,token:'synthetic',repo:'example/test'});await incident({request,token:'synthetic',repo:'example/test'});assert.equal(writes.length,1);
+await incident({request,token:'synthetic',repo:'example/test',healthy:true});assert.equal(writes[1].state,'closed');
+await incident({request,token:'synthetic',repo:'example/test',healthy:true});assert.equal(writes.length,2);
+console.log('PASS: stale/missing/fresh status, single incident and recovery');

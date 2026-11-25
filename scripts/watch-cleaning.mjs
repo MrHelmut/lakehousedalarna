@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {pathToFileURL} from 'node:url';
+import {incident} from './cleaning-incident.mjs';
 const HOUR=3600000;
 export function healthProblems(value,now=Date.now()) {
  const fresh=(raw,age)=>{const t=Date.parse(raw);return Number.isFinite(t)&&now-t<age&&now-t>=-300000;};
@@ -10,7 +11,7 @@ export function healthProblems(value,now=Date.now()) {
  return problems;
 }
 export function isHealthy(value,now=Date.now()){return healthProblems(value,now).length===0;}
-export async function check({request=fetch,test=false,stateFile='.cleaning-watch/state.json',now=Date.now()}={}) {
+export async function check({request=fetch,test=false,stateFile='.cleaning-watch/state.json',now=Date.now(),fallback}={}) {
  let previous={};try{previous=JSON.parse(await fs.readFile(stateFile,'utf8'));}catch{}
  let known=false,problems=[];
  try {
@@ -23,15 +24,23 @@ export async function check({request=fetch,test=false,stateFile='.cleaning-watch
  const recovery=healthy&&!!previous.alertAt;
  const notify=test||(overdue&&!previous.alertAt)||recovery;
  if(notify){
+  try {
   const response=await request('https://api.web3forms.com/submit',{
    method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},signal:AbortSignal.timeout(20000),
    body:JSON.stringify({access_key:'76b6737b-f408-448b-b29d-bba9aa1a4a43',from_name:'Lake House Dalarna · Driftkontroll',
     subject:test?'TEST: Oberoende driftkontroll för städportalen':healthy?'Städautomatiken fungerar igen':'Kontrollera städautomatiken · Lake House Dalarna',
     message:test?'Detta är ett test av reservlarmet från GitHub. Ingen bokning eller städstatus har ändrats.':healthy?'Driftkontrollen får åter aktuella livstecken från både mejlkontroll och kalenderimport.':(known?problems.join('\n'):'Driftkontrollen har inte kunnat läsa automatikens status på minst sex timmar.')+'\nAutomatiska återförsök fortsätter. Kontrollera portalen och kontakta städaren direkt om ett tillfälle är nära. Detta är ett samlat larm för avbrottet, inte ett nytt mejl för varje misslyckat försök.\nhttps://lakehousedalarna.com/stad/'})});
-  const result=await response.json();if(!response.ok||result.success!==true)throw Error('Reservlarmet accepterades inte av mejltjänsten');
+  let result;try{result=await response.json();}catch{throw Error('Reservmejltjänsten svarade inte med ett giltigt API-svar');}
+  if(!response.ok||result.success!==true)throw Error('Reservlarmet accepterades inte av mejltjänsten');
+  } catch(error) {
+   if(test||!fallback)throw error;
+   await fallback({healthy});
+   console.warn('Reservmejlet misslyckades; samlat driftärende hanteras i GitHub.');
+  }
  }
+ if(healthy&&fallback)await fallback({healthy:true});
  if(!test){await fs.mkdir(path.dirname(stateFile),{recursive:true});await fs.writeFile(stateFile,JSON.stringify({unhealthy:!healthy,firstFailureAt,alertAt:healthy?null:notify?now:previous.alertAt}));}
  console.log(test?'Testlarm accepterat av mejltjänsten':healthy?'Driftkontroll OK':'Driftkontroll: återförsök pågår');
  return {healthy,notified:notify};
 }
-if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href)await check({test:process.argv.includes('--test')});
+if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href)await check({test:process.argv.includes('--test'),fallback:process.env.GITHUB_TOKEN?incident:undefined});
