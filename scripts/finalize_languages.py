@@ -22,7 +22,7 @@ def build():
   for lang,route in cluster.items():
    p=ROOT/route/('index.html') if route.endswith('/') else ROOT/route
    text=p.read_text(encoding='utf-8')
-   text=re.sub(r'((?:src|href)="/?(?:i18n|booking|analytics-consent|euro-estimate|house-photos|seo)\.js|href="/site-navigation\.css)(?:\?[^"<>]*)?"',r'\1?v=20261119-nl"',text)
+   text=re.sub(r'((?:src|href)="/?(?:i18n|analytics-consent|euro-estimate|house-photos|seo)\.js|href="/site-navigation\.css)(?:\?[^"<>]*)?"',r'\1?v=20261119-nl"',text)
    text=re.sub(r'<link\b[^>]*hreflang=[^>]+>','',text)
    text=text.replace('</head>',head+'</head>')
    if lang=='nl-NL':

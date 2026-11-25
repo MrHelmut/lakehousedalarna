@@ -589,17 +589,39 @@ function updateHelpTextDefault() {
     }
 }
 
+async function calendarFetch(url) {
+    const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);
+    try {const response=await fetch(url,{cache:'no-store',signal:controller.signal});if(!response.ok)throw Error('Calendar unavailable');return await response.json();}
+    finally {clearTimeout(timer);}
+}
+async function loadOwnerDates() {
+    const result = new Set(); let token = '';
+    const pages=new Set();
+    do {
+        if(pages.has(token))throw Error('Invalid calendar pagination');pages.add(token);
+        const data = await calendarFetch('https://firestore.googleapis.com/v1/projects/lake-house-dalarna-cleaning/databases/(default)/documents/ownerAvailability?pageSize=100'+(token?'&pageToken='+encodeURIComponent(token):''));
+        if(!data || (data.documents && !Array.isArray(data.documents))) throw new Error('Invalid owner calendar');
+        for(const document of data.documents||[]) {
+            const f=document.fields;
+            if(typeof f?.active?.booleanValue!=='boolean') throw new Error('Invalid owner range');
+            if(!f.active.booleanValue) continue;
+            const start=f.start?.stringValue,end=f.end?.stringValue;
+            if(!/^\d{4}-\d{2}-\d{2}$/.test(start)||!/^\d{4}-\d{2}-\d{2}$/.test(end)||start>=end) throw new Error('Invalid owner range');
+            if(toDateKey(parseDateKey(start))!==start||toDateKey(parseDateKey(end))!==end||nightsBetween(start,end)>730)throw Error('Invalid owner dates');
+            for(let day=parseDateKey(start);toDateKey(day)<end;day=addDays(day,1)) result.add(toDateKey(day));
+        }
+        token=data.nextPageToken||'';
+    } while(token);
+    return result;
+}
 async function loadAvailability() {
     try {
-        const response = await fetch(`/availability.json?v=${Date.now()}`);
-        if (!response.ok) {
-            throw new Error("Availability data could not be loaded.");
-        }
-
-        const availability = await response.json();
+        const availability = await calendarFetch(`/availability.json?v=${Date.now()}`);
         if (!availability.coverage_start || !availability.coverage_end || !availability.updated_at
             || !Number.isFinite(Date.parse(availability.updated_at))) throw new Error("Calendar data is invalid");
+        const ownerDates = await loadOwnerDates();
         bookedDates = collectUnavailableDates(availability);
+        for (const day of ownerDates) bookedDates.add(day);
         coverageStart = availability.coverage_start;
         coverageEnd = availability.coverage_end;
         checkInInput.min = coverageStart;
@@ -622,6 +644,10 @@ async function loadAvailability() {
 form.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (requestSending || requestComplete || form.querySelector("[name=botcheck]")?.checked) return;
+    requestSending=true;
+    validateSelection();
+    await loadAvailability();
+    requestSending=false;
 
     if (!validateSelection()) {
         helpText.textContent = tr("These dates are unavailable. Choose other dates.");
@@ -702,6 +728,19 @@ form.addEventListener("submit", async (event) => {
     const emailUrl = `mailto:${bookingEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(requestBody)}`;
     const emailFallback = document.querySelector("[data-email-fallback]");
     emailFallback.href = emailUrl;
+    emailFallback.onclick = async event => {
+        event.preventDefault();
+        if(requestSending)return;
+        requestSending=true;
+        await loadAvailability();
+        requestSending=false;
+        if(!validateSelection()||checkInInput.value!==checkIn||checkOutInput.value!==checkOut||String(getSelectedGuests())!==guests){
+            emailFallback.hidden=true;
+            helpText.textContent=tr("These dates are unavailable. Choose other dates.");
+            helpText.classList.add('error');return;
+        }
+        window.location.href=emailUrl;
+    };
     if (usesDirectSubmission()) {
         requestSending = true;
         validateSelection();
@@ -750,6 +789,7 @@ form.addEventListener("submit", async (event) => {
 
 function handleRequestInteraction(event) {
     requestComplete = false;
+    document.querySelector('[data-email-fallback]').hidden=true;
     const field = event.target;
     if (["first_name", "last_name", "guest_email", "guest_phone", "country", "message"].includes(field?.name) && field.value.trim()) startBookingRequest();
     trackDateSelection();

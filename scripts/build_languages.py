@@ -70,7 +70,7 @@ for lang in ROUTES:
         # Swedish-only campaign control must survive language rebuilds.
         if lang == 'sv' and i == 2:
             result = result.replace('<p data-length-discount', "<details data-promo-panel data-no-translate>\n<summary>Har ni en rabattkod?</summary>\n<label for=\"booking-promo-code\">Rabattkod</label>\n<input id=\"booking-promo-code\" data-promo-code type=\"text\" autocomplete=\"off\" maxlength=\"24\" spellcheck=\"false\">\n<button type=\"button\" data-apply-promo>Använd</button>\n<p data-promo-status role=\"status\"></p>\n</details>\n" + '<p data-length-discount', 1)
-            result = result.replace('booking.js?v=20261119-nl', 'booking.js?v=20261120-skidvm')
+            result = result.replace('booking.js?v=20261119-nl', 'booking.js?v=20261125-owner-bookings')
         result=result.replace('</head>',f'<link rel="alternate" hreflang="nl-NL" href="{BASE+ROUTES["nl"][i]}"></head>')
         # Contextual German ski guide link; keep the booking CTA primary.
         if lang == 'de' and i == 0:

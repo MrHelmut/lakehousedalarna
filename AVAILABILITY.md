@@ -1,5 +1,15 @@
 # Availability
 
+## Owner self-service (25 November 2026)
+
+The owner view at `/stad/` can create a reservation, confirmed direct booking, or calendar-only block. New records use stable `owner-<uuid>` IDs and `source: direct-portal`. Reservations and blocks never create cleaning jobs or cleaner notices. Confirming a reservation preserves its ID and creates the departure cleaning through the existing confirmed-booking flow. Cancelling only changes status; notes, responses and cleaning history remain stored. Existing legacy records and overrides are not migrated or removed by this feature.
+
+Every owner save atomically writes the private booking and a public `ownerAvailability/{id}` mirror containing only `start`, `end` (exclusive), and `active`. Firestore rules restrict all writes to the existing verified active owner, enforce the mirror, and prohibit exposing guest details. A shared transaction lock serializes owner saves; overlap checks include active bookings, reservations and blocks. New dates also require a successful calendar check. Confirmation keeps already-held dates and checks private bookings again, without treating the owner's subsequent Airbnb block as a new conflict.
+
+All public booking languages read the date-only mirror together with `availability.json`, including immediately before a request or fallback email. A failed mirror read disables requests. An inactive owner mirror cannot reopen dates blocked by the base calendar or another active mirror. Cloud iCal refreshes do not overwrite owner records. This is not two-way Airbnb synchronization: the owner must block or reopen Airbnb separately, and manually confirm direct guest requests. Existing notification schedules and daily limits apply to confirmed bookings and cancellations.
+
+Tests: `node scripts/test_owner_bookings.mjs`, `node scripts/test_booking_request.cjs`, and `node scripts/test_pricing.cjs`. Browser checks use isolated synthetic records, never real guest bookings.
+
 Both booked and blocked dates are unavailable. The UI uses one disabled, striped state for both. Guests cannot select these dates, select a range across them, or include them as a checkout date. Manual date input is also validated, and the email request cannot open for an invalid selection.
 
 The updater imports every iCal event regardless of its summary. It then adds availability-overrides.json. The additional blocked dates 15 and 24 September 2026 were verified in the Airbnb host calendar on 11 September but omitted from its export. If reopened, remove their overrides. Do not automatically extend all reservations by one night: Airbnb can allow same-day arrivals for other dates.

@@ -8,6 +8,38 @@ service cloud.firestore {
   }
 
   function owner() { return member() && get(/databases/$(database)/documents/members/$(request.auth.uid)).data.role == 'owner'; }
+  function portalBooking(d) {
+   return d.keys().hasAll(['source','status','arrival','departure','guestName','guests','noteLanguage','address','updatedAt','updatedBy'])
+    && d.source == 'direct-portal' && d.status in ['reserved','confirmed','blocked','cancelled']
+    && d.arrival is string && d.arrival.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
+    && d.departure is string && d.departure.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$') && d.departure > d.arrival
+    && d.guestName is string && d.guestName.size() <= 60 && d.guests is string
+    && (d.status in ['blocked','cancelled'] || (d.guestName.size() > 0 && d.guests.matches('^[1-6]$')))
+    && d.noteLanguage in ['sv','en','de'] && d.address == 'Harnäsudden 26'
+    && d.updatedBy == request.auth.uid && d.updatedAt == request.time;
+  }
+  function mirrored(id,d) {
+   let m=getAfter(/databases/$(database)/documents/ownerAvailability/$(id)).data;
+   return m.start==d.arrival && m.end==d.departure && m.active==(d.status in ['reserved','confirmed','blocked']);
+  }
+  match /ownerBookingLocks/main { allow read, write: if owner(); }
+  match /ownerAvailability/{id} {
+   allow read: if true;
+   allow create, update: if owner() && id.matches('^owner-[a-zA-Z0-9-]+$')
+    && request.resource.data.keys().hasOnly(['start','end','active'])
+    && getAfter(/databases/$(database)/documents/bookings/$(id)).data.source == 'direct-portal'
+    && mirrored(id,getAfter(/databases/$(database)/documents/bookings/$(id)).data);
+  }
+  match /bookings/{id} {
+   allow create: if owner() && id.matches('^owner-[a-zA-Z0-9-]+$') && portalBooking(request.resource.data)
+    && request.resource.data.keys().hasOnly(['source','status','arrival','departure','guestName','guests','noteLanguage','address','updatedAt','updatedBy'])
+    && request.resource.data.status in ['reserved','confirmed','blocked'] && mirrored(id,request.resource.data);
+   allow update: if owner() && resource.data.source == 'direct-portal' && portalBooking(request.resource.data)
+    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status','updatedAt','updatedBy'])
+    && ((resource.data.status=='reserved' && request.resource.data.status in ['confirmed','cancelled'])
+     || (resource.data.status in ['confirmed','blocked'] && request.resource.data.status=='cancelled'))
+    && mirrored(id,request.resource.data);
+  }
   match /cleaningProposals/{id} {
    allow read: if member();
    allow create, update: if member()
