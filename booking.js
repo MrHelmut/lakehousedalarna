@@ -21,6 +21,28 @@ const summarySeason = document.querySelector("[data-summary-season]");
 const summaryStatus = document.querySelector("[data-summary-status]");
 const seasonNote = document.querySelector("[data-season-note]");
 
+// Keep the existing offer available in every booking language, with unchanged rules.
+const promoWords = {
+    sv: { heading: "Har ni en rabattkod?", label: "Rabattkod", apply: "Använd", invalid: "Rabattkoden känns inte igen.", saved: "Du sparar", before: "Pris före rabatt", conditions: "Välj sju lediga nätter med incheckning tidigast 21 februari och utcheckning senast 9 mars 2027 samt antal gäster." },
+    en: { heading: "Have a discount code?", label: "Discount code", apply: "Apply", invalid: "Discount code not recognised.", saved: "You save", before: "Price before discount", conditions: "Select seven available nights with arrival on or after 21 February and departure on or before 9 March 2027, and the number of guests." },
+    de: { heading: "Haben Sie einen Rabattcode?", label: "Rabattcode", apply: "Anwenden", invalid: "Rabattcode nicht erkannt.", saved: "Sie sparen", before: "Preis vor Rabatt", conditions: "Wählen Sie sieben verfügbare Nächte mit Anreise frühestens am 21. Februar und Abreise spätestens am 9. März 2027 sowie die Gästezahl." },
+    nl: { heading: "Heeft u een kortingscode?", label: "Kortingscode", apply: "Toepassen", invalid: "Kortingscode niet herkend.", saved: "U bespaart", before: "Prijs vóór korting", conditions: "Kies zeven beschikbare nachten met aankomst op of na 21 februari en vertrek uiterlijk op 9 maart 2027, en het aantal gasten." }
+};
+function promotionText() { return promoWords[currentLanguage()] || promoWords.en; }
+function promotionRequestText(estimate) {
+    const labels = {
+        sv: ["Rabattkod", "VM-rabatt", "Beräknat totalpris efter rabatt"],
+        en: ["Discount code", "World Championships discount", "Estimated total after discount"],
+        de: ["Rabattcode", "WM-Rabatt", "Geschätzter Gesamtpreis nach Rabatt"],
+        nl: ["Kortingscode", "WK-korting", "Geschat totaal na korting"]
+    }[currentLanguage()] || ["Discount code", "World Championships discount", "Estimated total after discount"];
+    return `${labels[0]}: ${estimate.promoCode}\n${labels[1]}: ${formatSek(estimate.promoDiscount)}\n${labels[2]}: ${formatSek(estimate.total)}`;
+}
+if (!document.querySelector("[data-promo-panel]")) {
+    const words = promotionText();
+    document.querySelector("[data-price-breakdown]")?.insertAdjacentHTML("afterend",
+        `<details data-promo-panel data-no-translate><summary>${words.heading}</summary><label for="booking-promo-code">${words.label}</label><input id="booking-promo-code" data-promo-code type="text" autocomplete="off" maxlength="24" spellcheck="false"><button type="button" data-apply-promo>${words.apply}</button><p data-promo-status role="status"></p></details>`);
+}
 const promoInput = document.querySelector("[data-promo-code]");
 const promoStatus = document.querySelector("[data-promo-status]");
 const vmPromotion = { code: "SKIDVM", start: "2027-02-21", end: "2027-03-09", nights: 7, rate: 0.10 };
@@ -324,11 +346,11 @@ function updatePromoStatus(estimate) {
     if (!enteredPromoCode) {
         promoStatus.textContent = "";
     } else if (enteredPromoCode !== vmPromotion.code) {
-        promoStatus.textContent = "Rabattkoden känns inte igen.";
+        promoStatus.textContent = promotionText().invalid;
     } else if (estimate?.promoCode) {
-        promoStatus.textContent = `SKIDVM · Du sparar ${formatSek(estimate.promoDiscount)}. Pris före rabatt ${formatSek(estimate.totalBeforePromo)}.`;
+        promoStatus.textContent = `SKIDVM · ${promotionText().saved} ${formatSek(estimate.promoDiscount)}. ${promotionText().before} ${formatSek(estimate.totalBeforePromo)}.`;
     } else {
-        promoStatus.textContent = "Välj sju lediga nätter med incheckning tidigast 21 februari och utcheckning senast 9 mars 2027 samt antal gäster.";
+        promoStatus.textContent = promotionText().conditions;
     }
 }
 
@@ -723,7 +745,7 @@ form.addEventListener("submit", async (event) => {
     ].join("\n");
 
     const requestBody = estimate?.promoCode
-        ? `${body}\n\nRabattkod: ${estimate.promoCode}\nVM-rabatt: ${formatSek(estimate.promoDiscount)}\nBeräknat totalpris efter rabatt: ${formatSek(estimate.total)}`
+        ? `${body}\n\n${promotionRequestText(estimate)}`
         : body;
     const emailUrl = `mailto:${bookingEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(requestBody)}`;
     const emailFallback = document.querySelector("[data-email-fallback]");
