@@ -4838,6 +4838,24 @@ a.lake-map-button:focus-visible,.whatsapp-contact a:focus-visible,.whatsapp-floa
 /* Keep discovery links readable on the light seasonal-page background. */
 .seo-section .footer-links a,.seo-section p a:not(.primary-btn){color:var(--primary);text-decoration:underline;text-underline-offset:4px}
 
+/* Standalone seasonal copy and CTAs must participate in normal block flow. */
+.seo-page .seo-section>h2,.seo-page .seo-section>p{max-width:880px;margin-inline:auto;overflow-wrap:break-word}
+.seo-page .seo-section>h2{margin-bottom:18px;color:var(--primary)}
+.seo-page .seo-section>p{margin-bottom:24px}
+.seo-page .seo-section>.primary-btn{display:flex;width:fit-content;max-width:100%;margin:24px auto 0;align-items:center;justify-content:center;white-space:normal;text-align:center;line-height:1.5}
+.seo-page .seo-section:has(>.primary-btn){text-align:center}
+
+/* Show the real meeting photo in full, with text outside the image. */
+.business-hero{max-width:1320px;margin:auto;padding:130px 24px 30px}
+.business-hero>img{width:100%;height:auto;border-radius:18px}
+.business-hero-copy{max-width:880px;margin:32px auto 0;text-align:center}
+.business-hero-copy h1{font-size:clamp(34px,5vw,60px);line-height:1.15;color:var(--primary);margin:12px 0 20px}
+.business-hero-copy p{font-size:18px;line-height:1.75}
+.business-hero-copy .hero-buttons{margin:26px 0 0}
+.business-hero-copy .welcome{color:#735529}
+@media(max-width:1000px){.business-hero{padding-top:110px}}
+@media(max-width:600px){.business-hero{padding-inline:16px}.business-hero>img{border-radius:10px}.business-hero-copy p{font-size:16px}}
+
 /* Mobile CTA containment and compact, readable introductory copy. */
 @media(max-width:768px){
  .primary-btn,.secondary-btn,.booking-button{
@@ -4884,3 +4902,5 @@ a.lake-map-button:focus-visible,.whatsapp-contact a:focus-visible,.whatsapp-floa
 [data-promo-code]{display:block;width:100%;box-sizing:border-box;min-height:44px;border:1px solid #c5c9c8;border-radius:8px;padding:10px 12px;font:inherit;background:#fff;color:#183545}
 [data-apply-promo]{margin-top:10px;min-height:44px;border:0;border-radius:8px;padding:10px 20px;font:inherit;background:#c3a46b;color:#183545;cursor:pointer}
 [data-promo-status]{line-height:1.6;overflow-wrap:anywhere}
+
+.business-inquiry{scroll-margin-top:180px}.business-inquiry form{max-width:880px;margin:auto}.business-inquiry h2{color:var(--primary);font-size:30px;line-height:1.25}.business-inquiry p{margin:18px 0;line-height:1.7}.business-inquiry .form-grid{margin:24px 0}.business-inquiry input,.business-inquiry select,.business-inquiry textarea{min-width:0;max-width:100%;box-sizing:border-box}.business-inquiry [role=status]{font-weight:600;color:var(--primary)}

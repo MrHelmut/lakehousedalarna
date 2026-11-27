@@ -1,0 +1,30 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const {payload, send} = require('../business-request.js');
+(async () => {
+  const values = new Map(Object.entries({company:'Testföretag',contact:'Testperson',email:'test@example.invalid',phone:'000',arrival:'2027-01-11',departure:'2027-01-13',guests:'6',overnight:'Ja',message:'Planeringsmöte'}));
+  const data = payload(values,'test-only');
+  assert.equal(data.request_type,'business_quote');
+  assert.equal(data.company,'Testföretag');
+  assert.equal(data.guests,'6');
+  assert.match(data.message,/personlig offert/);
+  assert.match(data.message,/Övernattning: Ja/);
+  assert.ok(!('total' in data));
+  let calls=0;
+  await send(data,async (url, options)=>{
+    calls++; assert.equal(url,'https://api.web3forms.com/submit');
+    assert.deepEqual(JSON.parse(options.body),data);
+    return {ok:true,json:async()=>({success:true})};
+  });
+  assert.equal(calls,1);
+  await assert.rejects(send(data,async()=>({ok:true,json:async()=>({success:false})})));
+  await assert.rejects(send(data,async()=>({ok:false,json:async()=>({success:true})})));
+  await assert.rejects(send(data,async()=>{throw new Error('network');}));
+  const html=fs.readFileSync('sv/foretagsvistelse/index.html','utf8');
+  assert.ok(!html.includes('href="/sv/boka/"'));
+  assert.ok(!html.includes('src="/booking.js'));
+  assert.match(html,/data-business-request/);
+  assert.match(html,/Pris lämnas i personlig offert/);
+  assert.ok(!html.includes('uppskattat totalpris'));
+  console.log('PASS: quote payload, recipient route, confirmed/failed responses, no price estimate; all requests mocked.');
+})();
