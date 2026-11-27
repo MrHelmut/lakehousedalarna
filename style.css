@@ -327,6 +327,10 @@ background:linear-gradient(180deg,#000 0 33%,#dd0000 33% 66%,#ffce00 66% 100%);
 
 }
 
+.flag-nl{
+background:linear-gradient(180deg,#ae1c28 0 33%,#fff 33% 66%,#21468b 66% 100%);
+}
+
 .language-switcher small{
 
 font-size:9px;
