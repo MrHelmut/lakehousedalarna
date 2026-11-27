@@ -82,3 +82,20 @@ p=page({saved:accepted,search:'?utm_source=private%40example.com&utm_medium=secr
 config=p.window.dataLayer.find(x=>x[0]==='config')[2];
 assert(!JSON.stringify(config).includes('private'));assert(!JSON.stringify(config).includes('secret'));
 console.log('PASS: Dalarna article and Facebook campaign attribution, consent, redirect and query privacy.');
+
+for(const [lang,path] of [['sv','/sv/skidsemester-dalarna/'],['nl','/nl/skivakantie-zweden/']]) {
+ const search='?utm_source=facebook&utm_medium=social&utm_campaign=vinter_2027_januari&utm_content=facebook_inlagg&email=private%40example.com';
+ p=page({lang,path,search});assert.equal(p.scripts.length,0);
+ p.click('declined');assert.equal(p.scripts.length,0);
+ p.click('accepted');
+ const c=p.window.dataLayer.find(x=>x[0]==='config')[2];
+ assert.equal(c.campaign_name,'vinter_2027_januari');
+ assert.equal(c.campaign_source,'facebook');assert.equal(c.campaign_medium,'social');
+ assert.equal(c.campaign_content,'facebook_inlagg');assert.equal(c.site_language,lang);
+ assert.equal(c.page_location,'https://lakehousedalarna.com'+path);
+ assert(!JSON.stringify(c).includes('private'));
+ p.click(null,'https://lakehousedalarna.com'+(lang==='sv'?'/sv/boka/':'/nl/boeken/'));
+ assert(p.window.dataLayer.some(x=>x[0]==='event'&&x[1]==='click_check_availability'));
+ p=page({lang,path,search,saved:accepted,excluded:true});assert.equal(p.scripts.length,0);
+}
+console.log('PASS: Swedish/Dutch winter links, consent, language, booking clicks, private query stripping and internal exclusion.');
