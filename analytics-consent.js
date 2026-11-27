@@ -62,7 +62,7 @@
     if(['google','bing','instagram','facebook','facebook.com','newsletter','dalarna.nu'].includes(source))campaign.campaign_source=source;
     if(['organic','social','paid_social','cpc','email','referral','paid_referral'].includes(medium))campaign.campaign_medium=medium;
     // Only approved public campaign labels; never forward arbitrary query content.
-    if(['foretagspresentation_2026','dalarna_nu','skivm_2027_muenchen'].includes(query.get('utm_campaign')))campaign.campaign_name=query.get('utm_campaign');
+    if(['foretagspresentation_2026','dalarna_nu','skivm_2027_muenchen','vinter_2027_januari'].includes(query.get('utm_campaign')))campaign.campaign_name=query.get('utm_campaign');
     if(['artikel','facebook_inlagg'].includes(query.get('utm_content')))campaign.campaign_content=query.get('utm_content');
     window.gtag('config',ID,{
       send_page_view:true,page_location:location.origin+location.pathname,page_referrer:referrer,
