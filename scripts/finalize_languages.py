@@ -42,6 +42,7 @@ def build():
     nav='<nav class="privacy-languages">'+''.join(f'<a href="/{v}" lang="{k}">{dict(en="English",sv="Svenska",de="Deutsch",**{"nl-NL":"Nederlands"})[k]}</a>' for k,v in cluster.items())+'</nav>'
     text=re.sub(r'<nav class="privacy-languages">.*?</nav>',lambda m:nav,text,flags=re.S)
    if cluster['en'] in ['sweden-lake-house.html','ski-holiday-sweden.html']:
+    text=re.sub(r'href="/style\.css(?:\?[^"<>]*)?"','href="/style.css?v=20261127-seasons"',text)
     # Every seasonal language control points to the equivalent page, once.
     names={'en':'English','sv':'Svenska','de':'Deutsch','nl-NL':'Nederlands'}
     nav='<div class="language-switcher" aria-label="Language">'+''.join(f'<a href="/{p}" lang="{l}" aria-label="{names[l]}"'+(' class="active" aria-current="page"' if l==lang else '')+f'><span class="flag flag-{l[:2]}" aria-hidden="true"></span><small>{l[:2].upper()}</small></a>' for l,p in cluster.items())+'</div>'
