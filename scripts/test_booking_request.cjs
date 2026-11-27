@@ -57,13 +57,13 @@ function setup(){
    }
  };
  await p.submit();
- assert.match(p.posts[0].payload.message,/Rabattkod: SKIDVM/);
- assert.match(p.posts[0].payload.message,/Beräknat totalpris efter rabatt/);
+ assert.match(p.posts[0].payload.message,/Discount code: SKIDVM/);
+ assert.match(p.posts[0].payload.message,/Estimated total after discount/);
  const fallbackBody = decodeURIComponent(p.node('[data-email-fallback]').href.split('&body=')[1]);
  assert.equal(fallbackBody,p.posts[0].payload.message);
- assert.match(fallbackBody,/VM-rabatt:/);
+ assert.match(fallbackBody,/World Championships discount:/);
  p.node('[data-promo-code]').value='FELKOD';p.run('applyPromoCode()');
- assert.match(p.node('[data-promo-status]').textContent,/känns inte igen/);
+ assert.match(p.node('[data-promo-status]').textContent,/not recognised/);
  assert.equal(p.run('getStayEstimate("2027-02-21","2027-02-28",6).promoDiscount'),0);
  p.node('[data-promo-code]').value='SKIDVM';p.run('applyPromoCode()');
  const four=p.run('getStayEstimate("2027-02-21","2027-02-28",4)');
@@ -84,6 +84,17 @@ function setup(){
  p=dutch(setup());p.failPost(async()=>({ok:false,json:async()=>({success:false})}));await p.submit();assert.match(p.node('[data-request-help]').textContent,/niet bevestigen/);assert.equal(p.node('[data-email-fallback]').hidden,false);
  p=dutch(setup());p.context.window.lakeBookingForm.accessKey='';await p.submit();assert.match(decodeURIComponent(p.context.window.location.href),/Boekingsaanvraag.*Aankomst:/s);
  console.log('PASS: Dutch totals, guest/night labels, request payload, success, failure and email fallback.');
+ for (const [lang,invalid,saved,label] of [['sv','känns inte igen','Du sparar','Rabattkod'],['en','not recognised','You save','Discount code'],['de','nicht erkannt','Sie sparen','Rabattcode'],['nl','niet herkend','U bespaart','Kortingscode']]) {
+   p=setup();p.context.window.siteI18n={getCurrentLanguage:()=>lang};
+   p.node('[data-check-in]').value='2027-02-21';p.node('[data-check-out]').value='2027-02-28';
+   p.node('[data-promo-code]').value='SKIDVM';p.run('applyPromoCode()');
+   assert(p.node('[data-promo-status]').textContent.includes(saved),lang);
+   assert(p.run('promotionRequestText(getStayEstimate("2027-02-21","2027-02-28",6))').includes(label),lang);
+   assert.equal(p.run('getStayEstimate("2027-02-21","2027-02-28",6).total'),81283.5);
+   p.node('[data-promo-code]').value='INVALID';p.run('applyPromoCode()');
+   assert(p.node('[data-promo-status]').textContent.includes(invalid),lang);
+ }
+ console.log('PASS: identical SKIDVM totals and localized status/request details in SV/EN/DE/NL.');
  // A new owner hold must be checked even after the visitor selected dates.
  p=setup();let ownerActive=true;
  const normal=p.context.fetch;

@@ -67,7 +67,8 @@ console.log('PASS: redirect preserves campaign and sanitized external origin.');
 
 for(const [search,expected] of [
  ['?utm_source=dalarna.nu&utm_medium=paid_referral&utm_campaign=foretagspresentation_2026&utm_content=artikel',{campaign_source:'dalarna.nu',campaign_medium:'paid_referral',campaign_name:'foretagspresentation_2026',campaign_content:'artikel'}],
- ['?utm_source=facebook&utm_medium=social&utm_campaign=dalarna_nu',{campaign_source:'facebook',campaign_medium:'social',campaign_name:'dalarna_nu'}]
+ ['?utm_source=facebook&utm_medium=social&utm_campaign=dalarna_nu',{campaign_source:'facebook',campaign_medium:'social',campaign_name:'dalarna_nu'}],
+ ['?utm_source=facebook.com&utm_medium=paid_social&utm_campaign=skivm_2027_muenchen',{campaign_source:'facebook.com',campaign_medium:'paid_social',campaign_name:'skivm_2027_muenchen'}]
 ]) {
  p=page({search});assert.equal(p.scripts.length,0);p.click('accepted');
  const c=p.window.dataLayer.find(x=>x[0]==='config')[2];

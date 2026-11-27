@@ -4872,3 +4872,11 @@ a.lake-map-button:focus-visible,.whatsapp-contact a:focus-visible,.whatsapp-floa
 .photo-intro h2{font-size:30px}.photo-intro p{font-size:16px}
 #ski-preview,#photo-intro{scroll-margin-top:130px}
 @media(max-width:760px){.photo-intro{grid-template-columns:1fr}.photo-intro img{max-height:600px;object-fit:cover}.photo-intro h2{font-size:26px}}
+
+/* A quiet, touch-friendly code field in every booking language. */
+[data-promo-panel]{margin:20px 0;text-align:left}
+[data-promo-panel] summary{cursor:pointer;padding:10px 0}
+[data-promo-panel] label{display:block;margin:12px 0 6px}
+[data-promo-code]{display:block;width:100%;box-sizing:border-box;min-height:44px;border:1px solid #c5c9c8;border-radius:8px;padding:10px 12px;font:inherit;background:#fff;color:#183545}
+[data-apply-promo]{margin-top:10px;min-height:44px;border:0;border-radius:8px;padding:10px 20px;font:inherit;background:#c3a46b;color:#183545;cursor:pointer}
+[data-promo-status]{line-height:1.6;overflow-wrap:anywhere}

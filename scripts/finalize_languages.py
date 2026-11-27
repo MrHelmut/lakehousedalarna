@@ -43,3 +43,6 @@ def build():
    p.write_text(re.sub(r'(?m)^[ \t]+$','',text),encoding='utf-8')
    urls.append(f'<url><loc>{BASE+route}</loc>{xml}</url>')
  (ROOT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'+''.join(urls)+'</urlset>',encoding='utf-8')
+ # Preserve the single-language business page and its discreet footer links.
+ from build_business_page import build as build_business_page
+ build_business_page()
