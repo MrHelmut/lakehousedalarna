@@ -9,11 +9,13 @@ CLUSTERS=[
  {'en':'en/house/','sv':'sv/huset/','de':'de/ferienhaus/','nl-NL':'nl/het-huis/'},
  {'en':'en/booking/','sv':'sv/boka/','de':'de/buchen/','nl-NL':'nl/boeken/'},
  {'en':'en/explore-dalarna/','sv':'sv/upplev-dalarna/','de':'de/dalarna-entdecken/','nl-NL':'nl/ontdek-dalarna/'},
- {'en':'sweden-lake-house.html','de':'de/ferienhaus-schweden.html','nl-NL':'nl/vakantiehuis-zweden/'},
- {'en':'ski-holiday-sweden.html','de':'de/skiurlaub-schweden.html','nl-NL':'nl/skivakantie-zweden/'},
+ {'en':'sweden-lake-house.html','sv':'sv/semesterhus-vid-sjo/','de':'de/ferienhaus-schweden.html','nl-NL':'nl/vakantiehuis-zweden/'},
+ {'en':'ski-holiday-sweden.html','sv':'sv/skidsemester-dalarna/','de':'de/skiurlaub-schweden.html','nl-NL':'nl/skivakantie-zweden/'},
  {'en':'privacy/en.html','sv':'privacy/sv.html','de':'privacy/de.html','nl-NL':'privacy/nl.html'}]
 def build():
  from seo_markup import add_markup
+ from build_swedish_seasons import build as build_swedish_seasons
+ build_swedish_seasons()
  urls=[]
  for cluster in CLUSTERS:
   alts={**cluster,'x-default':cluster['en']}
@@ -30,6 +32,9 @@ def build():
     for src,dst in [('privacy/en.html','privacy/nl.html'),('sweden-lake-house.html','nl/vakantiehuis-zweden/'),('ski-holiday-sweden.html','nl/skivakantie-zweden/')]:
      text=re.sub(r'<a\b[^>]*>',lambda m:m[0] if re.search(r'\blang=',m[0]) else m[0].replace('href="/'+src+'"','href="/'+dst+'"'),text)
    if 'explore-dalarna/' in cluster['en']:
+    # Re-running the language finalizer must not duplicate metadata or graphs.
+    text=re.sub(r'<meta property="og:(?:title|description|url|locale)" content="[^"]*">','',text)
+    text=re.sub(r'<script type="application/ld\+json">.*?</script>','',text,flags=re.S)
     desc=html.unescape(re.search('name="description" content="([^"]+)"',text)[1]);title=html.unescape(re.search('<title>(.*?)</title>',text)[1])
     text=text.replace('</head>',f'<meta property="og:title" content="{html.escape(title,quote=True)}"><meta property="og:description" content="{html.escape(desc,quote=True)}"><meta property="og:url" content="{BASE+route}"><meta property="og:locale" content="{dict(en="en_GB",sv="sv_SE",de="de_DE",**{"nl-NL":"nl_NL"})[lang]}"></head>')
     text=add_markup(text,lang,BASE+route,title,desc)
@@ -37,9 +42,13 @@ def build():
     nav='<nav class="privacy-languages">'+''.join(f'<a href="/{v}" lang="{k}">{dict(en="English",sv="Svenska",de="Deutsch",**{"nl-NL":"Nederlands"})[k]}</a>' for k,v in cluster.items())+'</nav>'
     text=re.sub(r'<nav class="privacy-languages">.*?</nav>',lambda m:nav,text,flags=re.S)
    if cluster['en'] in ['sweden-lake-house.html','ski-holiday-sweden.html']:
-    # Add the equivalent Dutch page to existing seasonal language controls.
-    target=cluster['nl-NL'];link=f'<a href="/{target}" lang="nl-NL" aria-label="Nederlands"><small>NL</small></a>'
-    text=re.sub(r'(<div class="language-switcher"[^>]*>)(.*?)(</div>)',lambda m:m[1]+m[2]+link+m[3],text,count=1,flags=re.S)
+    # Every seasonal language control points to the equivalent page, once.
+    names={'en':'English','sv':'Svenska','de':'Deutsch','nl-NL':'Nederlands'}
+    nav='<div class="language-switcher" aria-label="Language">'+''.join(f'<a href="/{p}" lang="{l}" aria-label="{names[l]}"'+(' class="active" aria-current="page"' if l==lang else '')+f'><span class="flag flag-{l[:2]}" aria-hidden="true"></span><small>{l[:2].upper()}</small></a>' for l,p in cluster.items())+'</div>'
+    if 'class="language-switcher"' in text:
+     text=re.sub(r'<div class="language-switcher"[^>]*>.*?</div>',lambda m:nav,text,count=1,flags=re.S)
+    else:
+     text=text.replace('</nav>',nav+'</nav>',1)
    p.write_text(re.sub(r'(?m)^[ \t]+$','',text),encoding='utf-8')
    urls.append(f'<url><loc>{BASE+route}</loc>{xml}</url>')
  (ROOT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'+''.join(urls)+'</urlset>',encoding='utf-8')
