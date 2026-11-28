@@ -16,7 +16,8 @@ def build():
     for attr, value in [('name="description"',DESCRIPTION),('property="og:title"',TITLE),('property="og:description"',DESCRIPTION),('property="og:url"',URL)]:
         head = re.sub(r'<meta '+attr+r' content="[^"]*">', '<meta '+attr+' content="'+value+'">', head)
     head = re.sub(r'<link rel="canonical" href="[^"]*">', '<link rel="canonical" href="'+URL+'">', head)
-    head = head.replace('winter-sunset-2026.webp', 'living-dining.jpg')
+    head = head.replace('winter-sunset-2026.webp', 'ledningsgrupp-rogsjon.png')
+    head = re.sub(r'/style\.css\?v=[^"\s]+', '/style.css?v=20261127-layout', head)
     graph = {'@context':'https://schema.org','@graph':[{'@type':'WebPage','@id':URL+'#webpage','url':URL,'name':TITLE,'description':DESCRIPTION,'inLanguage':'sv','about':{'@id':'https://lakehousedalarna.com/#lodging'}}]}
     head += '<script type="application/ld+json">'+json.dumps(graph,ensure_ascii=False)+'</script></head>'
     header = template[template.index('<body'):template.index('<main>')]
@@ -24,12 +25,13 @@ def build():
     header = re.sub(r'<div\b[^>]*data-language-switcher[^>]*>.*?</div>', '', header, flags=re.S)
     body = '''
 <main>
-<section class="seo-hero" style="background-image:url('/images/site/living-dining.jpg')">
-<div class="seo-hero-overlay"></div><div class="seo-hero-content">
-<p class="welcome">FÖRETAGS VISTELSE VID ROGSJÖN</p>
+<section class="business-hero">
+<img src="/images/site/ledningsgrupp-rogsjon.png" alt="Tre personer arbetar runt matbordet med utsikt över Rogsjön" width="1890" height="1064" fetchpriority="high">
+<div class="business-hero-copy">
+<p class="welcome">FÖRETAGSVISTELSE VID ROGSJÖN</p>
 <h1>Tid att tänka tillsammans</h1>
 <p>Samla en liten ledningsgrupp i ett eget hus vid sjön. Här finns plats för samtal runt matbordet, gemensamma måltider och en lugn kväll i bastun.</p>
-<div class="hero-buttons"><a class="primary-btn vm-cta" href="/sv/boka/">Se datum och skicka förfrågan</a></div>
+<div class="hero-buttons"><a class="primary-btn vm-cta" href="#foretagsforfragan">Begär offert för er företagsvistelse</a></div>
 </div></section>
 <section class="seo-section"><div class="seo-intro">
 <h2>En mindre grupp, hela huset för er själva</h2>
@@ -40,20 +42,21 @@ def build():
 <section class="seo-section"><div class="seo-feature-grid">
 <article><img src="/images/site/living-dining.jpg" alt="Matplats och vardagsrum med sjöutsikt" loading="lazy" decoding="async"><h2>Samtal med utrymme</h2><p>Samlas runt matbordet och ge plats åt frågor som behöver mer tid än vardagen brukar tillåta.</p></article>
 <article><img src="/images/site/sauna-relax.jpg" alt="Bastu och relax i huset" loading="lazy" decoding="async"><h2>En lugn kväll tillsammans</h2><p>Avsluta dagen med gemensam matlagning, utsikt över sjön och en stund i bastun.</p></article>
-<article><img src="/images/site/terrace-lake.jpg" alt="Terrass vid Rogsjön" loading="lazy" decoding="async"><h2>Vardagar och säsongsskiften</h2><p>Utforska en vistelse under vår eller höst, eller några vardagar när kalendern passar er. Aktuell tillgänglighet och pris finns på bokningssidan.</p></article>
+<article><img src="/images/site/terrace-lake.jpg" alt="Terrass vid Rogsjön" loading="lazy" decoding="async"><h2>Vardagar och säsongsskiften</h2><p>Utforska en vistelse under vår eller höst, eller några vardagar när kalendern passar er. Vi återkommer med tillgänglighet och en personlig offert för ert upplägg.</p></article>
 </div></section>
 <section class="seo-section"><div class="seo-intro">
 <h2>Planera upplägget med oss</h2>
 <p>Berätta vilka ni är, önskade datum, antal gäster och vad ni vill få ut av vistelsen. Om ni behöver särskild mötesutrustning, uppkoppling för videomöten eller andra arrangemang, stäm av det med oss innan ni bokar.</p>
 <p>Vistelsen gäller boende i huset. Vi utlovar inget konferenspaket, catering eller särskild mötesservice. Samma husregler gäller som vid övriga vistelser: inga fester eller större sammankomster.</p>
 <h2>Personlig förfrågan och bekräftelse</h2>
-<p>Välj datum och antal gäster för ett uppskattat totalpris inklusive städning och sängkläder. Beskriv ert upplägg i förfrågan. Vi svarar personligen med tillgänglighet, slutpris och bokningsvillkor.</p>
+<p>Pris lämnas i personlig offert. Beskriv datum, antal personer och ert upplägg i företagsförfrågan. Vi svarar personligen med tillgänglighet, pris, vad som ingår och bokningsvillkor.</p>
 <p>Ingen betalning görs när ni skickar förfrågan. Vistelsen är bekräftad först när ni har fått vår personliga bokningsbekräftelse.</p>
-<div class="vm-booking-actions"><a class="primary-btn vm-cta" href="/sv/boka/">Se lediga datum och pris</a></div>
+<div class="vm-booking-actions"><a class="primary-btn vm-cta" href="#foretagsforfragan">Begär personlig offert</a></div>
 </div></section>
 </main>
-<footer><div class="footer-content"><h2>Lake House Dalarna</h2><p>Solsidan Dalarna · Rogsjön · Falun</p><div class="footer-links"><a href="/sv/">Hem</a><a href="/sv/huset/">Huset</a><a href="/sv/boka/">Lediga datum och pris</a><a href="/privacy/sv.html" data-privacy-link>Integritet</a></div><p class="copyright">© 2026 Lake House Dalarna</p></div></footer><script src="/navigation.js?v=20260917-nav-spacing"></script></body></html>
+<footer><div class="footer-content"><h2>Lake House Dalarna</h2><p>Solsidan Dalarna · Rogsjön · Falun</p><div class="footer-links"><a href="/sv/">Hem</a><a href="/sv/huset/">Huset</a><a href="#foretagsforfragan">Företagsförfrågan</a><a href="/privacy/sv.html" data-privacy-link>Integritet</a></div><p class="copyright">© 2026 Lake House Dalarna</p></div></footer><script src="/navigation.js?v=20260917-nav-spacing"></script><script src="/booking-config.js?v=20260924-enabled"></script><script src="/business-request.js?v=20261127"></script></body></html>
 '''.replace('FÖRETAGS VISTELSE','FÖRETAGSVISTELSE')
+    body = body.replace("</main>", (ROOT/"scripts/business_form.html").read_text(encoding="utf-8") + "</main>")
     dest = ROOT/ROUTE/'index.html'; dest.parent.mkdir(parents=True,exist_ok=True)
     dest.write_text(head+header+body,encoding='utf-8')
     for path in ['sv/index.html','sv/huset/index.html']:
